@@ -1,0 +1,48 @@
+@if (product(); as product) {
+  <section class="detail">
+    <header class="detail__header">
+      <div>
+        <h2>{{ product.name }}</h2>
+        <p class="detail__meta">
+          {{ 'inventory.product.sku' | translate }}: <b>{{ product.id }}</b> ·
+          {{ 'inventory.product.supplier' | translate }}: <b>{{ supplierName() }}</b>
+        </p>
+      </div>
+      <div class="detail__total">
+        <span>{{ 'inventory.product.total' | translate }}</span>
+        <strong>{{ stock() }}</strong>
+      </div>
+    </header>
+
+    @if (lots().length) {
+      <table class="plain">
+        <thead>
+          <tr>
+            <th>{{ 'inventory.columns.lot' | translate }}</th>
+            <th>{{ 'inventory.columns.stock' | translate }}</th>
+            <th>{{ 'inventory.product.origin' | translate }}</th>
+            <th>{{ 'inventory.columns.expires' | translate }}</th>
+            <th>{{ 'inventory.columns.status' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (lot of lots(); track lot.lotCode) {
+            <tr>
+              <td>{{ lot.lotCode }}</td>
+              <td>{{ lot.quantity }}</td>
+              <td>{{ supplierName() }}</td>
+              <td>{{ lot.expiresOn.toString() }}</td>
+              <td><app-status-badge [tone]="toneOf(lot.status)">{{ 'status.' + lot.status | translate }}</app-status-badge></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <p class="empty" role="status">{{ 'inventory.product.empty' | translate }}</p>
+    }
+
+    <a mat-button routerLink="/inventory">{{ 'inventory.product.back' | translate }}</a>
+  </section>
+} @else {
+  <p class="empty" role="status">{{ 'inventory.product.not-found' | translate }}</p>
+}
