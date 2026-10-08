@@ -1,0 +1,67 @@
+@if (supplier(); as supplier) {
+  <article class="profile">
+    <header class="profile__header">
+      <span class="profile__avatar" aria-hidden="true">{{ supplier.initials }}</span>
+      <div>
+        <h2>{{ supplier.businessName }}</h2>
+        <p>{{ 'suppliers.card-description' | translate }}</p>
+      </div>
+    </header>
+
+    <dl class="profile__details">
+      <div>
+        <dt>{{ 'suppliers.form.contact' | translate }}</dt>
+        <dd>{{ supplier.contactName }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'suppliers.form.phone' | translate }}</dt>
+        <dd>{{ supplier.phone }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'suppliers.form.email' | translate }}</dt>
+        <dd>{{ supplier.email.toString() }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'suppliers.form.certification' | translate }}</dt>
+        <dd>{{ supplier.organicCertification }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'suppliers.form.categories' | translate }}</dt>
+        <dd>{{ supplier.categories.join(', ') }}</dd>
+      </div>
+    </dl>
+
+    <section class="catalog">
+      <h3>{{ 'catalog-page.title' | translate }}</h3>
+      <table class="catalog__table">
+        <thead>
+          <tr>
+            <th>{{ 'catalog-page.product' | translate }}</th>
+            <th>{{ 'catalog-page.availability' | translate }}</th>
+            <th>{{ 'inventory.columns.expires' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of catalog(); track item.id) {
+            <tr>
+              <td>{{ item.productName }}</td>
+              <td>{{ item.availableQuantity }}</td>
+              <td>{{ item.expiresOn.toString() }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="3">{{ 'catalog-page.empty' | translate }}</td></tr>
+          }
+        </tbody>
+      </table>
+    </section>
+
+    <div class="profile__actions">
+      <a mat-flat-button routerLink="/requests/new" [queryParams]="{supplier: supplier.id}">
+        {{ 'suppliers.detail.create-request' | translate }}
+      </a>
+      <a mat-button routerLink="/suppliers">{{ 'common.back' | translate }}</a>
+    </div>
+  </article>
+} @else {
+  <p class="empty">{{ 'suppliers.detail.not-found' | translate }}</p>
+}

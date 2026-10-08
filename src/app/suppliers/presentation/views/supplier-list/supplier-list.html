@@ -1,0 +1,14 @@
+<div class="toolbar">
+  <a mat-flat-button routerLink="/suppliers/new">
+    <mat-icon>add</mat-icon>
+    {{ 'suppliers.new' | translate }}
+  </a>
+</div>
+
+<ul class="directory">
+  @for (supplier of suppliers(); track supplier.id; let index = $index) {
+    <li>
+      <app-supplier-card [supplier]="supplier" [tone]="index % 2 === 0 ? 'green' : 'blue'"/>
+    </li>
+  }
+</ul>

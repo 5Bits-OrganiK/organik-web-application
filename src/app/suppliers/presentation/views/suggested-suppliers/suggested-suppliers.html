@@ -1,0 +1,35 @@
+<section class="suggested">
+  <h2>{{ 'suppliers.suggested.title' | translate }}</h2>
+  <p class="suggested__description">{{ 'suppliers.suggested.description' | translate }}</p>
+
+  @for (suggestion of suggestions(); track suggestion.reason) {
+    <section class="group" [attr.aria-labelledby]="'reason-' + suggestion.reason">
+      <h3 class="group__title" [id]="'reason-' + suggestion.reason">
+        {{ 'suppliers.suggested.reasons.' + suggestion.reason | translate }}
+      </h3>
+      <ul class="group__list">
+        @for (supplier of suggestion.suppliers; track supplier.id) {
+          <li class="candidate">
+            <span class="candidate__avatar" aria-hidden="true">{{ supplier.initials }}</span>
+            <div class="candidate__info">
+              <a class="candidate__name" [routerLink]="['/suppliers', supplier.id]">
+                {{ supplier.businessName }}
+              </a>
+              <span class="candidate__meta">{{ supplier.categories.join(', ') }}</span>
+            </div>
+            <a
+              mat-flat-button
+              class="ok-btn-tonal"
+              routerLink="/requests/new"
+              [queryParams]="{supplier: supplier.id}"
+            >
+              {{ 'suppliers.suggested.request' | translate }}
+            </a>
+          </li>
+        }
+      </ul>
+    </section>
+  } @empty {
+    <p class="suggested__empty">{{ 'suppliers.suggested.empty' | translate }}</p>
+  }
+</section>
