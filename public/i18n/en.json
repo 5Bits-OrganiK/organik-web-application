@@ -1,0 +1,679 @@
+{
+  "app": {
+    "title": "OrganiK",
+    "tagline": "Organic products management"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "inventory": "Inventory",
+    "products": "Products",
+    "requests": "Requests",
+    "shipments": "Shipment orders",
+    "suppliers": "Suppliers",
+    "conservation": "Conservation",
+    "analytics": "Analytics",
+    "alerts": "Alerts",
+    "profiles": "Profiles",
+    "users": "Users and roles",
+    "settings": "Settings",
+    "catalog": "Catalog"
+  },
+  "shell": {
+    "navigation": "Main navigation",
+    "open-menu": "Open navigation menu",
+    "search-placeholder": "Search OrganiK",
+    "search-empty": "No results",
+    "alerts-shortcut": "View alerts",
+    "current-role": "Current role"
+  },
+  "form": {
+    "description": "Fill in the details and confirm to save the record.",
+    "validation-title": "Expected validation",
+    "validation-text": "The user fills in the data, confirms the action and returns to the module with the updated record.",
+    "cancel": "Cancel",
+    "required": "This field is required",
+    "invalid-email": "Enter a valid e-mail address",
+    "invalid-number": "Enter a number greater than zero",
+    "invalid-phone": "Enter a valid phone number",
+    "select": "Select an option",
+    "invalid-non-negative": "Enter a whole number of zero or more"
+  },
+  "flow": {
+    "page-title": "Prototype",
+    "topbar-link": "Prototype flow",
+    "title": "OrganiK consolidated prototype flow",
+    "subtitle": "Starting point to navigate the administrative frontend prototype and demonstrate every key requested interaction.",
+    "start": "Start prototype",
+    "view-dashboard": "View dashboard",
+    "recommended-route": "Recommended walkthrough",
+    "step-dashboard": "1. Dashboard and main modules",
+    "step-crud": "2. CRUD and operational actions",
+    "step-alerts": "3. Alerts, reports and suppliers",
+    "step-users": "4. Users and roles",
+    "shortcuts": "Direct access to interactions",
+    "map-title": "Frontend interaction map",
+    "map-description": "Each card is an action wired with ON_CLICK prototyping from the main mockup.",
+    "notes-title": "Notes to present the prototype",
+    "note-start": "- Use “Start prototype” to enter the main frontend flow.",
+    "note-actions": "- Action buttons open the corresponding registration or review screens.",
+    "note-map": "- The interaction map and this screen consolidate the walkthrough requested for the evaluation."
+  },
+  "interactions": {
+    "add-product": "Add product",
+    "register-stock": "Register stock",
+    "new-request": "New request",
+    "accept-reception": "Accept reception",
+    "new-supplier": "New supplier",
+    "view-alerts": "View alerts",
+    "generate-report": "Generate report",
+    "view-suppliers": "View suppliers",
+    "new-user": "New user",
+    "alert-module": "Alert",
+    "review-orders": "Review orders",
+    "publish-catalog": "Publish product",
+    "register-waste": "Register waste"
+  },
+  "page-not-found": {
+    "page-title": "Page not found",
+    "title": "Page not found",
+    "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",
+    "go-home": "Go to dashboard"
+  },
+  "common": {
+    "close": "Close",
+    "back": "Back"
+  },
+  "suppliers": {
+    "new": "New supplier",
+    "view-profile": "View profile",
+    "card-description": "Active supplier - certified organic products",
+    "form": {
+      "title": "New supplier",
+      "business-name": "Business name",
+      "contact": "Contact",
+      "phone": "Phone",
+      "email": "E-mail",
+      "categories": "Categories",
+      "categories-hint": "E.g. Dairy, Grains",
+      "certification": "Organic certification",
+      "submit": "Save supplier",
+      "saved": "Supplier {{name}} registered"
+    },
+    "detail": {
+      "title": "Supplier profile",
+      "create-request": "Create request",
+      "not-found": "We could not find this supplier."
+    },
+    "suggested": {
+      "title": "Suggested suppliers",
+      "description": "Suppliers recommended to resolve active alerts: urgent restock, fresh products and critical preservation.",
+      "reasons": {
+        "urgent-restock": "Urgent restock",
+        "fresh-produce": "Fresh products",
+        "cold-chain": "Critical preservation"
+      },
+      "request": "Request",
+      "empty": "There are no recommended suppliers yet."
+    }
+  },
+  "storage": {
+    "cold": "Refrigerated",
+    "fresh": "Fresh",
+    "dry": "Dry",
+    "frozen": "Frozen"
+  },
+  "catalog": {
+    "add": "Add product",
+    "card-description": "Catalog, lots and linked suppliers.",
+    "categories": {
+      "fruits-vegetables": "Fruits and vegetables",
+      "dairy": "Dairy",
+      "grains": "Grains",
+      "beverages": "Beverages",
+      "bakery": "Bakery",
+      "frozen": "Frozen"
+    },
+    "units": {
+      "unit": "Unit",
+      "kg": "Kilogram",
+      "liter": "Liter",
+      "pack": "Pack"
+    },
+    "form": {
+      "title": "Add product",
+      "name": "Product name",
+      "category": "Category",
+      "supplier": "Supplier",
+      "unit": "Unit of measure",
+      "minimum-stock": "Minimum stock",
+      "storage": "Storage condition",
+      "submit": "Save product",
+      "saved": "Product {{name}} added",
+      "edit-title": "Edit product",
+      "updated": "Product {{name}} updated",
+      "initial-quantity": "Initial quantity",
+      "initial-expires-on": "Expiration of the initial lot",
+      "initial-location": "Location of the initial lot"
+    },
+    "list": {
+      "title": "Products",
+      "search": "Search by SKU, name or supplier",
+      "view-all": "View all products",
+      "categories": "Categories",
+      "lots": "Lots",
+      "empty": "No products match your search."
+    }
+  },
+  "status": {
+    "normal": "Normal",
+    "risk": "At risk",
+    "critical": "Critical"
+  },
+  "inventory": {
+    "search": "Search product or lot",
+    "status": "Status",
+    "filters": "Inventory filters",
+    "register-stock": "Register stock",
+    "new-product": "New product",
+    "empty": "No lots match your search.",
+    "columns": {
+      "sku": "SKU",
+      "product": "Product",
+      "lot": "Lot",
+      "stock": "Stock",
+      "expires": "Expires",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "title": "Register stock",
+      "product": "Product",
+      "lot": "Lot",
+      "quantity": "Received quantity",
+      "expires-on": "Expiration date",
+      "location": "Location",
+      "notes": "Notes",
+      "submit": "Register stock",
+      "saved": "Lot {{lot}} registered",
+      "duplicate-lot": "A lot with this code already exists",
+      "expired": "The lot cannot be expired"
+    },
+    "category": "Category",
+    "expiration": "Expiration",
+    "expiration-options": {
+      "all": "Expiration",
+      "expired": "Expired",
+      "within-7": "Within 7 days",
+      "within-30": "Within 30 days"
+    },
+    "reset": "Reset filters",
+    "edit": "Edit",
+    "waste": "Register waste",
+    "offer": "Register offer",
+    "history-link": "History",
+    "product": {
+      "title": "Product lots",
+      "sku": "SKU",
+      "supplier": "Supplier of origin",
+      "origin": "Origin",
+      "total": "Total stock",
+      "empty": "This product has no lots registered.",
+      "not-found": "This product does not exist.",
+      "back": "Back to inventory"
+    },
+    "lot-form": {
+      "title": "Edit lot",
+      "submit": "Save changes",
+      "saved": "Lot {{lot}} updated"
+    },
+    "waste-form": {
+      "title": "Register waste",
+      "quantity": "Units lost",
+      "cause": "Cause",
+      "available": "{{units}} units in the lot",
+      "exceeds": "The units exceed what the lot holds",
+      "submit": "Register waste",
+      "saved": "Waste of {{quantity}} units registered"
+    },
+    "waste-causes": {
+      "expired": "Expired",
+      "damaged": "Damaged",
+      "temperature": "Temperature",
+      "other": "Other"
+    },
+    "offer-form": {
+      "title": "Register offer",
+      "quantity": "Units on offer",
+      "valid-until": "Valid until",
+      "available": "{{units}} units available",
+      "exceeds": "The units exceed the available stock",
+      "past": "The offer cannot end in the past",
+      "submit": "Register offer",
+      "saved": "Offer registered"
+    },
+    "offer-status": {
+      "active": "Active",
+      "expired": "Expired"
+    },
+    "event-types": {
+      "registered": "Lot registered",
+      "updated": "Lot updated",
+      "waste": "Waste",
+      "offer": "Offer",
+      "order-received": "Order received",
+      "product-updated": "Product updated"
+    },
+    "history": {
+      "title": "Inventory history",
+      "movements": "Movements",
+      "offers": "Offers",
+      "date": "Date",
+      "type": "Movement",
+      "quantity": "Units",
+      "detail": "Detail",
+      "actor": "Made by",
+      "valid-until": "Valid until",
+      "empty": "There are no movements yet.",
+      "offers-empty": "There are no offers yet."
+    }
+  },
+  "requests": {
+    "eyebrow": "Requests",
+    "heading": "Supply requests",
+    "description": "The minimarket shares what it needs; suppliers can consult it and answer with an order.",
+    "new": "New request",
+    "columns": {
+      "id": "Request",
+      "product": "Product",
+      "supplier": "Supplier",
+      "quantity": "Quantity",
+      "reason": "Reason",
+      "status": "Status"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "priority": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "form": {
+      "title": "New request",
+      "product": "Product",
+      "supplier": "Supplier",
+      "quantity": "Quantity",
+      "reason": "Reason",
+      "required-on": "Required date",
+      "priority": "Priority",
+      "submit": "Send request",
+      "saved": "Request {{id}} sent to the supplier",
+      "past-date": "The date cannot be in the past"
+    }
+  },
+  "alerts": {
+    "types": {
+      "expiration": "Upcoming expiration",
+      "temperature": "Temperature out of range",
+      "minimum-stock": "Minimum stock reached"
+    }
+  },
+  "conservation": {
+    "eyebrow": "Conservation",
+    "heading": "Temperature and humidity monitoring",
+    "description": "Condition control to preserve organic products.",
+    "view-alerts": "View alerts",
+    "columns": {
+      "zone": "Zone",
+      "product": "Product",
+      "temperature": "Temp °C",
+      "humidity": "Humidity %",
+      "recorded": "Recorded",
+      "status": "Status"
+    },
+    "status": {
+      "normal": "Normal",
+      "warning": "Warning",
+      "critical": "Critical"
+    },
+    "alerts": {
+      "title": "Conservation alerts",
+      "description": "Prioritized list of expirations, out-of-range temperatures and minimum stock. From here the user can review the origin of each alert and decide whether to contact suppliers.",
+      "view-suppliers": "View suppliers",
+      "empty": "There are no active alerts."
+    },
+    "no-readings": "No readings yet for: {{zones}}.",
+    "sources": {
+      "simulated": "Simulated",
+      "sensor": "Sensor"
+    },
+    "history": {
+      "title": "Reading history",
+      "all-zones": "All zones",
+      "from": "From",
+      "to": "To",
+      "temperature": "Temperature",
+      "humidity": "Humidity",
+      "source": "Source",
+      "empty": "There are no readings in this range."
+    }
+  },
+  "analytics": {
+    "eyebrow": "Analytics",
+    "heading": "Operational indicators",
+    "description": "Summary of avoided losses, products at risk and supplier performance.",
+    "alerts-title": "Analytics and alerts",
+    "generate-report": "Generate report",
+    "active-alerts": "Active alerts",
+    "kpi": {
+      "avoided-loss": "Avoided loss",
+      "products-at-risk": "Products at risk",
+      "accepted-requests": "Accepted requests"
+    },
+    "trend": {
+      "title": "Alert trend",
+      "bar": "{{label}}: {{count}} alerts",
+      "spike": "Sharp increase in alerts"
+    }
+  },
+  "reports": {
+    "indicators": {
+      "alerts": "Active alerts",
+      "requests": "Supply requests",
+      "inventory": "Inventory",
+      "conservation": "Conservation"
+    },
+    "form": {
+      "title": "Generate report",
+      "description": "Report setup with date range, operational indicators and export format for the administrator.",
+      "from": "From",
+      "to": "To",
+      "indicators": "Operational indicators",
+      "format": "Export format",
+      "submit": "Generate PDF",
+      "generated": "Report {{file}} generated",
+      "invalid-period": "The end date cannot be earlier than the start date",
+      "no-section": "Select at least one indicator"
+    },
+    "document": {
+      "title": "OrganiK - Operational report",
+      "period": "Period: {{from}} to {{to}}",
+      "generated": "Generated: {{at}}",
+      "indicators": "Indicators",
+      "health": "Operational health",
+      "units": "Units available"
+    }
+  },
+  "dashboard": {
+    "eyebrow": "OrganiK summary",
+    "heading": "Operational control of organic products",
+    "description": "Shared panel with inventory, requests, shipment reception and alerts.",
+    "health": "operational health",
+    "inventory": "Inventory",
+    "units": "units available",
+    "requests": "Requests",
+    "requests-note": "created by the minimarket",
+    "shipments": "Orders",
+    "shipments-note": "waiting for an answer",
+    "recent-activity": "Recent activity",
+    "no-activity": "There is no recent activity yet.",
+    "activity": {
+      "expiration": {
+        "title": "Lot about to expire",
+        "detail": "{{product}} expires in {{days}} days."
+      },
+      "request": {
+        "title": "Order accepted",
+        "detail": "Supplier {{supplier}} confirmed."
+      },
+      "sensor": {
+        "title": "Sensor updated",
+        "detail": "{{zone}} within range."
+      },
+      "order-accepted": {
+        "title": "Order accepted",
+        "detail": "{{minimarket}} accepted order {{order}}."
+      },
+      "order-rejected": {
+        "title": "Order rejected",
+        "detail": "{{minimarket}} rejected order {{order}}."
+      }
+    },
+    "overview": {
+      "title": "Operational overview",
+      "inventory": "Inventory",
+      "inventory-text": "Stock, lots and reception.",
+      "requests": "Supply requests",
+      "requests-text": "Orders to suppliers.",
+      "shipments": "Supplier orders",
+      "shipments-text": "Accept or reject orders."
+    },
+    "supplier": {
+      "heading": "Your supply at a glance",
+      "description": "Needs shared by the minimarkets, your catalog and the state of your orders.",
+      "needs": "Needs",
+      "needs-note": "shared by the minimarkets",
+      "catalog": "Catalog",
+      "catalog-note": "products you offer",
+      "orders": "Orders",
+      "orders-note": "pending · {{accepted}} accepted · {{rejected}} rejected",
+      "requests-text": "Consult what the minimarkets need.",
+      "catalog-text": "Publish products and keep the availability up to date.",
+      "orders-text": "Create orders and follow their answer."
+    },
+    "attention": {
+      "expiring": "Expiring lots",
+      "expiring-note": "close to expire or expired",
+      "shortages": "Low stock",
+      "shortages-note": "products below the minimum",
+      "orders": "Orders to answer",
+      "orders-note": "waiting for your decision"
+    }
+  },
+  "iam": {
+    "roles": {
+      "administrator": "Administrator",
+      "operator": "Operator",
+      "supplier": "Supplier"
+    },
+    "status": {
+      "accepted": "Accepted",
+      "pending": "Pending"
+    },
+    "session": {
+      "administrator": "Minimarket administrator",
+      "operator": "Minimarket operator",
+      "supplier": "Supplier"
+    },
+    "users": {
+      "eyebrow": "Access",
+      "heading": "Minimarket users and roles",
+      "description": "Manage permissions for operators, suppliers and administrators.",
+      "new": "New user",
+      "edit": "Edit",
+      "resend": "Resend",
+      "invitation-resent": "Invitation sent again to {{email}}",
+      "columns": {
+        "user": "User",
+        "email": "E-mail",
+        "role": "Role",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "New user",
+        "edit-title": "Edit user",
+        "full-name": "Full name",
+        "email": "E-mail",
+        "role": "Role",
+        "module": "Assigned module",
+        "status": "Initial status",
+        "notes": "Notes",
+        "submit": "Create user",
+        "save": "Save changes",
+        "created": "User {{name}} created",
+        "updated": "User {{name}} updated",
+        "email-in-use": "This e-mail already belongs to another user",
+        "module-not-allowed": "The chosen role has no access to the assigned module"
+      }
+    },
+    "profiles": {
+      "my-profile": "My profile",
+      "assigned-module": "Assigned module",
+      "roles-title": "Access profiles",
+      "manage": "Manages",
+      "view": "Can view",
+      "description": {
+        "administrator": "Governs the whole operation, users and settings.",
+        "operator": "Runs the daily store work: stock, receptions and conservation.",
+        "supplier": "Follows the requests and shipments addressed to their company."
+      }
+    }
+  },
+  "settings": {
+    "language": {
+      "title": "Language",
+      "description": "Choose the interface language. It will be remembered in this browser."
+    },
+    "expiration": {
+      "title": "Expiration thresholds",
+      "description": "Set how many days ahead a lot becomes at risk or critical in the inventory.",
+      "critical": "Days for critical status",
+      "risk": "Days for at-risk status",
+      "save": "Save settings",
+      "saved": "Settings saved",
+      "invalid": "Enter a valid number of days",
+      "order": "The risk threshold must be greater than the critical one"
+    }
+  },
+  "auth": {
+    "page-title": "Sign in",
+    "headline": "Less waste, more fresh produce.",
+    "subheadline": "Control inventory, expirations and suppliers of your organic minimarket from one place.",
+    "benefit-stock": "Stock and lots always up to date",
+    "benefit-alerts": "Alerts before anything is lost",
+    "benefit-suppliers": "Orders and shipments with your suppliers",
+    "back-to-site": "Back to the site",
+    "title": "Welcome back",
+    "intro": "Sign in with your OrganiK account to continue.",
+    "email": "E-mail",
+    "email-placeholder": "you@minimarket.pe",
+    "password": "Password",
+    "show-password": "Show password",
+    "hide-password": "Hide password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "logout": "Sign out",
+    "errors": {
+      "invalid-credentials": "The e-mail or the password is not correct.",
+      "pending-invitation": "Your invitation has not been accepted yet. Check your e-mail or ask for it to be sent again."
+    },
+    "register-page-title": "Create account",
+    "register-headline": "Start taking control of your minimarket.",
+    "register-subheadline": "Create your OrganiK account and manage inventory, batches, expirations and restocking from day one.",
+    "register-title": "Create your account",
+    "register-intro": "Fill in your details to get started with OrganiK.",
+    "full-name": "Full name",
+    "minimarket": "Your minimarket's name",
+    "password-too-short": "Use at least {{min}} characters",
+    "accept-terms": "I accept the terms and conditions",
+    "read-terms": "Read terms and conditions",
+    "terms-required": "You must accept the terms to continue.",
+    "register-submit": "Create account",
+    "register-submitting": "Creating account…",
+    "have-account": "Already have an account?",
+    "no-account": "Don't have an account?",
+    "register-link": "Sign up",
+    "register-errors": {
+      "email-taken": "An account with that e-mail already exists. Sign in or use another e-mail."
+    },
+    "role-label": "Account type",
+    "role-administrator": "I run a minimarket",
+    "role-supplier": "I am a supplier",
+    "company": "Your company name",
+    "selected-plan": "Selected plan: {{plan}}",
+    "plans": {
+      "basic": "Basic (minimarket)",
+      "professional": "Professional (minimarket)",
+      "enterprise": "Enterprise (minimarket)",
+      "listing": "Catalog (supplier)",
+      "partner": "Partner (supplier)"
+    }
+  },
+  "footer": {
+    "copyright": "© {{year}} OrganiK. All rights reserved.",
+    "terms": "Terms and conditions",
+    "privacy": "Privacy policy",
+    "legal": "Legal information"
+  },
+  "catalog-page": {
+    "title": "Product catalog",
+    "add": "Publish product",
+    "supplier": "Supplier",
+    "all-suppliers": "All suppliers",
+    "product": "Product",
+    "availability": "Available units",
+    "updated": "Updated",
+    "own-note": "These are the products you offer to the minimarkets. Keep the availability up to date.",
+    "read-only": "Catalog published by your suppliers. You can only consult it.",
+    "empty": "No products published yet.",
+    "form": {
+      "title": "Publish product",
+      "edit-title": "Update offered product",
+      "submit": "Save",
+      "saved": "Product published in your catalog",
+      "updated": "Offered product updated"
+    }
+  },
+  "shipments": {
+    "create": "Create order",
+    "view": "View",
+    "empty": "There are no orders yet.",
+    "columns": {
+      "order": "Order",
+      "supplier": "Supplier",
+      "minimarket": "Minimarket",
+      "products": "Products",
+      "date": "Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "form": {
+      "title": "Create order",
+      "minimarket": "Minimarket",
+      "product": "Product",
+      "quantity": "Quantity",
+      "available": "{{available}} units available",
+      "exceeds": "Only {{available}} units are available",
+      "add-line": "Add product",
+      "remove-line": "Remove",
+      "submit": "Send order",
+      "note": "The order stays pending until the administrator of the minimarket answers it. Your catalog and the minimarket inventory do not change until then.",
+      "saved": "Order {{id}} sent to the minimarket",
+      "supplier-only": "Only suppliers can create orders."
+    },
+    "detail": {
+      "title": "Order detail",
+      "order": "Order",
+      "created-by": "Created by",
+      "decided-by": "Answered by",
+      "decided-on": "Answer date",
+      "reason": "Reason",
+      "accept": "Accept order",
+      "reject": "Reject order",
+      "confirm-reject": "Confirm rejection",
+      "accepted": "Order {{id}} accepted and added to the inventory",
+      "rejected": "Order {{id}} rejected",
+      "inventory-added": "The units of this order were added to the inventory when it was accepted.",
+      "only-admin": "Only the administrator of the destination minimarket can accept or reject this order.",
+      "not-found": "The order does not exist or you cannot see it."
+    }
+  }
+}
