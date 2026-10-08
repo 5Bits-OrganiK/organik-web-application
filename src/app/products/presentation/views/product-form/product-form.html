@@ -1,0 +1,112 @@
+<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <app-form-card [heading]="(editing() ? 'catalog.form.edit-title' : 'catalog.form.title') | translate">
+    <div class="ok-field">
+      <label for="name">{{ 'catalog.form.name' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="name" formControlName="name" autocomplete="off"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="category">{{ 'catalog.form.category' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="category" formControlName="categoryId">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (category of categories(); track category.id) {
+            <option [value]="category.id">{{ 'catalog.categories.' + category.id | translate }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="supplier">{{ 'catalog.form.supplier' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="supplier" formControlName="supplierId">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (supplier of suppliers(); track supplier.id) {
+            <option [value]="supplier.id">{{ supplier.businessName }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="unit">{{ 'catalog.form.unit' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="unit" formControlName="unit">
+          @for (unit of units; track unit) {
+            <option [value]="unit">{{ 'catalog.units.' + unit | translate }}</option>
+          }
+        </select>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="minimum-stock">{{ 'catalog.form.minimum-stock' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="minimum-stock" type="number" min="1" inputmode="numeric" formControlName="minimumStock"/>
+        @if (form.controls.minimumStock.hasError('required')) {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.invalid-number' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="storage">{{ 'catalog.form.storage' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="storage" formControlName="storageCondition">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (condition of storageConditions; track condition) {
+            <option [value]="condition">{{ 'storage.' + condition | translate }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    @if (!editing()) {
+      <div class="ok-field">
+        <label for="initial-quantity">{{ 'catalog.form.initial-quantity' | translate }}</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput id="initial-quantity" type="number" min="1" inputmode="numeric" formControlName="initialQuantity"/>
+          @if (form.controls.initialQuantity.hasError('required')) {
+            <mat-error>{{ 'form.required' | translate }}</mat-error>
+          } @else {
+            <mat-error>{{ 'form.invalid-number' | translate }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="ok-field">
+        <label for="initial-expires-on">{{ 'catalog.form.initial-expires-on' | translate }}</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput id="initial-expires-on" type="date" [min]="minExpiry" formControlName="initialExpiresOn"/>
+          @if (form.controls.initialExpiresOn.hasError('expired')) {
+            <mat-error>{{ 'inventory.form.expired' | translate }}</mat-error>
+          } @else {
+            <mat-error>{{ 'form.required' | translate }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="ok-field">
+        <label for="initial-location">{{ 'catalog.form.initial-location' | translate }}</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput id="initial-location" formControlName="initialLocation" autocomplete="off"/>
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+    }
+
+    <ng-container formActions>
+      <button mat-flat-button type="submit">{{ 'catalog.form.submit' | translate }}</button>
+      <a mat-button routerLink="/products/list">{{ 'form.cancel' | translate }}</a>
+    </ng-container>
+  </app-form-card>
+</form>

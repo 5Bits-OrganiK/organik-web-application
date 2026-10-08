@@ -1,0 +1,7 @@
+<article class="category">
+  <div class="category__swatch" [class]="'category__swatch--' + category().tone" aria-hidden="true">
+    <mat-icon>{{ icon() }}</mat-icon>
+  </div>
+  <h2 class="category__name">{{ 'catalog.categories.' + category().id | translate }}</h2>
+  <p class="category__description">{{ 'catalog.card-description' | translate }}</p>
+</article>
