@@ -1,0 +1,58 @@
+<section class="toolbar">
+  @if (owner()) {
+    <p class="toolbar__note">{{ 'catalog-page.own-note' | translate }}</p>
+    <a mat-flat-button routerLink="/catalog/new">{{ 'catalog-page.add' | translate }}</a>
+  } @else {
+    <label class="toolbar__filter">
+      <span>{{ 'catalog-page.supplier' | translate }}</span>
+      <select class="filter" (change)="onSupplier($event)">
+        <option value="">{{ 'catalog-page.all-suppliers' | translate }}</option>
+        @for (supplier of suppliers(); track supplier.id) {
+          <option [value]="supplier.id">{{ supplier.businessName }}</option>
+        }
+      </select>
+    </label>
+    <p class="toolbar__note">{{ 'catalog-page.read-only' | translate }}</p>
+  }
+</section>
+
+<div class="card">
+  <table class="plain">
+    <thead>
+      <tr>
+        @if (!owner()) {
+          <th>{{ 'catalog-page.supplier' | translate }}</th>
+        }
+        <th>{{ 'catalog-page.product' | translate }}</th>
+        <th>{{ 'inventory.columns.lot' | translate }}</th>
+        <th>{{ 'catalog-page.availability' | translate }}</th>
+        <th>{{ 'inventory.columns.expires' | translate }}</th>
+        <th>{{ 'catalog-page.updated' | translate }}</th>
+        @if (owner()) {
+          <th>{{ 'inventory.columns.actions' | translate }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track row.id) {
+        <tr>
+          @if (!owner()) {
+            <td>{{ row.supplierName }}</td>
+          }
+          <td>{{ row.productName }}</td>
+          <td>{{ row.lotCode }}</td>
+          <td>{{ row.availableQuantity }}</td>
+          <td>{{ row.expiresOn.toString() }}</td>
+          <td>{{ row.updatedOn.toString() }}</td>
+          @if (owner()) {
+            <td><a class="link" [routerLink]="['/catalog', row.id, 'edit']">{{ 'inventory.edit' | translate }}</a></td>
+          }
+        </tr>
+      } @empty {
+        <tr>
+          <td class="empty" [attr.colspan]="owner() ? 6 : 6">{{ 'catalog-page.empty' | translate }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
