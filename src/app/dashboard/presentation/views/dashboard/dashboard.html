@@ -1,0 +1,115 @@
+<div class="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__text">
+      <h2 id="hero-title">{{ (isSupplier() ? 'dashboard.supplier.heading' : 'dashboard.heading') | translate }}</h2>
+      <p class="hero__description">{{ (isSupplier() ? 'dashboard.supplier.description' : 'dashboard.description') | translate }}</p>
+    </div>
+    @if (!isSupplier() && summary().health !== null) {
+      <div class="hero__health">
+        <strong>{{ summary().health }}%</strong>
+        <span>{{ 'dashboard.health' | translate }}</span>
+      </div>
+    }
+  </section>
+
+  @if (isSupplier()) {
+    <app-kpi-card
+      icon="receipt_long"
+      [label]="'dashboard.supplier.needs' | translate"
+      [value]="'' + supplierSummary().needs"
+      [note]="'dashboard.supplier.needs-note' | translate"
+    />
+    <app-kpi-card
+      icon="storefront"
+      [label]="'dashboard.supplier.catalog' | translate"
+      [value]="'' + supplierSummary().offered"
+      [note]="'dashboard.supplier.catalog-note' | translate"
+    />
+    <app-kpi-card
+      icon="local_shipping"
+      [label]="'dashboard.supplier.orders' | translate"
+      [value]="'' + supplierSummary().pending"
+      [note]="'dashboard.supplier.orders-note' | translate: {accepted: supplierSummary().accepted, rejected: supplierSummary().rejected}"
+    />
+  } @else {
+    <app-kpi-card
+      icon="inventory_2"
+      [label]="'dashboard.inventory' | translate"
+      [value]="(summary().units | number) ?? ''"
+      [note]="'dashboard.units' | translate"
+    />
+    <app-kpi-card
+      icon="receipt_long"
+      [label]="'dashboard.requests' | translate"
+      [value]="'' + summary().requests"
+      [note]="'dashboard.requests-note' | translate"
+    />
+    <app-kpi-card
+      icon="local_shipping"
+      [label]="'dashboard.shipments' | translate"
+      [value]="'' + summary().pendingShipments"
+      [note]="'dashboard.shipments-note' | translate"
+    />
+  }
+</div>
+
+@if (!isSupplier()) {
+  <div class="attention">
+    <app-kpi-card
+      icon="schedule"
+      [label]="'dashboard.attention.expiring' | translate"
+      [value]="'' + attention().expiring"
+      [note]="'dashboard.attention.expiring-note' | translate"
+    />
+    <app-kpi-card
+      icon="trending_down"
+      [label]="'dashboard.attention.shortages' | translate"
+      [value]="'' + attention().shortages"
+      [note]="'dashboard.attention.shortages-note' | translate"
+    />
+    <app-kpi-card
+      icon="pending_actions"
+      [label]="'dashboard.attention.orders' | translate"
+      [value]="'' + attention().pendingOrders"
+      [note]="'dashboard.attention.orders-note' | translate"
+    />
+  </div>
+}
+
+<div class="bottom">
+  <section class="panel" aria-labelledby="activity-title">
+    <h2 id="activity-title">{{ 'dashboard.recent-activity' | translate }}</h2>
+    <ul class="panel__list">
+      @for (entry of activity(); track entry.kind) {
+        <li class="activity">
+          <span class="activity__dot" [class]="'activity__dot--' + entry.tone" aria-hidden="true"></span>
+          <div>
+            <h3>{{ 'dashboard.activity.' + entry.kind + '.title' | translate }}</h3>
+            <p>{{ 'dashboard.activity.' + entry.kind + '.detail' | translate: entry.params }}</p>
+          </div>
+        </li>
+      } @empty {
+        <li class="panel__empty">{{ 'dashboard.no-activity' | translate }}</li>
+      }
+    </ul>
+  </section>
+
+  <section class="panel" aria-labelledby="overview-title">
+    <h2 id="overview-title">{{ 'dashboard.overview.title' | translate }}</h2>
+    <ul class="panel__list">
+      @for (item of (isSupplier() ? supplierOverview : overview); track item.link) {
+        <li>
+          <a class="overview" [routerLink]="item.link">
+            <span class="overview__icon" aria-hidden="true">
+              <mat-icon>{{ item.icon }}</mat-icon>
+            </span>
+            <span>
+              <strong>{{ item.title | translate }}</strong>
+              <small>{{ item.description | translate }}</small>
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+</div>
