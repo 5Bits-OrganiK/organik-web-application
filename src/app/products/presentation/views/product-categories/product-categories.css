@@ -1,0 +1,15 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px;
+  max-width: 100%;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
