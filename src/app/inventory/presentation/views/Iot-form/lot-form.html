@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <app-form-card [heading]="('inventory.lot-form.title' | translate) + ' · ' + lotCode()">
+    <div class="ok-field">
+      <label for="quantity">{{ 'inventory.form.quantity' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="quantity" type="number" min="0" inputmode="numeric" formControlName="quantity"/>
+        @if (form.controls.quantity.hasError('required')) {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.invalid-non-negative' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="expires-on">{{ 'inventory.form.expires-on' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="expires-on" type="date" formControlName="expiresOn"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="location">{{ 'inventory.form.location' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="location" formControlName="location" autocomplete="off"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="notes">{{ 'inventory.form.notes' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="notes" formControlName="notes" autocomplete="off"/>
+      </mat-form-field>
+    </div>
+
+    <ng-container formActions>
+      <button mat-flat-button class="ok-btn-success" type="submit">
+        {{ 'inventory.lot-form.submit' | translate }}
+      </button>
+      <a mat-button routerLink="/inventory">{{ 'form.cancel' | translate }}</a>
+    </ng-container>
+  </app-form-card>
+</form>
