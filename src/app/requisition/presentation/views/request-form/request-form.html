@@ -1,0 +1,77 @@
+<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <app-form-card [heading]="'requests.form.title' | translate">
+    <div class="ok-field">
+      <label for="product">{{ 'requests.form.product' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="product" formControlName="productId">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (product of products(); track product.id) {
+            <option [value]="product.id">{{ product.name }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="supplier">{{ 'requests.form.supplier' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="supplier" formControlName="supplierId">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (supplier of suppliers(); track supplier.id) {
+            <option [value]="supplier.id">{{ supplier.businessName }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="quantity">{{ 'requests.form.quantity' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="quantity" type="number" min="1" inputmode="numeric" formControlName="quantity"/>
+        @if (form.controls.quantity.hasError('required')) {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.invalid-number' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="reason">{{ 'requests.form.reason' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="reason" formControlName="reason" autocomplete="off"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="required-on">{{ 'requests.form.required-on' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="required-on" type="date" [min]="minDate" formControlName="requiredOn"/>
+        @if (form.controls.requiredOn.hasError('past')) {
+          <mat-error>{{ 'requests.form.past-date' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="priority">{{ 'requests.form.priority' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="priority" formControlName="priority">
+          @for (priority of priorities; track priority) {
+            <option [value]="priority">{{ 'requests.priority.' + priority | translate }}</option>
+          }
+        </select>
+      </mat-form-field>
+    </div>
+
+    <ng-container formActions>
+      <button mat-flat-button type="submit">{{ 'requests.form.submit' | translate }}</button>
+      <a mat-button routerLink="/requests">{{ 'form.cancel' | translate }}</a>
+    </ng-container>
+  </app-form-card>
+</form>
