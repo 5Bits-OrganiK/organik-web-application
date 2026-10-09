@@ -1,0 +1,31 @@
+.alert {
+  padding: 14px 18px;
+  border: 1px solid var(--ok-border);
+  border-radius: var(--ok-radius-sm);
+}
+
+.alert--info {
+  background: #e3f2e7;
+}
+
+.alert--critical {
+  background: var(--ok-danger-bg);
+  border-color: #f4c2c2;
+}
+
+.alert__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ok-forest);
+}
+
+.alert__detail {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ok-muted);
+}
+
+.alert--critical .alert__detail {
+  color: #8c1c1c;
+}

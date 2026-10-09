@@ -1,0 +1,4 @@
+<article class="alert" [class]="'alert--' + alert().severity">
+  <h3 class="alert__title">{{ 'alerts.types.' + alert().type | translate }}</h3>
+  <p class="alert__detail">{{ alert().subjects.join(', ') }}</p>
+</article>
