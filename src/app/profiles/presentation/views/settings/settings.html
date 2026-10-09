@@ -1,0 +1,36 @@
+<div class="settings">
+  <section class="settings__section" aria-labelledby="language-title">
+    <h2 id="language-title">{{ 'settings.language.title' | translate }}</h2>
+    <p>{{ 'settings.language.description' | translate }}</p>
+    <app-language-switcher/>
+  </section>
+
+  <form class="settings__section" [formGroup]="form" (ngSubmit)="save()" novalidate aria-labelledby="expiration-title">
+    <h2 id="expiration-title">{{ 'settings.expiration.title' | translate }}</h2>
+    <p>{{ 'settings.expiration.description' | translate }}</p>
+
+    <div class="settings__fields">
+      <div class="ok-field">
+        <label for="critical-days">{{ 'settings.expiration.critical' | translate }}</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput id="critical-days" type="number" min="0" inputmode="numeric" formControlName="criticalDays"/>
+          <mat-error>{{ 'settings.expiration.invalid' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="ok-field">
+        <label for="risk-days">{{ 'settings.expiration.risk' | translate }}</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <input matInput id="risk-days" type="number" min="1" inputmode="numeric" formControlName="riskDays"/>
+          <mat-error>{{ 'settings.expiration.invalid' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    @if (form.hasError('thresholds')) {
+      <p class="problem" role="alert">{{ 'settings.expiration.order' | translate }}</p>
+    }
+
+    <button mat-flat-button type="submit">{{ 'settings.expiration.save' | translate }}</button>
+  </form>
+</div>

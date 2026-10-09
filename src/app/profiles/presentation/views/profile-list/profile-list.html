@@ -1,0 +1,46 @@
+@if (user(); as user) {
+  <h2 class="section-title section-title--first">{{ 'iam.profiles.my-profile' | translate }}</h2>
+  <section class="me" aria-labelledby="me-title">
+    <span class="me__avatar" aria-hidden="true">
+      {{ user.fullName.slice(0, 2).toUpperCase() }}
+    </span>
+    <div>
+      <h2 id="me-title">{{ user.fullName }}</h2>
+      <p class="me__meta">
+        {{ 'iam.roles.' + user.role.id | translate }} · {{ user.email.toString() }}
+      </p>
+      <p class="me__meta">
+        {{ 'iam.profiles.assigned-module' | translate }}: {{ 'nav.' + user.assignedModule | translate }}
+      </p>
+    </div>
+  </section>
+}
+
+<h2 class="section-title">{{ 'iam.profiles.roles-title' | translate }}</h2>
+
+<ul class="roles">
+  @for (role of roles; track role.id) {
+    <li class="role">
+      <h3>{{ 'iam.roles.' + role.id | translate }}</h3>
+      <p class="role__description">{{ 'iam.profiles.description.' + role.id | translate }}</p>
+
+      @if (role.modulesWith('manage').length > 0) {
+        <p class="role__label">{{ 'iam.profiles.manage' | translate }}</p>
+        <ul class="chips">
+          @for (module of role.modulesWith('manage'); track module) {
+            <li class="chip chip--manage">{{ 'nav.' + module | translate }}</li>
+          }
+        </ul>
+      }
+
+      @if (role.modulesWith('view').length > 0) {
+        <p class="role__label">{{ 'iam.profiles.view' | translate }}</p>
+        <ul class="chips">
+          @for (module of role.modulesWith('view'); track module) {
+            <li class="chip">{{ 'nav.' + module | translate }}</li>
+          }
+        </ul>
+      }
+    </li>
+  }
+</ul>
