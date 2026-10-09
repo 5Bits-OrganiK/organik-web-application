@@ -1,0 +1,12 @@
+<article class="supplier">
+  <span class="supplier__avatar" [class]="'supplier__avatar--' + tone()" aria-hidden="true">
+    {{ supplier().initials }}
+  </span>
+  <div class="supplier__body">
+    <h2 class="supplier__name">{{ supplier().businessName }}</h2>
+    <p class="supplier__description">{{ 'suppliers.card-description' | translate }}</p>
+    <a mat-flat-button class="ok-btn-tonal" [routerLink]="['/suppliers', supplier().id]">
+      {{ 'suppliers.view-profile' | translate }}
+    </a>
+  </div>
+</article>

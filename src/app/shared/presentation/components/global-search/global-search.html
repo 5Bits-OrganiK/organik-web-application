@@ -1,0 +1,28 @@
+<div class="search">
+  <mat-icon class="search__icon" aria-hidden="true">search</mat-icon>
+  <input
+    class="search__input"
+    type="search"
+    autocomplete="off"
+    [formControl]="query"
+    [matAutocomplete]="auto"
+    [placeholder]="'shell.search-placeholder' | translate"
+    [attr.aria-label]="'shell.search-placeholder' | translate"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayNothing"
+    (optionSelected)="open($event.option.value)"
+  >
+    @for (entry of results(); track entry.link + entry.label) {
+      <mat-option [value]="entry.link">
+        <mat-icon aria-hidden="true">{{ entry.icon }}</mat-icon>
+        {{ entry.label }}
+      </mat-option>
+    } @empty {
+      @if (query.value) {
+        <mat-option disabled>{{ 'shell.search-empty' | translate }}</mat-option>
+      }
+    }
+  </mat-autocomplete>
+</div>

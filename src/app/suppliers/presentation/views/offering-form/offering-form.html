@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <app-form-card [heading]="(editing() ? 'catalog-page.form.edit-title' : 'catalog-page.form.title') | translate">
+    <div class="ok-field">
+      <label for="product">{{ 'catalog-page.product' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="product" formControlName="productId">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (product of products(); track product.id) {
+            <option [value]="product.id">{{ product.name }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="lot">{{ 'inventory.form.lot' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="lot" formControlName="lotCode" autocomplete="off"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="availability">{{ 'catalog-page.availability' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="availability" type="number" min="0" inputmode="numeric" formControlName="availableQuantity"/>
+        @if (form.controls.availableQuantity.hasError('required')) {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.invalid-non-negative' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="expires-on">{{ 'inventory.form.expires-on' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="expires-on" type="date" [min]="minExpiry" formControlName="expiresOn"/>
+        @if (form.controls.expiresOn.hasError('expired')) {
+          <mat-error>{{ 'inventory.form.expired' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <ng-container formActions>
+      <button mat-flat-button class="ok-btn-success" type="submit">{{ 'catalog-page.form.submit' | translate }}</button>
+      <a mat-button routerLink="/catalog">{{ 'form.cancel' | translate }}</a>
+    </ng-container>
+  </app-form-card>
+</form>

@@ -1,0 +1,95 @@
+@if (order(); as order) {
+  <article class="detail">
+    <header class="detail__header">
+      <h2>{{ 'shipments.detail.order' | translate }} {{ order.id }}</h2>
+      <app-status-badge [tone]="tone()">{{ 'shipments.status.' + order.status | translate }}</app-status-badge>
+    </header>
+
+    <dl class="detail__facts">
+      <div>
+        <dt>{{ 'shipments.columns.supplier' | translate }}</dt>
+        <dd>{{ order.supplierName }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'shipments.columns.minimarket' | translate }}</dt>
+        <dd>{{ order.minimarketName }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'shipments.detail.created-by' | translate }}</dt>
+        <dd>{{ order.createdBy }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'shipments.columns.date' | translate }}</dt>
+        <dd>{{ order.createdOn.toString() }}</dd>
+      </div>
+      @if (order.decidedOn) {
+        <div>
+          <dt>{{ 'shipments.detail.decided-by' | translate }}</dt>
+          <dd>{{ order.decidedBy }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'shipments.detail.decided-on' | translate }}</dt>
+          <dd>{{ order.decidedOn.toString() }}</dd>
+        </div>
+      }
+      @if (order.status === 'rejected') {
+        <div class="detail__reason">
+          <dt>{{ 'shipments.detail.reason' | translate }}</dt>
+          <dd>{{ order.reason }}</dd>
+        </div>
+      }
+    </dl>
+
+    <table class="detail__lines">
+      <thead>
+        <tr>
+          <th>{{ 'shipments.form.product' | translate }}</th>
+          <th>{{ 'inventory.columns.lot' | translate }}</th>
+          <th>{{ 'shipments.form.quantity' | translate }}</th>
+          <th>{{ 'inventory.columns.expires' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (line of order.lines; track line.lotCode + line.productId) {
+          <tr>
+            <td>{{ line.productName }}</td>
+            <td>{{ line.lotCode }}</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.expiresOn.toString() }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    @if (order.status === 'accepted') {
+      <p class="detail__note">{{ 'shipments.detail.inventory-added' | translate }}</p>
+    }
+
+    @if (canDecide()) {
+      <div class="detail__actions">
+        <button mat-flat-button class="ok-btn-success" type="button" (click)="accept()">
+          {{ 'shipments.detail.accept' | translate }}
+        </button>
+        @if (!rejecting()) {
+          <button mat-stroked-button type="button" (click)="startReject()">{{ 'shipments.detail.reject' | translate }}</button>
+        }
+      </div>
+      @if (rejecting()) {
+        <div class="detail__reject">
+          <label for="reason">{{ 'shipments.detail.reason' | translate }}</label>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <textarea matInput id="reason" rows="3" [formControl]="reason"></textarea>
+            <mat-error>{{ 'form.required' | translate }}</mat-error>
+          </mat-form-field>
+          <button mat-flat-button type="button" (click)="reject()">{{ 'shipments.detail.confirm-reject' | translate }}</button>
+        </div>
+      }
+    } @else if (order.status === 'pending') {
+      <p class="detail__note">{{ 'shipments.detail.only-admin' | translate }}</p>
+    }
+
+    <a mat-button routerLink="/shipments">{{ 'common.back' | translate }}</a>
+  </article>
+} @else {
+  <p class="empty">{{ 'shipments.detail.not-found' | translate }}</p>
+}

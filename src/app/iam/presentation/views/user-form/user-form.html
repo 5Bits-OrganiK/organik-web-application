@@ -1,0 +1,80 @@
+<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <app-form-card [heading]="(id() ? 'iam.users.form.edit-title' : 'iam.users.form.title') | translate">
+    <div class="ok-field">
+      <label for="full-name">{{ 'iam.users.form.full-name' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="full-name" formControlName="fullName" autocomplete="name"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="email">{{ 'iam.users.form.email' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="email" type="email" formControlName="email" autocomplete="email"/>
+        @if (form.controls.email.hasError('required')) {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        } @else if (form.controls.email.hasError('inUse')) {
+          <mat-error>{{ 'iam.users.form.email-in-use' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.invalid-email' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="role">{{ 'iam.users.form.role' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="role" formControlName="role">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (role of roles; track role) {
+            <option [value]="role">{{ 'iam.roles.' + role | translate }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="module">{{ 'iam.users.form.module' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="module" formControlName="assignedModule">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (module of modules; track module) {
+            <option [value]="module">{{ 'nav.' + module | translate }}</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="status">{{ 'iam.users.form.status' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="status" formControlName="status">
+          @for (status of statuses; track status) {
+            <option [value]="status">{{ 'iam.status.' + status | translate }}</option>
+          }
+        </select>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="notes">{{ 'iam.users.form.notes' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="notes" formControlName="notes" autocomplete="off"/>
+      </mat-form-field>
+    </div>
+
+    @if (form.hasError('moduleNotAllowed')) {
+      <p class="problem" role="alert">{{ 'iam.users.form.module-not-allowed' | translate }}</p>
+    }
+
+    <ng-container formActions>
+      <button mat-flat-button type="submit">
+        {{ (id() ? 'iam.users.form.save' : 'iam.users.form.submit') | translate }}
+      </button>
+      <a mat-button routerLink="/users">{{ 'form.cancel' | translate }}</a>
+    </ng-container>
+  </app-form-card>
+</form>

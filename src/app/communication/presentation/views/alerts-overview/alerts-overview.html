@@ -1,0 +1,41 @@
+<div class="toolbar">
+  <a mat-flat-button class="ok-btn-accent" routerLink="/analytics/report">
+    {{ 'analytics.generate-report' | translate }}
+  </a>
+</div>
+
+@if (indicators(); as indicators) {
+  <div class="kpis">
+    <app-kpi-card icon="savings" [label]="'analytics.kpi.avoided-loss' | translate" [value]="indicators.avoidedLoss.format()"/>
+    <app-kpi-card
+      icon="error"
+      tone="attention"
+      [label]="'analytics.kpi.products-at-risk' | translate"
+      [value]="'' + indicators.productsAtRisk"
+    />
+    <app-kpi-card
+      icon="task_alt"
+      [label]="'analytics.kpi.accepted-requests' | translate"
+      [value]="indicators.acceptedRequestsRate.toString()"
+    />
+  </div>
+}
+
+<div class="panels">
+  @if (trend(); as trend) {
+    <app-alert-trend-chart [trend]="trend"/>
+  }
+
+  <section class="active" aria-labelledby="active-title">
+    <h2 id="active-title">{{ 'analytics.active-alerts' | translate }}</h2>
+    <ul class="active__list">
+      @for (alert of alerts(); track alert.type) {
+        <li>
+          <app-alert-item [alert]="alert"/>
+        </li>
+      } @empty {
+        <li class="active__empty">{{ 'conservation.alerts.empty' | translate }}</li>
+      }
+    </ul>
+  </section>
+</div>

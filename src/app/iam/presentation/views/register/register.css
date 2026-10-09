@@ -1,0 +1,46 @@
+.terms {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--ok-muted);
+}
+
+.terms a {
+  margin-left: 42px;
+  font-weight: 600;
+  color: var(--ok-green-strong);
+  text-decoration: none;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
+.terms__error {
+  margin-left: 42px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ok-danger);
+}
+
+.roles {
+  width: 100%;
+  --mat-button-toggle-height: 44px;
+}
+
+.roles mat-button-toggle {
+  flex: 1;
+}
+
+.plan {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ok-tint);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ok-green-text);
+}

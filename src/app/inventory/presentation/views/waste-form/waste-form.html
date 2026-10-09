@@ -1,0 +1,51 @@
+<form [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <app-form-card [heading]="'inventory.waste-form.title' | translate">
+    <div class="ok-field">
+      <label for="lot">{{ 'inventory.form.lot' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="lot" formControlName="lotCode">
+          <option value="" disabled>{{ 'form.select' | translate }}</option>
+          @for (lot of lots(); track lot.lotCode) {
+            <option [value]="lot.lotCode">{{ lot.lotCode }} · {{ lot.productName }} ({{ lot.quantity }})</option>
+          }
+        </select>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="quantity">{{ 'inventory.waste-form.quantity' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="quantity" type="number" min="1" inputmode="numeric" formControlName="quantity"/>
+        @if (availableUnits() !== null) {
+          <mat-hint>{{ 'inventory.waste-form.available' | translate: {units: availableUnits()} }}</mat-hint>
+        }
+        @if (form.controls.quantity.hasError('required')) {
+          <mat-error>{{ 'form.required' | translate }}</mat-error>
+        } @else if (form.controls.quantity.hasError('exceeds')) {
+          <mat-error>{{ 'inventory.waste-form.exceeds' | translate }}</mat-error>
+        } @else {
+          <mat-error>{{ 'form.invalid-number' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="cause">{{ 'inventory.waste-form.cause' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="cause" formControlName="cause">
+          @for (cause of causes; track cause) {
+            <option [value]="cause">{{ 'inventory.waste-causes.' + cause | translate }}</option>
+          }
+        </select>
+      </mat-form-field>
+    </div>
+
+    <ng-container formActions>
+      <button mat-flat-button class="ok-btn-success" type="submit">
+        {{ 'inventory.waste-form.submit' | translate }}
+      </button>
+      <a mat-button routerLink="/inventory">{{ 'form.cancel' | translate }}</a>
+    </ng-container>
+  </app-form-card>
+</form>

@@ -1,0 +1,69 @@
+@if (isSupplier()) {
+  <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <app-form-card [heading]="'shipments.form.title' | translate">
+      <div class="ok-field">
+        <label for="minimarket">{{ 'shipments.form.minimarket' | translate }}</label>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <select matNativeControl id="minimarket" formControlName="minimarketId">
+            @for (minimarket of minimarkets; track minimarket.id) {
+              <option [value]="minimarket.id">{{ minimarket.name }}</option>
+            }
+          </select>
+        </mat-form-field>
+      </div>
+
+      <div formArrayName="lines" class="lines">
+        @for (line of lines.controls; track line; let i = $index) {
+          <div class="line" [formGroupName]="i">
+            <div class="ok-field">
+              <label [for]="'offering-' + i">{{ 'shipments.form.product' | translate }}</label>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <select matNativeControl [id]="'offering-' + i" formControlName="offeringId">
+                  <option value="" disabled>{{ 'form.select' | translate }}</option>
+                  @for (item of catalog(); track item.id) {
+                    <option [value]="item.id">{{ item.productName }} · {{ item.lotCode }}</option>
+                  }
+                </select>
+                <mat-error>{{ 'form.required' | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="ok-field">
+              <label [for]="'quantity-' + i">{{ 'shipments.form.quantity' | translate }}</label>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input matInput [id]="'quantity-' + i" type="number" min="1" inputmode="numeric" formControlName="quantity"/>
+                @if (line.get('quantity')?.hasError('exceeds')) {
+                  <mat-error>{{ 'shipments.form.exceeds' | translate: {available: availableFor(line)} }}</mat-error>
+                } @else if (line.get('quantity')?.hasError('required')) {
+                  <mat-error>{{ 'form.required' | translate }}</mat-error>
+                } @else {
+                  <mat-error>{{ 'form.invalid-number' | translate }}</mat-error>
+                }
+              </mat-form-field>
+              @if (availableFor(line) !== null) {
+                <small class="hint">{{ 'shipments.form.available' | translate: {available: availableFor(line)} }}</small>
+              }
+            </div>
+
+            @if (lines.length > 1) {
+              <button mat-button type="button" class="line__remove" (click)="removeLine(i)">
+                {{ 'shipments.form.remove-line' | translate }}
+              </button>
+            }
+          </div>
+        }
+        <button mat-stroked-button type="button" (click)="addLine()">{{ 'shipments.form.add-line' | translate }}</button>
+      </div>
+
+      <p class="note">{{ 'shipments.form.note' | translate }}</p>
+
+      <ng-container formActions>
+        <button mat-flat-button class="ok-btn-success" type="submit">{{ 'shipments.form.submit' | translate }}</button>
+        <a mat-button routerLink="/shipments">{{ 'form.cancel' | translate }}</a>
+      </ng-container>
+    </app-form-card>
+  </form>
+} @else {
+  <p class="denied">{{ 'shipments.form.supplier-only' | translate }}</p>
+  <a mat-button routerLink="/shipments">{{ 'common.back' | translate }}</a>
+}

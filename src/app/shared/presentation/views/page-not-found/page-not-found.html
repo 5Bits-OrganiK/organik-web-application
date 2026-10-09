@@ -1,0 +1,6 @@
+<div class="not-found">
+  <p class="not-found__code">404</p>
+  <h2>{{ 'page-not-found.title' | translate }}</h2>
+  <p [innerHTML]="'page-not-found.content' | translate: {invalid_path: invalidPath}"></p>
+  <button mat-flat-button (click)="navigateToHome()">{{ 'page-not-found.go-home' | translate }}</button>
+</div>

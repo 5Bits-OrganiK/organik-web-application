@@ -1,0 +1,111 @@
+:host {
+  display: block;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--ok-forest);
+  text-decoration: none;
+  transition:
+    transform 160ms var(--ok-ease-out),
+    box-shadow 160ms var(--ok-ease-out),
+    border-color 160ms var(--ok-ease-out);
+}
+
+.link:active {
+  transform: scale(0.98);
+}
+
+.link:focus-visible {
+  outline: 3px solid var(--ok-green);
+  outline-offset: 2px;
+}
+
+.link__text {
+  display: grid;
+  gap: 2px;
+}
+
+.link__arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--ok-tint);
+  border-radius: 50%;
+  color: var(--ok-green-strong);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 200ms var(--ok-ease-out);
+}
+
+.link__arrow mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.link--card {
+  min-height: 78px;
+  padding: 16px 20px;
+  background: #fff;
+  border: 1px solid var(--ok-border);
+  border-radius: var(--ok-radius);
+  box-shadow: var(--ok-shadow);
+}
+
+.link--card .link__module {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ok-green-text);
+}
+
+.link--card .link__action {
+  font-family: var(--ok-font-display);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.link--chip {
+  padding: 8px 12px;
+  background: var(--ok-tint);
+  border: 1px solid var(--ok-border);
+  border-radius: var(--ok-radius-sm);
+}
+
+.link--chip .link__action {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.link--chip .link__arrow {
+  width: 24px;
+  height: 24px;
+  background: #fff;
+}
+
+.link--chip .link__arrow mat-icon {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    border-color: var(--ok-green);
+  }
+
+  .link:hover .link__arrow {
+    background: var(--ok-green);
+    color: #fff;
+    transform: translate(2px, -2px);
+  }
+
+  .link--card:hover {
+    box-shadow: 0 16px 36px -14px rgb(1 30 73 / 0.32);
+  }
+}

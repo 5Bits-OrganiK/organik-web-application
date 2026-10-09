@@ -1,0 +1,51 @@
+<form [formGroup]="form" (ngSubmit)="generate()" novalidate>
+  <app-form-card [heading]="'reports.form.title' | translate" [description]="'reports.form.description' | translate">
+    <div class="ok-field">
+      <label for="from">{{ 'reports.form.from' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="from" type="date" [max]="maxDate" formControlName="from"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="ok-field">
+      <label for="to">{{ 'reports.form.to' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <input matInput id="to" type="date" [max]="maxDate" formControlName="to"/>
+        <mat-error>{{ 'form.required' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    @if (form.hasError('period')) {
+      <p class="span-2 problem" role="alert">{{ 'reports.form.invalid-period' | translate }}</p>
+    }
+
+    <fieldset class="span-2 sections" formGroupName="sections">
+      <legend>{{ 'reports.form.indicators' | translate }}</legend>
+      <div class="sections__grid">
+        @for (indicator of indicators; track indicator) {
+          <mat-checkbox [formControlName]="indicator">
+            {{ 'reports.indicators.' + indicator | translate }}
+          </mat-checkbox>
+        }
+      </div>
+      @if (form.controls.sections.invalid && form.controls.sections.touched) {
+        <p class="problem" role="alert">{{ 'reports.form.no-section' | translate }}</p>
+      }
+    </fieldset>
+
+    <div class="ok-field span-2 format">
+      <label for="format">{{ 'reports.form.format' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <select matNativeControl id="format" formControlName="format">
+          <option value="pdf">PDF</option>
+        </select>
+      </mat-form-field>
+    </div>
+
+    <ng-container formActions>
+      <button mat-flat-button type="submit">{{ 'reports.form.submit' | translate }}</button>
+      <a mat-button routerLink="/analytics">{{ 'form.cancel' | translate }}</a>
+    </ng-container>
+  </app-form-card>
+</form>

@@ -1,0 +1,111 @@
+<section class="toolbar" [attr.aria-label]="'inventory.filters' | translate">
+  <div class="toolbar__filters">
+    <input
+      class="filter filter--search"
+      type="search"
+      autocomplete="off"
+      [value]="search()"
+      [placeholder]="'inventory.search' | translate"
+      [attr.aria-label]="'inventory.search' | translate"
+      (input)="onSearch($event)"
+    />
+    <select
+      class="filter filter--category"
+      [attr.aria-label]="'inventory.category' | translate"
+      (change)="onCategoryChange($event)"
+    >
+      <option value="all" [selected]="categoryFilter() === 'all'">{{ 'inventory.category' | translate }}</option>
+      @for (category of categories(); track category.id) {
+        <option [value]="category.id" [selected]="categoryFilter() === category.id">
+          {{ 'catalog.categories.' + category.id | translate }}
+        </option>
+      }
+    </select>
+    <select
+      class="filter filter--status"
+      [attr.aria-label]="'inventory.status' | translate"
+      (change)="onStatusChange($event)"
+    >
+      <option value="all" [selected]="statusFilter() === 'all'">{{ 'inventory.status' | translate }}</option>
+      @for (status of statuses; track status) {
+        <option [value]="status" [selected]="statusFilter() === status">
+          {{ 'status.' + status | translate }}
+        </option>
+      }
+    </select>
+    <select
+      class="filter filter--expiration"
+      [attr.aria-label]="'inventory.expiration' | translate"
+      (change)="onExpirationChange($event)"
+    >
+      @for (option of expirationOptions; track option) {
+        <option [value]="option" [selected]="expirationFilter() === option">
+          {{ 'inventory.expiration-options.' + option | translate }}
+        </option>
+      }
+    </select>
+    @if (filtering()) {
+      <button type="button" class="filter filter--reset" (click)="resetFilters()">{{ 'inventory.reset' | translate }}</button>
+    }
+  </div>
+  <div class="toolbar__actions">
+    <a mat-flat-button class="ok-btn-success" routerLink="/inventory/stock/new">
+      {{ 'inventory.register-stock' | translate }}
+    </a>
+    <a mat-flat-button routerLink="/products/new">{{ 'inventory.new-product' | translate }}</a>
+    <a mat-button routerLink="/inventory/waste/new">{{ 'inventory.waste' | translate }}</a>
+    <a mat-button routerLink="/inventory/offers/new">{{ 'inventory.offer' | translate }}</a>
+    <a mat-button routerLink="/inventory/history">{{ 'inventory.history-link' | translate }}</a>
+  </div>
+</section>
+
+<div class="ok-table-card table">
+  <table mat-table [dataSource]="rows()">
+    <ng-container matColumnDef="sku">
+      <th mat-header-cell *matHeaderCellDef>{{ 'inventory.columns.sku' | translate }}</th>
+      <td mat-cell *matCellDef="let item">{{ item.sku }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef>{{ 'inventory.columns.product' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        <a class="link" [routerLink]="['/inventory/product', item.sku]">{{ item.productName }}</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lot">
+      <th mat-header-cell *matHeaderCellDef>{{ 'inventory.columns.lot' | translate }}</th>
+      <td mat-cell *matCellDef="let item">{{ item.lotCode }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef>{{ 'inventory.columns.stock' | translate }}</th>
+      <td mat-cell *matCellDef="let item">{{ item.quantity }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="expires">
+      <th mat-header-cell *matHeaderCellDef>{{ 'inventory.columns.expires' | translate }}</th>
+      <td mat-cell *matCellDef="let item">{{ item.expiresOn.toString() }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>{{ 'inventory.columns.status' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        <app-status-badge [tone]="toneOf(item.status)">{{ 'status.' + item.status | translate }}</app-status-badge>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{ 'inventory.columns.actions' | translate }}</th>
+      <td mat-cell *matCellDef="let item">
+        <a class="link" [routerLink]="['/inventory/lots', item.lotCode, 'edit']">{{ 'inventory.edit' | translate }}</a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="empty" [attr.colspan]="columns.length">{{ 'inventory.empty' | translate }}</td>
+    </tr>
+  </table>
+</div>

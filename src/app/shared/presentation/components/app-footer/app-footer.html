@@ -1,0 +1,7 @@
+<footer class="footer">
+  <span class="footer__copyright">{{ 'footer.copyright' | translate: {year: year} }}</span>
+  <nav class="footer__links" [attr.aria-label]="'footer.legal' | translate">
+    <a [href]="termsUrl" target="_blank" rel="noopener">{{ 'footer.terms' | translate }}</a>
+    <a [href]="privacyUrl" target="_blank" rel="noopener">{{ 'footer.privacy' | translate }}</a>
+  </nav>
+</footer>

@@ -1,1 +1,313 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*
+ * OrganiK design tokens.
+ * World: an organic grocery. Deep forest for structure, one confident green for action,
+ * a lime accent for the single thing that needs attention, mint-tinted neutrals everywhere else.
+ */
+:root {
+  /* Greens */
+  --ok-forest: #0b2b1c;
+  --ok-forest-2: #123a27;
+  --ok-green: #17803f;
+  --ok-green-strong: #116a33;
+  --ok-green-text: #12703a;
+  --ok-leaf: #2fa866;
+  --ok-lime: #c8e04f;
+  --ok-lime-soft: #d8ec8a;
+
+  /* Mint-tinted neutrals */
+  --ok-bg: #edf3ee;
+  --ok-tint: #e6f3e9;
+  --ok-tint-strong: #d3ebd9;
+  --ok-border: #d5e4d8;
+  --ok-muted: #4e6556;
+
+  /* Semantics: status keeps its own hue so it never depends on the brand color alone */
+  --ok-danger: #b42318;
+  --ok-danger-bg: #fde8e6;
+  --ok-warning: #7a4b00;
+  --ok-warning-bg: #fbe7a6;
+
+  /* Shape and depth */
+  --ok-radius: 12px;
+  --ok-radius-sm: 8px;
+  --ok-shadow:
+    0 1px 2px rgb(11 43 28 / 0.06),
+    0 14px 28px -14px rgb(11 43 28 / 0.2);
+  --ok-shadow-lift:
+    0 2px 4px rgb(11 43 28 / 0.06),
+    0 22px 36px -16px rgb(11 43 28 / 0.3);
+  --ok-sidebar-width: 280px;
+
+  /* Type */
+  --ok-font-ui: 'Geist', 'Segoe UI', system-ui, sans-serif;
+  --ok-font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  /* Motion: long, soft, exponential ease-out so things settle instead of snapping */
+  --ok-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ok-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ok-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ok-enter: 720ms;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--ok-font-ui);
+  accent-color: var(--ok-green);
+  caret-color: var(--ok-green);
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+h2 {
+  font-family: var(--ok-font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Browser surfaces themed from the palette. */
+::selection {
+  background: var(--ok-lime);
+  color: var(--ok-forest);
+}
+
+:focus-visible {
+  outline: 3px solid var(--ok-leaf);
+  outline-offset: 2px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9bb5a2 transparent;
+}
+
+/* Data is read in columns: figures line up. */
+table,
+.ok-numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Page titles and key figures use the display serif. */
+.ok-display {
+  font-family: var(--ok-font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: 'SOFT' 100;
+  letter-spacing: -0.015em;
+}
+
+/* Layout helpers shared by every view. */
+.container-with-spacing {
+  display: grid;
+  gap: 24px;
+  max-width: 100%;
+}
+
+/*
+ * Entrance: the routed view and its blocks float up, un-blur and fade in, one after another.
+ * Each step is slightly later than the previous one so the eye can follow the page being laid out.
+ */
+@keyframes ok-rise {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(18px) scale(0.985);
+  }
+}
+
+@keyframes ok-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.ok-rise > * > * {
+  animation: ok-rise var(--ok-enter) var(--ok-ease-soft) both;
+  animation-delay: calc(var(--ok-step, 0) * 90ms + 80ms);
+}
+
+.ok-rise > * > *:nth-child(1) { --ok-step: 0; }
+.ok-rise > * > *:nth-child(2) { --ok-step: 1; }
+.ok-rise > * > *:nth-child(3) { --ok-step: 2; }
+.ok-rise > * > *:nth-child(4) { --ok-step: 3; }
+.ok-rise > * > *:nth-child(n + 5) { --ok-step: 4; }
+
+/* Table rows settle one by one. */
+.ok-table-card .mat-mdc-row {
+  animation: ok-fade 600ms var(--ok-ease-soft) both;
+  animation-delay: calc(var(--ok-row, 0) * 55ms + 320ms);
+}
+
+.ok-table-card .mat-mdc-row:nth-child(1) { --ok-row: 0; }
+.ok-table-card .mat-mdc-row:nth-child(2) { --ok-row: 1; }
+.ok-table-card .mat-mdc-row:nth-child(3) { --ok-row: 2; }
+.ok-table-card .mat-mdc-row:nth-child(4) { --ok-row: 3; }
+.ok-table-card .mat-mdc-row:nth-child(5) { --ok-row: 4; }
+.ok-table-card .mat-mdc-row:nth-child(n + 6) { --ok-row: 5; }
+
+/* Smooth cross-fade between pages; the sidebar stays put. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 380ms;
+  animation-timing-function: var(--ok-ease-soft);
+}
+
+app-sidebar {
+  view-transition-name: ok-sidebar;
+}
+
+::view-transition-group(ok-sidebar) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Card surface used by banners, tables and panels. */
+.ok-card {
+  background: #fff;
+  border: 1px solid var(--ok-border);
+  border-radius: var(--ok-radius);
+  box-shadow: var(--ok-shadow);
+}
+
+/* Button variants; the default filled button is the primary green. */
+.ok-btn-accent {
+  --mat-button-filled-container-color: var(--ok-lime);
+  --mat-button-filled-label-text-color: var(--ok-forest);
+}
+
+.ok-btn-success {
+  --mat-button-filled-container-color: var(--ok-forest-2);
+  --mat-button-filled-label-text-color: #fff;
+}
+
+.ok-btn-dark {
+  --mat-button-filled-container-color: var(--ok-forest);
+  --mat-button-filled-label-text-color: #fff;
+}
+
+.mat-mdc-button-base {
+  transition:
+    transform 150ms var(--ok-ease-out),
+    box-shadow 200ms var(--ok-ease-out),
+    background-color 150ms ease;
+}
+
+.mat-mdc-button-base:active {
+  transform: scale(0.97);
+}
+
+.mat-mdc-unelevated-button:not(:disabled) {
+  box-shadow: 0 6px 14px -8px rgb(11 43 28 / 0.55);
+}
+
+/* Table card: horizontal scroll on narrow screens instead of clipping columns. */
+.ok-table-card {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid var(--ok-border);
+  border-radius: var(--ok-radius);
+  box-shadow: var(--ok-shadow);
+}
+
+.ok-table-card .mat-mdc-table {
+  width: 100%;
+  min-width: 640px;
+}
+
+.ok-table-card .mat-mdc-header-row {
+  background: var(--ok-tint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ok-table-card .mat-mdc-row {
+  transition: background-color 150ms ease;
+}
+
+.ok-table-card .mat-mdc-header-cell:first-of-type,
+.ok-table-card .mat-mdc-cell:first-of-type {
+  padding-left: 24px;
+}
+
+.ok-table-card .mat-mdc-header-cell:last-of-type,
+.ok-table-card .mat-mdc-cell:last-of-type {
+  padding-right: 24px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ok-table-card .mat-mdc-row:hover {
+    background: var(--ok-bg);
+  }
+}
+
+/* Form field with its label above the control. */
+.ok-field {
+  display: grid;
+  gap: 6px;
+}
+
+.ok-field > label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ok-muted);
+}
+
+.ok-field .mat-mdc-form-field {
+  width: 100%;
+}
+
+.ok-field select.mat-mdc-input-element {
+  cursor: pointer;
+}
+
+/* Low-emphasis button used for secondary actions inside cards. */
+.ok-btn-tonal {
+  --mat-button-filled-container-color: var(--ok-tint);
+  --mat-button-filled-label-text-color: var(--ok-green-strong);
+  --mat-button-filled-container-height: 32px;
+  box-shadow: none !important;
+}
+
+/* Inputs and selects share one size so forms read evenly. */
+.ok-field .mat-mdc-input-element,
+.ok-field .mat-mdc-form-field-infix select {
+  font-family: var(--ok-font-ui);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ok-field .mat-mdc-form-field {
+  --mat-form-field-container-text-size: 15px;
+  --mat-form-field-container-text-weight: 500;
+}
+
+/* Staggered soft entrance for standalone screens such as the login: set --i per block. */
+.ok-reveal {
+  animation: ok-rise 900ms var(--ok-ease-soft) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 120ms);
+}

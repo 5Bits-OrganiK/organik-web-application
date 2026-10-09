@@ -1,0 +1,80 @@
+<section class="card">
+  <header class="card__header">
+    <h2>{{ 'inventory.history.movements' | translate }}</h2>
+    <a mat-button routerLink="/inventory">{{ 'inventory.product.back' | translate }}</a>
+  </header>
+
+  @if (events().length) {
+    <table class="plain">
+      <thead>
+        <tr>
+          <th>{{ 'inventory.history.date' | translate }}</th>
+          <th>{{ 'inventory.history.type' | translate }}</th>
+          <th>{{ 'inventory.columns.product' | translate }}</th>
+          <th>{{ 'inventory.columns.lot' | translate }}</th>
+          <th>{{ 'inventory.history.quantity' | translate }}</th>
+          <th>{{ 'inventory.history.detail' | translate }}</th>
+          <th>{{ 'inventory.history.actor' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (event of events(); track event.id) {
+          <tr>
+            <td>{{ event.occurredOn.toString() }}</td>
+            <td>{{ 'inventory.event-types.' + event.type | translate }}</td>
+            <td>{{ event.productName }}</td>
+            <td>{{ event.lotCode ?? '—' }}</td>
+            <td>{{ event.quantity ?? '—' }}</td>
+            <td>
+              @if (event.cause) {
+                <b>{{ 'inventory.waste-causes.' + event.cause | translate }}</b> ·
+              }
+              {{ event.detail }}
+            </td>
+            <td>{{ event.actorName }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="empty" role="status">{{ 'inventory.history.empty' | translate }}</p>
+  }
+</section>
+
+<section class="card">
+  <header class="card__header">
+    <h2>{{ 'inventory.history.offers' | translate }}</h2>
+    <a mat-button routerLink="/inventory/offers/new">{{ 'inventory.offer' | translate }}</a>
+  </header>
+
+  @if (offers().length) {
+    <table class="plain">
+      <thead>
+        <tr>
+          <th>{{ 'inventory.columns.product' | translate }}</th>
+          <th>{{ 'inventory.history.quantity' | translate }}</th>
+          <th>{{ 'inventory.history.valid-until' | translate }}</th>
+          <th>{{ 'inventory.history.actor' | translate }}</th>
+          <th>{{ 'inventory.columns.status' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (offer of offers(); track offer.id) {
+          <tr>
+            <td>{{ offer.productName }}</td>
+            <td>{{ offer.quantity }}</td>
+            <td>{{ offer.validUntil.toString() }}</td>
+            <td>{{ offer.createdBy }}</td>
+            <td>
+              <app-status-badge [tone]="offer.active ? 'success' : 'neutral'">
+                {{ 'inventory.offer-status.' + (offer.active ? 'active' : 'expired') | translate }}
+              </app-status-badge>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="empty" role="status">{{ 'inventory.history.offers-empty' | translate }}</p>
+  }
+</section>

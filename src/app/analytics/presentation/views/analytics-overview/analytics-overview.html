@@ -1,0 +1,30 @@
+<app-module-banner
+  icon="analytics"
+  [heading]="'analytics.heading' | translate"
+  [description]="'analytics.description' | translate"
+>
+  <a mat-flat-button class="ok-btn-accent" routerLink="/analytics/report">
+    {{ 'analytics.generate-report' | translate }}
+  </a>
+</app-module-banner>
+
+@if (indicators(); as indicators) {
+  <div class="kpis">
+    <app-kpi-card icon="savings" [label]="'analytics.kpi.avoided-loss' | translate" [value]="indicators.avoidedLoss.format()"/>
+    <app-kpi-card
+      icon="error"
+      tone="attention"
+      [label]="'analytics.kpi.products-at-risk' | translate"
+      [value]="'' + indicators.productsAtRisk"
+    />
+    <app-kpi-card
+      icon="task_alt"
+      [label]="'analytics.kpi.accepted-requests' | translate"
+      [value]="indicators.acceptedRequestsRate.toString()"
+    />
+  </div>
+}
+
+@if (trend(); as trend) {
+  <app-alert-trend-chart class="chart" [trend]="trend"/>
+}

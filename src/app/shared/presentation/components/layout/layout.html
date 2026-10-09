@@ -1,0 +1,26 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav
+    #drawer
+    class="shell__sidebar"
+    fixedInViewport
+    [mode]="isCompact() ? 'over' : 'side'"
+    [opened]="!isCompact()"
+  >
+    <app-sidebar (navigated)="closeOnCompact(drawer)"/>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="shell__content">
+    <div class="main">
+      <app-header
+        [titleKey]="pageTitleKey()"
+        [showMenuButton]="isCompact()"
+        [alertCount]="alertCount()"
+        (menuToggle)="drawer.toggle()"
+      />
+      <main class="main__content ok-rise">
+        <router-outlet/>
+      </main>
+      <app-footer/>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

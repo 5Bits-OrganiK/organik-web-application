@@ -1,0 +1,57 @@
+.settings {
+  display: grid;
+  gap: 28px;
+  max-width: 880px;
+}
+
+.settings__section {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 32px;
+  background: #fff;
+  border: 1px solid var(--ok-border);
+  border-radius: var(--ok-radius);
+  box-shadow: var(--ok-shadow);
+}
+
+.settings__section h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ok-forest);
+}
+
+.settings__section p {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ok-muted);
+}
+
+.settings__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 40px;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.problem {
+  font-weight: 700;
+  color: var(--ok-danger);
+}
+
+@media (max-width: 700px) {
+  .settings__section {
+    padding: 24px 20px;
+  }
+
+  .settings__fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+app-language-switcher {
+  --ok-switcher-selected-bg: var(--ok-green);
+  --ok-switcher-selected-color: #fff;
+}

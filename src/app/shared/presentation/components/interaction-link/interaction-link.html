@@ -1,0 +1,11 @@
+<a class="link" [class]="'link--' + variant()" [routerLink]="interaction().link">
+  <span class="link__text">
+    @if (variant() === 'card') {
+      <span class="link__module">{{ interaction().module | translate }}</span>
+    }
+    <span class="link__action">{{ interaction().action | translate }}</span>
+  </span>
+  <span class="link__arrow" aria-hidden="true">
+    <mat-icon>north_east</mat-icon>
+  </span>
+</a>

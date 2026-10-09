@@ -1,0 +1,53 @@
+<section class="toolbar">
+  <input
+    class="filter"
+    type="search"
+    autocomplete="off"
+    [value]="search()"
+    [placeholder]="'catalog.list.search' | translate"
+    [attr.aria-label]="'catalog.list.search' | translate"
+    (input)="onSearch($event)"
+  />
+  <div class="toolbar__actions">
+    <a mat-flat-button routerLink="/products/new">{{ 'catalog.add' | translate }}</a>
+    <a mat-button routerLink="/products">{{ 'catalog.list.categories' | translate }}</a>
+  </div>
+</section>
+
+<div class="card">
+  <table class="plain">
+    <thead>
+      <tr>
+        <th>{{ 'inventory.columns.sku' | translate }}</th>
+        <th>{{ 'catalog.form.name' | translate }}</th>
+        <th>{{ 'catalog.form.category' | translate }}</th>
+        <th>{{ 'catalog.form.supplier' | translate }}</th>
+        <th>{{ 'catalog.form.unit' | translate }}</th>
+        <th>{{ 'catalog.form.minimum-stock' | translate }}</th>
+        <th>{{ 'inventory.columns.stock' | translate }}</th>
+        <th>{{ 'inventory.columns.actions' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track row.product.id) {
+        <tr>
+          <td>{{ row.product.id }}</td>
+          <td>{{ row.product.name }}</td>
+          <td>{{ 'catalog.categories.' + row.product.categoryId | translate }}</td>
+          <td>{{ row.supplierName }}</td>
+          <td>{{ 'catalog.units.' + row.product.unit | translate }}</td>
+          <td>{{ row.product.minimumStock.value }}</td>
+          <td>{{ row.stock }}</td>
+          <td class="actions">
+            <a class="link" [routerLink]="['/inventory/product', row.product.id]">{{ 'catalog.list.lots' | translate }}</a>
+            <a class="link" [routerLink]="['/products', row.product.id, 'edit']">{{ 'inventory.edit' | translate }}</a>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td class="empty" colspan="8">{{ 'catalog.list.empty' | translate }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

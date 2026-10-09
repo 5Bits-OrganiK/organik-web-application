@@ -1,0 +1,17 @@
+<section class="form-card">
+  <h2 class="form-card__heading">{{ heading() }}</h2>
+  <p class="form-card__description">{{ description() ?? ('form.description' | translate) }}</p>
+
+  <div class="form-card__fields">
+    <ng-content/>
+  </div>
+
+  <aside class="form-card__note" role="note">
+    <h3>{{ 'form.validation-title' | translate }}</h3>
+    <p>{{ 'form.validation-text' | translate }}</p>
+  </aside>
+
+  <div class="form-card__actions">
+    <ng-content select="[formActions]"/>
+  </div>
+</section>

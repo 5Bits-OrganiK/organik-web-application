@@ -1,0 +1,15 @@
+<div class="toolbar">
+  <a mat-flat-button routerLink="/products/new">
+    <mat-icon>add</mat-icon>
+    {{ 'catalog.add' | translate }}
+  </a>
+  <a mat-button routerLink="/products/list">{{ 'catalog.list.view-all' | translate }}</a>
+</div>
+
+<ul class="categories">
+  @for (category of categories(); track category.id) {
+    <li>
+      <app-category-card [category]="category"/>
+    </li>
+  }
+</ul>

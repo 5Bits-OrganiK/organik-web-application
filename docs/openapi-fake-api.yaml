@@ -1,0 +1,328 @@
+openapi: 3.0.3
+info:
+  title: OrganiK fake REST API
+  version: 1.0.0
+  description: |
+    Fake REST API hosted on Beeceptor (CRUD routes) that stands in for the OrganiK web services
+    while the Spring Boot services are not available. The free plan keeps about twelve objects in
+    total (oldest first) and answers a limited number of requests per day, so the web application
+    merges these answers with its local data and keeps working when the API answers 429.
+servers:
+  - url: https://organik.free.beeceptor.com/api/v1
+tags:
+  - name: Users
+    description: Accounts used to sign in and sign up.
+  - name: Products
+    description: Catalog of organic products.
+  - name: Inventory
+    description: Stock lots received by the minimarket.
+paths:
+  /users:
+    get:
+      tags: [Users]
+      summary: List the users
+      responses:
+        '200':
+          description: Users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags: [Users]
+      summary: Sign up a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User stored.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: usr-1
+    get:
+      tags: [Users]
+      summary: Get a user
+      responses:
+        '200':
+          description: User.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags: [Users]
+      summary: Replace a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User replaced.
+    patch:
+      tags: [Users]
+      summary: Update some fields of a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: User updated.
+    delete:
+      tags: [Users]
+      summary: Delete a user
+      responses:
+        '200':
+          description: User deleted.
+  /products:
+    get:
+      tags: [Products]
+      summary: List the products
+      responses:
+        '200':
+          description: Products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      tags: [Products]
+      summary: Create a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Product stored.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /products/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: ORG-01
+    get:
+      tags: [Products]
+      summary: Get a product
+      responses:
+        '200':
+          description: Product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      tags: [Products]
+      summary: Replace a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Product replaced.
+    patch:
+      tags: [Products]
+      summary: Update some fields of a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Product updated.
+    delete:
+      tags: [Products]
+      summary: Delete a product
+      responses:
+        '200':
+          description: Product deleted.
+  /inventory:
+    get:
+      tags: [Inventory]
+      summary: List the stock lots
+      responses:
+        '200':
+          description: Stock lots.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockLot'
+    post:
+      tags: [Inventory]
+      summary: Register a received stock lot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockLot'
+      responses:
+        '200':
+          description: Stock lot stored.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockLot'
+  /inventory/{lotCode}:
+    parameters:
+      - name: lotCode
+        in: path
+        required: true
+        schema:
+          type: string
+        example: LT-204
+    get:
+      tags: [Inventory]
+      summary: Get a stock lot
+      responses:
+        '200':
+          description: Stock lot.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockLot'
+    put:
+      tags: [Inventory]
+      summary: Replace a stock lot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockLot'
+      responses:
+        '200':
+          description: Stock lot replaced.
+    patch:
+      tags: [Inventory]
+      summary: Update some fields of a stock lot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Stock lot updated.
+    delete:
+      tags: [Inventory]
+      summary: Delete a stock lot
+      responses:
+        '200':
+          description: Stock lot deleted.
+components:
+  schemas:
+    User:
+      type: object
+      required: [id, fullName, email, role, assignedModule, status, password]
+      properties:
+        id:
+          type: string
+          example: usr-1
+        fullName:
+          type: string
+          example: Albino Caceres
+        email:
+          type: string
+          format: email
+          example: albino@organik.pe
+        role:
+          type: string
+          enum: [administrator, operator, supplier]
+        assignedModule:
+          type: string
+          example: dashboard
+        status:
+          type: string
+          enum: [accepted, pending]
+        notes:
+          type: string
+          description: Minimarket or company name given at sign up.
+        password:
+          type: string
+          description: Demo password; a real service never exposes it.
+    Product:
+      type: object
+      required: [id, name, categoryId, supplierId, unit, minimumStock, storageCondition]
+      properties:
+        id:
+          type: string
+          example: ORG-01
+        name:
+          type: string
+          example: Yogurt orgánico
+        categoryId:
+          type: string
+          example: dairy
+        supplierId:
+          type: string
+          example: sup-anita-gamboa
+        unit:
+          type: string
+          enum: [unit, kg, liter]
+        minimumStock:
+          type: number
+          example: 60
+        storageCondition:
+          type: string
+          enum: [fresh, cold, dry, frozen]
+    StockLot:
+      type: object
+      required: [lotCode, productId, quantity, expiresOn, location]
+      properties:
+        lotCode:
+          type: string
+          example: LT-204
+        productId:
+          type: string
+          example: ORG-01
+        quantity:
+          type: number
+          example: 248
+        expiresOn:
+          type: string
+          format: date
+          example: '2026-10-14'
+        location:
+          type: string
+          example: Cámara fría A
+        notes:
+          type: string

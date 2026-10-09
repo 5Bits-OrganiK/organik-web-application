@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  max-width: 100%;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 28px;
+}
+
+.chart {
+  display: block;
+  margin-top: 32px;
+}
+
+@media (max-width: 900px) {
+  .kpis {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+}

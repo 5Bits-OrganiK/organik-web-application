@@ -1,0 +1,70 @@
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="topbar__logo" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="26" height="26" fill="none">
+        <path d="M7 24c0-9 6-16 18-17 0 11-6 17-14 17-1.3 0-2.9-.1-4-.4Z" fill="currentColor"/>
+        <path d="M7 25c3-6 7-10 12-13" stroke="#0b2b1c" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="topbar__name">{{ 'app.title' | translate }}</span>
+  </div>
+  <div class="topbar__tools">
+    <a class="topbar__link" routerLink="." fragment="interactions">{{ 'flow.topbar-link' | translate }}</a>
+    <app-language-switcher/>
+  </div>
+</header>
+
+<main class="flow">
+  <section class="hero">
+    <div class="hero__copy">
+      <h1>{{ 'flow.title' | translate }}</h1>
+      <p>{{ 'flow.subtitle' | translate }}</p>
+      <div class="hero__actions">
+        <a mat-flat-button routerLink="/dashboard">{{ 'flow.start' | translate }}</a>
+        <a mat-flat-button class="ok-btn-dark" routerLink="/dashboard">
+          {{ 'flow.view-dashboard' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <aside class="route-card">
+      <h2>{{ 'flow.recommended-route' | translate }}</h2>
+      <ol class="route-card__steps">
+        @for (step of steps; track step.label) {
+          <li>
+            <span class="dot" [class]="'dot--' + step.tone" aria-hidden="true"></span>
+            {{ step.label | translate }}
+          </li>
+        }
+      </ol>
+    </aside>
+  </section>
+
+  <section class="shortcuts" aria-labelledby="shortcuts-title">
+    <h2 id="shortcuts-title">{{ 'flow.shortcuts' | translate }}</h2>
+    <div class="shortcuts__grid">
+      @for (interaction of interactions; track interaction.link) {
+        <app-interaction-link [interaction]="interaction" variant="chip"/>
+      }
+    </div>
+  </section>
+
+  <section id="interactions" class="map" aria-labelledby="map-title">
+    <h2 id="map-title">{{ 'flow.map-title' | translate }}</h2>
+    <p class="map__description">{{ 'flow.map-description' | translate }}</p>
+    <div class="map__grid">
+      @for (interaction of interactions; track interaction.link) {
+        <app-interaction-link [interaction]="interaction"/>
+      }
+    </div>
+  </section>
+
+  <section class="notes" aria-labelledby="notes-title">
+    <h2 id="notes-title">{{ 'flow.notes-title' | translate }}</h2>
+    <ul class="notes__card">
+      @for (note of notes; track note) {
+        <li>{{ note | translate }}</li>
+      }
+    </ul>
+  </section>
+</main>

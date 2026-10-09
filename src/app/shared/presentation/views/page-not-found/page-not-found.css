@@ -1,0 +1,33 @@
+.not-found {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  max-width: 560px;
+  padding: 36px;
+  background: #fff;
+  border: 1px solid var(--ok-border);
+  border-radius: var(--ok-radius);
+  box-shadow: var(--ok-shadow);
+}
+
+.not-found__code {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ok-leaf);
+}
+
+.not-found h2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--ok-forest);
+}
+
+.not-found p {
+  font-weight: 500;
+  color: var(--ok-muted);
+}
+
+.not-found button {
+  margin-top: 8px;
+}

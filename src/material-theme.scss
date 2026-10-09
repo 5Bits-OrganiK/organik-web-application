@@ -1,0 +1,115 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$green-palette,
+        tertiary: mat.$spring-green-palette,
+      ),
+      typography: (
+        plain-family: 'Geist',
+        brand-family: 'Fraunces',
+      ),
+      density: 0,
+    )
+  );
+
+  // OrganiK green palette: forest ink, one action green, a lime accent and mint-tinted neutrals.
+  @include mat.theme-overrides(
+    (
+      primary: #17803f,
+      on-primary: #ffffff,
+      primary-container: #e6f3e9,
+      on-primary-container: #0b2b1c,
+      tertiary: #c8e04f,
+      on-tertiary: #0b2b1c,
+      surface: #ffffff,
+      on-surface: #0b2b1c,
+      on-surface-variant: #4e6556,
+      background: #edf3ee,
+      on-background: #0b2b1c,
+      outline: #9bb5a2,
+      outline-variant: #d5e4d8,
+      error: #b42318,
+      error-container: #fde8e6,
+      on-error-container: #7a1a12,
+    )
+  );
+}
+
+body {
+  // OrganiK is a light-only product surface.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+}
+
+// Component density and shape, tuned to the OrganiK mockups.
+html {
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 10px,
+      filled-container-height: 40px,
+      filled-label-text-size: 13px,
+      filled-label-text-weight: 700,
+      outlined-container-shape: 10px,
+      outlined-container-height: 40px,
+      outlined-label-text-size: 13px,
+      outlined-label-text-weight: 700,
+      text-container-shape: 10px,
+      text-label-text-size: 13px,
+      text-label-text-weight: 700,
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      container-height: 44px,
+      container-vertical-padding: 10px,
+      outlined-outline-color: #d5e4d8,
+      outlined-hover-outline-color: #6f9680,
+      outlined-container-shape: 10px,
+      outlined-input-text-color: #0b2b1c,
+      outlined-input-text-placeholder-color: #4e6556,
+      outlined-focus-outline-color: #17803f,
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      background-color: transparent,
+      header-container-height: 56px,
+      row-item-container-height: 54px,
+      header-headline-size: 12px,
+      header-headline-weight: 500,
+      header-headline-color: #4e6556,
+      row-item-label-text-size: 13px,
+      row-item-label-text-weight: 700,
+      row-item-label-text-color: #0b2b1c,
+      row-item-outline-color: #d5e4d8,
+      header-headline-tracking: 0.02em,
+    )
+  );
+
+  @include mat.autocomplete-overrides(
+    (
+      background-color: #ffffff,
+    )
+  );
+}
