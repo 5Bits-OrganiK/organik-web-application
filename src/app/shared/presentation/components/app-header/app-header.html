@@ -1,0 +1,36 @@
+<header class="header">
+  <div class="header__heading">
+    @if (showMenuButton()) {
+      <button
+        mat-icon-button
+        type="button"
+        class="header__menu"
+        [attr.aria-label]="'shell.open-menu' | translate"
+        (click)="menuToggle.emit()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+    <div>
+      <h1 class="header__title">{{ titleKey() ? (titleKey()! | translate) : '' }}</h1>
+      <p class="header__date">{{ today() }}</p>
+    </div>
+  </div>
+
+  <div class="header__tools">
+    <app-global-search/>
+    <a
+      mat-icon-button
+      class="header__alerts"
+      routerLink="/alerts"
+      [attr.aria-label]="'shell.alerts-shortcut' | translate"
+      [matBadge]="alertCount()"
+      [matBadgeHidden]="alertCount() === 0"
+      matBadgeSize="small"
+      matBadgeColor="warn"
+    >
+      <mat-icon>flag</mat-icon>
+    </a>
+    <app-language-switcher/>
+  </div>
+</header>
