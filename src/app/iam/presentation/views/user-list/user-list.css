@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  max-width: 100%;
+}
+
+.table {
+  margin-top: 36px;
+}
+
+.action {
+  padding: 4px 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ok-forest);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.action:hover {
+  color: var(--ok-green-text);
+  text-decoration: underline;
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--ok-green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
