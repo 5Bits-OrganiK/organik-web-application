@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+.problem {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ok-danger);
+}
