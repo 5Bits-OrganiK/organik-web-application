@@ -1,0 +1,47 @@
+<div class="sidebar">
+  <a class="brand" routerLink="/" [attr.aria-label]="'app.title' | translate">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="26" height="26" fill="none">
+        <path d="M7 24c0-9 6-16 18-17 0 11-6 17-14 17-1.3 0-2.9-.1-4-.4Z" fill="currentColor"/>
+        <path d="M7 25c3-6 7-10 12-13" stroke="#0b2b1c" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="brand__text">
+      <span class="brand__name">{{ 'app.title' | translate }}</span>
+      <span class="brand__tagline">{{ 'app.tagline' | translate }}</span>
+    </span>
+  </a>
+
+  <nav class="nav" [attr.aria-label]="'shell.navigation' | translate">
+    @for (item of items(); track item.link) {
+      <a
+        class="nav__item"
+        [routerLink]="item.link"
+        routerLinkActive="nav__item--active"
+        ariaCurrentWhenActive="page"
+        (click)="navigated.emit()"
+      >
+        <mat-icon class="nav__icon" aria-hidden="true">{{ item.icon }}</mat-icon>
+        <span>{{ item.label | translate }}</span>
+      </a>
+    }
+  </nav>
+
+  <footer class="role">
+    <p class="role__label">{{ 'shell.current-role' | translate }}</p>
+    <p class="role__value">{{ roleKey() | translate }}</p>
+    <div class="account">
+      <span class="account__avatar" aria-hidden="true">{{ user()?.fullName?.slice(0, 2)?.toUpperCase() }}</span>
+      <span class="account__name">{{ user()?.fullName }}</span>
+      <button
+        mat-icon-button
+        type="button"
+        class="account__logout"
+        [attr.aria-label]="'auth.logout' | translate"
+        (click)="logout()"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </footer>
+</div>
