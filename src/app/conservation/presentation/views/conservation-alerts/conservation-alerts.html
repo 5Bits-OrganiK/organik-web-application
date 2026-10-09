@@ -1,0 +1,16 @@
+<section class="alerts">
+  <h2>{{ 'conservation.alerts.title' | translate }}</h2>
+  <p class="alerts__description">{{ 'conservation.alerts.description' | translate }}</p>
+
+  <ul class="alerts__list">
+    @for (alert of alerts(); track alert.type) {
+      <li>
+        <app-alert-item [alert]="alert"/>
+      </li>
+    } @empty {
+      <li class="alerts__empty">{{ 'conservation.alerts.empty' | translate }}</li>
+    }
+  </ul>
+
+  <a mat-flat-button routerLink="/suppliers/suggested">{{ 'conservation.alerts.view-suppliers' | translate }}</a>
+</section>
