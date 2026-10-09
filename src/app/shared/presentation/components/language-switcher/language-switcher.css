@@ -1,0 +1,18 @@
+mat-button-toggle-group {
+  --mat-button-toggle-height: 36px;
+  --mat-button-toggle-shape: var(--ok-radius-sm);
+  --mat-button-toggle-text-color: var(--ok-muted);
+  --mat-button-toggle-background-color: transparent;
+  --mat-button-toggle-divider-color: transparent;
+  --mat-button-toggle-selected-state-text-color: var(--ok-switcher-selected-color, var(--ok-forest));
+  --mat-button-toggle-selected-state-background-color: var(--ok-switcher-selected-bg, #fff);
+  --mat-button-toggle-label-text-weight: 700;
+  --mat-button-toggle-label-text-size: 13px;
+  border: 0;
+  gap: 4px;
+}
+
+mat-button-toggle {
+  border: 0;
+  border-radius: var(--ok-radius-sm);
+}
