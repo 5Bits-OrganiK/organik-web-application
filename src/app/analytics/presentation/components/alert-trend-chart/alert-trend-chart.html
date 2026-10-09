@@ -1,0 +1,23 @@
+<section class="chart" aria-labelledby="trend-title">
+  <h2 id="trend-title">{{ 'analytics.trend.title' | translate }}</h2>
+
+  <ul class="chart__plot">
+    @for (point of trend().points; track point.label; let index = $index) {
+      <li
+        class="bar"
+        [style.--ratio]="ratio(point.count)"
+        [style.--delay.ms]="index * 45"
+        [attr.aria-label]="'analytics.trend.bar' | translate: {label: point.label, count: point.count}"
+      >
+        <span class="bar__count">{{ point.count }}</span>
+        <span class="bar__fill" [class.bar__fill--spike]="trend().isSpike(index)"></span>
+        <span class="bar__label">{{ point.label }}</span>
+      </li>
+    }
+  </ul>
+
+  <p class="chart__legend">
+    <span class="chart__swatch" aria-hidden="true"></span>
+    {{ 'analytics.trend.spike' | translate }}
+  </p>
+</section>
