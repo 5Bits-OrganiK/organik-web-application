@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.lines {
+  display: grid;
+  gap: 18px;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  align-items: start;
+  padding: 16px;
+  background: var(--ok-tint);
+  border-radius: var(--ok-radius);
+}
+
+.line__remove {
+  justify-self: start;
+}
+
+.hint,
+.note {
+  color: var(--ok-muted);
+}
+
+.denied {
+  font-weight: 700;
+  color: var(--ok-muted);
+}
