@@ -1,0 +1,12 @@
+<section class="banner">
+  <span class="banner__icon" aria-hidden="true">
+    <mat-icon>{{ icon() }}</mat-icon>
+  </span>
+  <div class="banner__text">
+    <h2 class="banner__heading">{{ heading() }}</h2>
+    <p class="banner__description">{{ description() }}</p>
+  </div>
+  <div class="banner__action">
+    <ng-content/>
+  </div>
+</section>
