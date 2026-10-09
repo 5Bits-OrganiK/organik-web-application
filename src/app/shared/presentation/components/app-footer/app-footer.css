@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ok-border);
+  font-size: 13px;
+  color: var(--ok-muted);
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.footer__links a {
+  color: var(--ok-green-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer__links a:hover,
+.footer__links a:focus-visible {
+  text-decoration: underline;
+}
