@@ -13,43 +13,43 @@
   </section>
 
   @if (isSupplier()) {
-    <app-kpi-card
-      icon="receipt_long"
-      [label]="'dashboard.supplier.needs' | translate"
-      [value]="'' + supplierSummary().needs"
-      [note]="'dashboard.supplier.needs-note' | translate"
-    />
-    <app-kpi-card
-      icon="storefront"
-      [label]="'dashboard.supplier.catalog' | translate"
-      [value]="'' + supplierSummary().offered"
-      [note]="'dashboard.supplier.catalog-note' | translate"
-    />
-    <app-kpi-card
-      icon="local_shipping"
-      [label]="'dashboard.supplier.orders' | translate"
-      [value]="'' + supplierSummary().pending"
-      [note]="'dashboard.supplier.orders-note' | translate: {accepted: supplierSummary().accepted, rejected: supplierSummary().rejected}"
-    />
+  <app-kpi-card
+    icon="receipt_long"
+    [label]="'dashboard.supplier.needs' | translate"
+    [value]="'' + supplierSummary().needs"
+    [note]="'dashboard.supplier.needs-note' | translate"
+  />
+  <app-kpi-card
+    icon="storefront"
+    [label]="'dashboard.supplier.catalog' | translate"
+    [value]="'' + supplierSummary().offered"
+    [note]="'dashboard.supplier.catalog-note' | translate"
+  />
+  <app-kpi-card
+    icon="local_shipping"
+    [label]="'dashboard.supplier.orders' | translate"
+    [value]="'' + supplierSummary().pending"
+    [note]="'dashboard.supplier.orders-note' | translate: {accepted: supplierSummary().accepted, rejected: supplierSummary().rejected}"
+  />
   } @else {
-    <app-kpi-card
-      icon="inventory_2"
-      [label]="'dashboard.inventory' | translate"
-      [value]="(summary().units | number) ?? ''"
-      [note]="'dashboard.units' | translate"
-    />
-    <app-kpi-card
-      icon="receipt_long"
-      [label]="'dashboard.requests' | translate"
-      [value]="'' + summary().requests"
-      [note]="'dashboard.requests-note' | translate"
-    />
-    <app-kpi-card
-      icon="local_shipping"
-      [label]="'dashboard.shipments' | translate"
-      [value]="'' + summary().pendingShipments"
-      [note]="'dashboard.shipments-note' | translate"
-    />
+  <app-kpi-card
+    icon="inventory_2"
+    [label]="'dashboard.inventory' | translate"
+    [value]="(summary().units | number) ?? ''"
+    [note]="'dashboard.units' | translate"
+  />
+  <app-kpi-card
+    icon="receipt_long"
+    [label]="'dashboard.requests' | translate"
+    [value]="'' + summary().requests"
+    [note]="'dashboard.requests-note' | translate"
+  />
+  <app-kpi-card
+    icon="local_shipping"
+    [label]="'dashboard.shipments' | translate"
+    [value]="'' + summary().pendingShipments"
+    [note]="'dashboard.shipments-note' | translate"
+  />
   }
 </div>
 
