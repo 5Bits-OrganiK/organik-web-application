@@ -1,0 +1,16 @@
+<article class="kpi" [class.kpi--attention]="tone() === 'attention'">
+  <header class="kpi__header">
+    <h3 class="kpi__label">{{ label() }}</h3>
+    @if (icon(); as icon) {
+      <span class="kpi__icon" aria-hidden="true">
+        <mat-icon>{{ icon }}</mat-icon>
+      </span>
+    }
+  </header>
+  <div>
+    <p class="kpi__value ok-display" [attr.aria-label]="value()">{{ shown() }}</p>
+    @if (note(); as note) {
+      <p class="kpi__note">{{ note }}</p>
+    }
+  </div>
+</article>
