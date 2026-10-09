@@ -1,0 +1,236 @@
+@startuml
+
+title OrganiK - domain and application overview
+
+package "shared.domain" {
+  class CalendarDate <<value object>> {
+    + {static} of(value): CalendarDate
+    + plusDays(days): CalendarDate
+    + daysUntil(target): number
+    + isBefore(other): boolean
+  }
+  class DateTime <<value object>>
+  class EmailAddress <<value object>>
+  class Money <<value object>> {
+    + format(locale): string
+  }
+  class Percentage <<value object>>
+  class Quantity <<value object>> {
+    + plus(other): Quantity
+    + isLessThan(other): boolean
+  }
+  abstract class Clock <<domain port>> {
+    + {abstract} now(): Date
+    + today(): CalendarDate
+  }
+  class DomainError
+}
+
+package "products" {
+  class Product <<entity>> {
+    + id: string
+    + name: string
+    + minimumStock: Quantity
+    + storageCondition: StorageCondition
+    + isBelowMinimum(stock): boolean
+  }
+  class ProductCategory <<entity>>
+  class ProductsStore <<application>> {
+    + categories: Signal
+    + products: Signal
+    + addProduct(command)
+  }
+  class ProductsApi <<gateway>>
+  ProductsStore --> ProductsApi
+  ProductsApi ..> Product : assembles
+  Product --> Quantity
+}
+
+package "suppliers" {
+  class Supplier <<entity>> {
+    + businessName: string
+    + specialties: SupplierSpecialty[]
+    + hasSpecialty(specialty): boolean
+  }
+  class SupplierSuggestionService <<domain service>> {
+    + suggest(suppliers): SupplierSuggestion[]
+  }
+  class SuppliersStore <<application>> {
+    + suppliers: Signal
+    + suggestions: Signal
+    + registerSupplier(command)
+  }
+  SuppliersStore --> SupplierSuggestionService
+  Supplier --> EmailAddress
+}
+
+package "inventory" {
+  class StockLot <<entity>> {
+    + lotCode: string
+    + expiresOn: CalendarDate
+    + daysToExpire(today): number
+    + statusOn(today, policy): StockStatus
+  }
+  class ExpirationPolicy <<value object>> {
+    + criticalDays: number
+    + riskDays: number
+    + statusFor(daysToExpire): StockStatus
+  }
+  class InventoryStore <<application>> {
+    + items: Signal
+    + expiringItems: Signal
+    + shortages: Signal
+    + registerStock(command)
+    + updatePolicy(policy)
+  }
+  StockLot --> Quantity
+  StockLot --> CalendarDate
+  StockLot ..> ExpirationPolicy
+  InventoryStore --> ProductsStore
+  InventoryStore --> Clock
+}
+
+package "requisition" {
+  class SupplyRequest <<entity>> {
+    + status: RequestStatus
+    + priority: RequestPriority
+  }
+  class RequisitionStore <<application>> {
+    + requestItems: Signal
+    + createSupplyRequest(command)
+  }
+  RequisitionStore --> ProductsStore
+  RequisitionStore --> SuppliersStore
+}
+
+package "procurements" {
+  class ShipmentOrder <<aggregate>> {
+    + supplierId: string
+    + minimarketId: string
+    + lines: ShipmentLine[]
+    + status: OrderStatus
+    + totalQuantity: Quantity
+    + accept(actor, today): ShipmentOrder
+    + reject(actor, today, reason): ShipmentOrder
+  }
+  class ShipmentLine <<value object>> {
+    + productId: string
+    + lotCode: string
+  }
+  class OrderDecision <<value object>> {
+    + decidedBy: string
+    + decidedOn: CalendarDate
+    + reason: string
+  }
+  class ProcurementsStore <<application>> {
+    + shipmentItems: Signal
+    + createOrder(command)
+    + acceptOrder(id)
+    + rejectOrder(id, reason)
+  }
+  ShipmentOrder *-- ShipmentLine
+  ShipmentOrder o-- OrderDecision
+  ProcurementsStore --> ProductsStore
+  ProcurementsStore --> SuppliersStore
+  ProcurementsStore --> InventoryStore : receiveOrder
+}
+
+package "conservation" {
+  class StorageZone <<entity>> {
+    + condition: StorageCondition
+    + range: ConservationRange
+  }
+  class ConservationRange <<value object>> {
+    + evaluate(temperature, humidity): ReadingStatus
+  }
+  class StorageReading <<entity>> {
+    + statusIn(zone): ReadingStatus
+  }
+  class ConservationAlert <<value object>>
+  class ConservationAlertService <<domain service>> {
+    + derive(signals): ConservationAlert[]
+  }
+  class ConservationStore <<application>> {
+    + readingItems: Signal
+    + alerts: Signal
+    + prioritizedAlerts: Signal
+  }
+  StorageZone *-- ConservationRange
+  StorageReading --> DateTime
+  ConservationStore --> ConservationAlertService
+  ConservationStore --> InventoryStore
+}
+
+package "analytics" {
+  class OperationalIndicators <<value object>>
+  class AlertTrend <<value object>> {
+    + peak: number
+    + isSpike(index): boolean
+  }
+  class ReportRequest <<value object>>
+  class AnalyticsStore <<application>> {
+    + indicators: Signal
+    + trend: Signal
+    + generateReport(command): string
+  }
+  class ReportComposer <<application>>
+  class PdfDocumentBuilder <<infrastructure>>
+  OperationalIndicators --> Money
+  OperationalIndicators --> Percentage
+  AnalyticsStore --> ReportComposer
+  AnalyticsStore ..> PdfDocumentBuilder
+  ReportComposer --> ConservationStore
+  ReportComposer --> InventoryStore
+  ReportComposer --> RequisitionStore
+}
+
+package "dashboard" {
+  class DashboardStore <<application>> {
+    + summary: Signal
+    + activity: Signal
+  }
+  DashboardStore --> AnalyticsStore
+  DashboardStore --> InventoryStore
+  DashboardStore --> RequisitionStore
+  DashboardStore --> ProcurementsStore
+  DashboardStore --> ConservationStore
+}
+
+package "iam" {
+  class Role <<entity>> {
+    + accessTo(module): AccessLevel
+    + modulesWith(level): ModuleKey[]
+  }
+  class User <<entity>> {
+    + role: Role
+    + status: UserStatus
+    + canResendInvitation: boolean
+    + with(changes): User
+  }
+  class UsersStore <<application>>
+  class SessionStore <<application>>
+  User --> Role
+  User --> EmailAddress
+  UsersStore ..> User
+  SessionStore --> UsersStore
+}
+
+package "profiles" {
+  class SettingsStore <<application>> {
+    + saveExpirationPolicy(criticalDays, riskDays)
+  }
+  SettingsStore --> InventoryStore
+}
+
+package "communication" {
+  class AlertsStore <<application>> {
+    + alerts: Signal
+    + loadAlerts()
+  }
+  class Notifier <<application>> {
+    + success(key, params)
+  }
+  AlertsStore --> ConservationStore
+}
+
+@enduml
