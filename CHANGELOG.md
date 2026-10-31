@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `domain/services` folders were removed: the conservation alerts and the supplier suggestions are now computed in their stores, and the `Clock` port was replaced by `CalendarDate.today()` (ADR 012).
 - The users, shipments, requests, inventory, product and catalog lists now sort by column and paginate with `MatTableDataSource`, `MatSort` and `MatPaginator`.
 
+## [1.4.1] - 2026-10-10
+
+### Added
+
+- Demo data: two more supplier accounts (Anita Gamboa and Valle Verde) and two more orders, one pending and one accepted.
+
 ## [1.4.0] - 2026-10-07
 
 ### Added

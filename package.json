@@ -1,7 +1,7 @@
 {
   "name": "organik-website-v2",
   "description": "Administrative frontend of OrganiK, a minimarket that manages organic products: inventory, supply requests, shipments, conservation alerts and analytics, built with Domain-Driven Design.",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "5Bits-OrganiK",
   "scripts": {
     "ng": "ng",

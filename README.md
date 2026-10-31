@@ -46,7 +46,7 @@ The enabled routes (all protected by `authGuard` except `login` and `register`) 
 - `profiles`, `settings`
 - `prototype` (entry screen with the interaction map)
 
-Each role only sees the modules it is granted: the administrator manages every module, the operator runs the daily operation and the supplier follows the dashboard and the requests, publishes its catalog and creates orders (it can see the suppliers). Only the administrator of the destination minimarket accepts or rejects an order. Demo supplier account: `marco@bioandes.pe` (same demo password).
+Each role only sees the modules it is granted: the administrator manages every module, the operator runs the daily operation and the supplier follows the dashboard and the requests, publishes its catalog and creates orders (it can see the suppliers). Only the administrator of the destination minimarket accepts or rejects an order. Demo accounts (same demo password): administrator `albino@organik.pe`, operator `cielo@organik.pe`, suppliers `marco@bioandes.pe` (BioAndes), `anita@gamboa.pe` (Anita Gamboa) and `luis@valleverde.pe` (Valle Verde).
 
 ## Architecture Overview
 The application structure follows Domain-Driven Design (DDD) bounded contexts, one folder each:
