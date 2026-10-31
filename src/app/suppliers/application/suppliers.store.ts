@@ -1,5 +1,5 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
-import {Observable, tap} from 'rxjs';
+import {Observable, ReplaySubject, tap} from 'rxjs';
 import {SessionStore} from '../../iam/application/session.store';
 import {ProductsStore} from '../../products/application/products.store';
 import {CalendarDate} from '../../shared/domain/model/calendar-date';
@@ -65,6 +65,7 @@ export class SuppliersStore {
   private readonly suppliersSignal = signal<Supplier[]>([]);
   private readonly offeredSignal = signal<OfferedProduct[]>([]);
   private loaded = false;
+  private readonly loadedSubject = new ReplaySubject<void>(1);
 
   /** Read-only projection of the known suppliers. */
   readonly suppliers = this.suppliersSignal.asReadonly();
@@ -118,15 +119,20 @@ export class SuppliersStore {
 
   /**
    * Loads the suppliers once; later calls reuse the cached list.
+   *
+   * @returns A stream that emits once the offered products are available.
    */
-  loadSuppliers(): void {
-    if (this.loaded) {
-      return;
+  loadSuppliers(): Observable<void> {
+    if (!this.loaded) {
+      this.loaded = true;
+      this.productsStore.loadProducts();
+      this.api.getSuppliers().subscribe(suppliers => this.suppliersSignal.set(suppliers));
+      this.api.getOfferedProducts().subscribe(offered => {
+        this.offeredSignal.set(offered);
+        this.loadedSubject.next();
+      });
     }
-    this.loaded = true;
-    this.productsStore.loadProducts();
-    this.api.getSuppliers().subscribe(suppliers => this.suppliersSignal.set(suppliers));
-    this.api.getOfferedProducts().subscribe(offered => this.offeredSignal.set(offered));
+    return this.loadedSubject.asObservable();
   }
 
   /**

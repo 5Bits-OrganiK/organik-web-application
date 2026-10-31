@@ -1,5 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {Observable, tap} from 'rxjs';
+import {Observable, ReplaySubject, tap} from 'rxjs';
 import {DomainError} from '../../shared/domain/model/domain-error';
 import {EmailAddress} from '../../shared/domain/model/email-address';
 import {MODULE_KEYS, ModuleKey, ROLES, RoleId} from '../domain/model/role';
@@ -27,19 +27,25 @@ export class UsersStore {
 
   private readonly usersSignal = signal<User[]>([]);
   private loaded = false;
+  private readonly loadedSubject = new ReplaySubject<void>(1);
 
   /** Read-only projection of the users. */
   readonly users = this.usersSignal.asReadonly();
 
   /**
    * Loads the users once; later calls reuse the cached list.
+   *
+   * @returns A stream that emits once the users are available.
    */
-  loadUsers(): void {
-    if (this.loaded) {
-      return;
+  loadUsers(): Observable<void> {
+    if (!this.loaded) {
+      this.loaded = true;
+      this.api.getUsers().subscribe(users => {
+        this.usersSignal.set(users);
+        this.loadedSubject.next();
+      });
     }
-    this.loaded = true;
-    this.api.getUsers().subscribe(users => this.usersSignal.set(users));
+    return this.loadedSubject.asObservable();
   }
 
   /**

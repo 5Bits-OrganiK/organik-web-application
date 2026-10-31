@@ -1,5 +1,5 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
-import {forkJoin, map, Observable, of, switchMap, tap} from 'rxjs';
+import {forkJoin, map, Observable, of, ReplaySubject, switchMap, tap} from 'rxjs';
 import {SessionStore} from '../../iam/application/session.store';
 import {ProductsStore} from '../../products/application/products.store';
 import {CalendarDate} from '../../shared/domain/model/calendar-date';
@@ -86,6 +86,7 @@ export class InventoryStore {
   private readonly offersSignal = signal<Offer[]>([]);
   private readonly policySignal = signal(ExpirationPolicy.default());
   private loaded = false;
+  private readonly loadedSubject = new ReplaySubject<void>(1);
 
   /** Policy that classifies lots by their remaining shelf life. */
   readonly policy = this.policySignal.asReadonly();
@@ -162,15 +163,18 @@ export class InventoryStore {
   /**
    * Loads the stock lots, the history and the offers (and the products they refer to) once.
    */
-  loadInventory(): void {
+  loadInventory(): Observable<void> {
     this.productsStore.loadProducts();
-    if (this.loaded) {
-      return;
+    if (!this.loaded) {
+      this.loaded = true;
+      this.api.getStockLots().subscribe(lots => {
+        this.lotsSignal.set(lots);
+        this.loadedSubject.next();
+      });
+      this.api.getEvents().subscribe(events => this.eventsSignal.set(events));
+      this.api.getOffers().subscribe(offers => this.offersSignal.set(offers));
     }
-    this.loaded = true;
-    this.api.getStockLots().subscribe(lots => this.lotsSignal.set(lots));
-    this.api.getEvents().subscribe(events => this.eventsSignal.set(events));
-    this.api.getOffers().subscribe(offers => this.offersSignal.set(offers));
+    return this.loadedSubject.asObservable();
   }
 
   /**

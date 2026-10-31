@@ -1,5 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {Observable, tap} from 'rxjs';
+import {Observable, ReplaySubject, tap} from 'rxjs';
 import {DomainError} from '../../shared/domain/model/domain-error';
 import {Quantity} from '../../shared/domain/model/quantity';
 import {StorageCondition} from '../../shared/domain/model/storage-condition';
@@ -30,6 +30,7 @@ export class ProductsStore {
   private readonly categoriesSignal = signal<ProductCategory[]>([]);
   private readonly productsSignal = signal<Product[]>([]);
   private loaded = false;
+  private readonly loadedSubject = new ReplaySubject<void>(1);
 
   /** Read-only projection of the product categories. */
   readonly categories = this.categoriesSignal.asReadonly();
@@ -38,14 +39,19 @@ export class ProductsStore {
 
   /**
    * Loads categories and products once; later calls reuse the cached data.
+   *
+   * @returns A stream that emits once the products are available.
    */
-  loadProducts(): void {
-    if (this.loaded) {
-      return;
+  loadProducts(): Observable<void> {
+    if (!this.loaded) {
+      this.loaded = true;
+      this.api.getCategories().subscribe(categories => this.categoriesSignal.set(categories));
+      this.api.getProducts().subscribe(products => {
+        this.productsSignal.set(products);
+        this.loadedSubject.next();
+      });
     }
-    this.loaded = true;
-    this.api.getCategories().subscribe(categories => this.categoriesSignal.set(categories));
-    this.api.getProducts().subscribe(products => this.productsSignal.set(products));
+    return this.loadedSubject.asObservable();
   }
 
   /**
