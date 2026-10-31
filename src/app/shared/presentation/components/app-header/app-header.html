@@ -24,12 +24,11 @@
       class="header__alerts"
       routerLink="/alerts"
       [attr.aria-label]="'shell.alerts-shortcut' | translate"
-      [matBadge]="alertCount()"
-      [matBadgeHidden]="alertCount() === 0"
-      matBadgeSize="small"
-      matBadgeColor="warn"
     >
       <mat-icon>flag</mat-icon>
+      @if (alertCount() > 0) {
+        <span class="header__badge">{{ alertCount() }}</span>
+      }
     </a>
     <app-language-switcher/>
   </div>

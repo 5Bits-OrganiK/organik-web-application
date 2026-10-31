@@ -35,7 +35,7 @@
   <app-kpi-card
     icon="inventory_2"
     [label]="'dashboard.inventory' | translate"
-    [value]="(summary().units | number) ?? ''"
+    [value]="'' + summary().units"
     [note]="'dashboard.units' | translate"
   />
   <app-kpi-card

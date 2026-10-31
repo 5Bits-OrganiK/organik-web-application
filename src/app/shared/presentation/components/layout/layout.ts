@@ -1,9 +1,6 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {BreakpointObserver} from '@angular/cdk/layout';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {MatSidenav, MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
-import {map} from 'rxjs';
 import {SessionStore} from '../../../../iam/application/session.store';
 import {ConservationStore} from '../../../../conservation/application/conservation.store';
 import {PageTitleStore} from '../../../application/page-title.store';
@@ -39,12 +36,15 @@ export class Layout implements OnInit {
   protected readonly pageTitleKey = inject(PageTitleStore).key;
 
   /** Whether the viewport is too narrow for a permanent sidebar. */
-  protected readonly isCompact = toSignal(
-    inject(BreakpointObserver)
-      .observe('(max-width: 959.98px)')
-      .pipe(map(state => state.matches)),
-    {initialValue: false}
-  );
+  protected readonly isCompact = signal(false);
+
+  constructor() {
+    if (typeof matchMedia === 'function') {
+      const narrow = matchMedia('(max-width: 959.98px)');
+      this.isCompact.set(narrow.matches);
+      narrow.addEventListener('change', event => this.isCompact.set(event.matches));
+    }
+  }
 
   ngOnInit(): void {
     this.session.loadSession();

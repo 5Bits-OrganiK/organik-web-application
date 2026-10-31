@@ -39,6 +39,7 @@
 }
 
 .header__alerts {
+  position: relative;
   --mat-icon-button-state-layer-size: 44px;
   width: 44px;
   height: 44px;
@@ -47,6 +48,22 @@
   border: 1px solid var(--ok-border);
   border-radius: var(--ok-radius);
   color: var(--ok-forest);
+}
+
+.header__badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--ok-danger);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
 }
 
 @media (max-width: 700px) {

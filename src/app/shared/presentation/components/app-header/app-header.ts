@@ -2,7 +2,6 @@ import {Component, computed, inject, input, output} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {MatBadge} from '@angular/material/badge';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {GlobalSearch} from '../global-search/global-search';
 import {LanguageSwitcher} from '../language-switcher/language-switcher';
@@ -12,7 +11,6 @@ import {LanguageSwitcher} from '../language-switcher/language-switcher';
     RouterLink,
     MatIconButton,
     MatIcon,
-    MatBadge,
     TranslatePipe,
     GlobalSearch,
     LanguageSwitcher

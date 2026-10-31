@@ -1,5 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
+import {Component, computed, inject, signal} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
@@ -40,7 +39,11 @@ export class GlobalSearch {
   private readonly translate = inject(TranslateService);
 
   protected readonly query = new FormControl('', {nonNullable: true});
-  private readonly queryValue = toSignal(this.query.valueChanges, {initialValue: ''});
+  private readonly queryValue = signal('');
+
+  constructor() {
+    this.query.valueChanges.subscribe(value => this.queryValue.set(value));
+  }
 
   private readonly entries = computed<SearchEntry[]>(() => {
     this.translate.currentLang();

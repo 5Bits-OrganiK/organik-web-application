@@ -1,5 +1,4 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {DecimalPipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {MatIcon} from '@angular/material/icon';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -16,7 +15,6 @@ interface OverviewLink {
 
 @Component({
   imports: [
-    DecimalPipe,
     RouterLink,
     MatIcon,
     TranslatePipe,
