@@ -1,14 +1,14 @@
-import {Component, effect, inject, input, OnInit} from '@angular/core';
-import {NonNullableFormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
+import {Component, inject, signal} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators, FormControl} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {MatError, MatFormField} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Notifier} from '../../../../communication/application/notifier';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
-import {nonNegativeIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {InventoryStore} from '../../../application/inventory.store';
+import {NON_NEGATIVE_INTEGER_PATTERN} from '../../../../shared/presentation/forms/form-patterns';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink, MatButton, MatFormField, MatError, MatInput, TranslatePipe, FormCard],
@@ -19,41 +19,41 @@ import {InventoryStore} from '../../../application/inventory.store';
 /**
  * View to update the quantity, the expiration, the location and the notes of a lot.
  */
-export class LotForm implements OnInit {
-  private readonly fb = inject(NonNullableFormBuilder);
+export class LotForm {
+  private readonly fb = inject(FormBuilder);
   private readonly inventory = inject(InventoryStore);
   private readonly router = inject(Router);
   private readonly notifier = inject(Notifier);
-  private filled = false;
+  private readonly route = inject(ActivatedRoute);
 
-  /** Code of the lot, bound from the route. */
-  lotCode = input.required<string>();
+  /** Code of the lot, read from the route. */
+  protected readonly lotCode = signal('');
 
   protected readonly form = this.fb.group({
-    quantity: ['', [Validators.required, nonNegativeIntegerValidator]],
-    expiresOn: ['', Validators.required],
-    location: ['', Validators.required],
-    notes: ['']
+    quantity: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.pattern(NON_NEGATIVE_INTEGER_PATTERN)]}),
+    expiresOn: new FormControl('', {nonNullable: true, validators: Validators.required}),
+    location: new FormControl('', {nonNullable: true, validators: Validators.required}),
+    notes: new FormControl('', {nonNullable: true})
   });
 
   constructor() {
-    effect(() => {
-      this.inventory.items();
-      const lot = this.inventory.findLot(this.lotCode());
-      if (lot && !this.filled) {
-        this.filled = true;
-        this.form.setValue({
-          quantity: String(lot.quantity.value),
-          expiresOn: lot.expiresOn.toString(),
-          location: lot.location,
-          notes: lot.notes
-        });
-      }
+    this.route.params.subscribe(params => {
+      this.lotCode.set(params['lotCode']);
+      // Fill the form once the lot to edit is available.
+      this.inventory.loadInventory().subscribe(() => this.fill());
     });
   }
 
-  ngOnInit(): void {
-    this.inventory.loadInventory();
+  private fill(): void {
+    const lot = this.inventory.findLot(this.lotCode());
+    if (lot) {
+      this.form.setValue({
+        quantity: String(lot.quantity.value),
+        expiresOn: lot.expiresOn.toString(),
+        location: lot.location,
+        notes: lot.notes
+      });
+    }
   }
 
   /**

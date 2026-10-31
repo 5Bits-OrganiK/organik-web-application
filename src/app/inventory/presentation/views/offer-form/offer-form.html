@@ -22,7 +22,7 @@
         }
         @if (form.controls.quantity.hasError('required')) {
           <mat-error>{{ 'form.required' | translate }}</mat-error>
-        } @else if (form.controls.quantity.hasError('exceeds')) {
+        } @else if (form.controls.quantity.hasError('max')) {
           <mat-error>{{ 'inventory.offer-form.exceeds' | translate }}</mat-error>
         } @else {
           <mat-error>{{ 'form.invalid-number' | translate }}</mat-error>

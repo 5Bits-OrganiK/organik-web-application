@@ -1,6 +1,6 @@
-import {Component, computed, effect, inject, input, OnInit} from '@angular/core';
-import {AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
+import {Component, computed, inject, signal} from '@angular/core';
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {MatError, MatFormField} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
@@ -8,17 +8,10 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {Notifier} from '../../../../communication/application/notifier';
 import {DomainError} from '../../../../shared/domain/model/domain-error';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
-import {emailValidator} from '../../../../shared/presentation/forms/validators';
+import {EMAIL_FIELD_PATTERN} from '../../../../shared/presentation/forms/form-patterns';
 import {UsersStore} from '../../../application/users.store';
 import {MODULE_KEYS, ModuleKey, ROLES, RoleId} from '../../../domain/model/role';
 import {UserStatus} from '../../../domain/model/user.entity';
-
-/** The role must be allowed to use the module assigned to the user. */
-const roleCanAccessModule = (group: AbstractControl): ValidationErrors | null => {
-  const role = ROLES.find(candidate => candidate.id === group.get('role')?.value);
-  const module = group.get('assignedModule')?.value as ModuleKey | '';
-  return role && module && role.accessTo(module) === 'none' ? {moduleNotAllowed: true} : null;
-};
 
 @Component({
   imports: [
@@ -36,61 +29,66 @@ const roleCanAccessModule = (group: AbstractControl): ValidationErrors | null =>
   templateUrl: './user-form.html',
 })
 /**
- * View to create a user, or to edit one when an `id` is bound from the route.
+ * View to create a user, or to edit one when an `id` comes in the route.
  */
-export class UserForm implements OnInit {
-  private readonly fb = inject(NonNullableFormBuilder);
+export class UserForm {
+  private readonly fb = inject(FormBuilder);
   private readonly store = inject(UsersStore);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly notifier = inject(Notifier);
 
   /** Identifier of the user being edited; absent when creating one. */
-  id = input<string>();
+  protected readonly id = signal<string | undefined>(undefined);
 
   protected readonly roles = ROLES.map(role => role.id);
-  protected readonly modules = MODULE_KEYS;
   protected readonly statuses: readonly UserStatus[] = ['pending', 'accepted'];
 
-  /** The user being edited, once loaded. */
-  protected readonly editing = computed(() => {
-    const id = this.id();
-    return id ? this.store.findById(id) : undefined;
+  private readonly selectedRole = signal<RoleId | ''>('');
+
+  /** Modules the chosen role can use, so a role is never paired with a module it cannot access. */
+  protected readonly availableModules = computed(() => {
+    const role = ROLES.find(candidate => candidate.id === this.selectedRole());
+    return role ? MODULE_KEYS.filter(module => role.accessTo(module) !== 'none') : MODULE_KEYS;
   });
 
-  protected readonly form = this.fb.group(
-    {
-      fullName: ['', Validators.required],
-      email: ['', [Validators.required, emailValidator]],
-      role: this.fb.control<RoleId | ''>('', Validators.required),
-      assignedModule: this.fb.control<ModuleKey | ''>('', Validators.required),
-      status: this.fb.control<UserStatus>('pending', Validators.required),
-      notes: ['']
-    },
-    {validators: roleCanAccessModule}
-  );
-
-  private patched = false;
+  protected readonly form = this.fb.group({
+    fullName: new FormControl('', {nonNullable: true, validators: Validators.required}),
+    email: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.pattern(EMAIL_FIELD_PATTERN)]}),
+    role: new FormControl<RoleId | ''>('', {nonNullable: true, validators: Validators.required}),
+    assignedModule: new FormControl<ModuleKey | ''>('', {nonNullable: true, validators: Validators.required}),
+    status: new FormControl<UserStatus>('pending', {nonNullable: true, validators: Validators.required}),
+    notes: new FormControl('', {nonNullable: true})
+  });
 
   constructor() {
-    // Fill the form once, as soon as the user to edit is available.
-    effect(() => {
-      const user = this.editing();
-      if (user && !this.patched) {
-        this.patched = true;
-        this.form.patchValue({
-          fullName: user.fullName,
-          email: user.email.toString(),
-          role: user.role.id,
-          assignedModule: user.assignedModule,
-          status: user.status,
-          notes: user.notes
-        });
+    this.form.controls.role.valueChanges.subscribe(role => {
+      this.selectedRole.set(role);
+      const module = this.form.controls.assignedModule.value;
+      if (module && !this.availableModules().includes(module)) {
+        this.form.controls.assignedModule.setValue('');
       }
+    });
+    this.route.params.subscribe(params => {
+      this.id.set(params['id']);
+      // Fill the form once the user to edit is available.
+      this.store.loadUsers().subscribe(() => this.fill());
     });
   }
 
-  ngOnInit(): void {
-    this.store.loadUsers();
+  private fill(): void {
+    const id = this.id();
+    const user = id ? this.store.findById(id) : undefined;
+    if (user) {
+      this.form.patchValue({
+        fullName: user.fullName,
+        email: user.email.toString(),
+        role: user.role.id,
+        assignedModule: user.assignedModule,
+        status: user.status,
+        notes: user.notes
+      });
+    }
   }
 
   /**

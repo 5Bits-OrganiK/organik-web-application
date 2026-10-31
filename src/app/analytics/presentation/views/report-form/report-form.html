@@ -16,23 +16,21 @@
       </mat-form-field>
     </div>
 
-    @if (form.hasError('period')) {
+    @if (form.controls.to.hasError('period')) {
       <p class="span-2 problem" role="alert">{{ 'reports.form.invalid-period' | translate }}</p>
     }
 
-    <fieldset class="span-2 sections" formGroupName="sections">
-      <legend>{{ 'reports.form.indicators' | translate }}</legend>
-      <div class="sections__grid">
-        @for (indicator of indicators; track indicator) {
-          <mat-checkbox [formControlName]="indicator">
-            {{ 'reports.indicators.' + indicator | translate }}
-          </mat-checkbox>
-        }
-      </div>
-      @if (form.controls.sections.invalid && form.controls.sections.touched) {
-        <p class="problem" role="alert">{{ 'reports.form.no-section' | translate }}</p>
-      }
-    </fieldset>
+    <div class="ok-field span-2 sections">
+      <label for="sections">{{ 'reports.form.indicators' | translate }}</label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-select id="sections" multiple formControlName="sections">
+          @for (indicator of indicators; track indicator) {
+            <mat-option [value]="indicator">{{ 'reports.indicators.' + indicator | translate }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ 'reports.form.no-section' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
 
     <div class="ok-field span-2 format">
       <label for="format">{{ 'reports.form.format' | translate }}</label>

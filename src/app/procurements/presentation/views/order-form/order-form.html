@@ -12,9 +12,9 @@
         </mat-form-field>
       </div>
 
-      <div formArrayName="lines" class="lines">
-        @for (line of lines.controls; track line; let i = $index) {
-          <div class="line" [formGroupName]="i">
+      <div class="lines">
+        @for (line of lines(); track line; let i = $index) {
+          <div class="line" [formGroup]="line">
             <div class="ok-field">
               <label [for]="'offering-' + i">{{ 'shipments.form.product' | translate }}</label>
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
@@ -32,9 +32,9 @@
               <label [for]="'quantity-' + i">{{ 'shipments.form.quantity' | translate }}</label>
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
                 <input matInput [id]="'quantity-' + i" type="number" min="1" inputmode="numeric" formControlName="quantity"/>
-                @if (line.get('quantity')?.hasError('exceeds')) {
+                @if (line.controls.quantity.hasError('max')) {
                   <mat-error>{{ 'shipments.form.exceeds' | translate: {available: availableFor(line)} }}</mat-error>
-                } @else if (line.get('quantity')?.hasError('required')) {
+                } @else if (line.controls.quantity.hasError('required')) {
                   <mat-error>{{ 'form.required' | translate }}</mat-error>
                 } @else {
                   <mat-error>{{ 'form.invalid-number' | translate }}</mat-error>
@@ -45,7 +45,7 @@
               }
             </div>
 
-            @if (lines.length > 1) {
+            @if (lines().length > 1) {
               <button mat-button type="button" class="line__remove" (click)="removeLine(i)">
                 {{ 'shipments.form.remove-line' | translate }}
               </button>

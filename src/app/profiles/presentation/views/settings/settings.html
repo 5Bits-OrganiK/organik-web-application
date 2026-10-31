@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    @if (form.hasError('thresholds')) {
+    @if (form.controls.riskDays.hasError('min')) {
       <p class="problem" role="alert">{{ 'settings.expiration.order' | translate }}</p>
     }
 

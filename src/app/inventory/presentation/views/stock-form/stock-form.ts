@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {MatError, MatFormField} from '@angular/material/form-field';
@@ -9,8 +9,8 @@ import {ProductsStore} from '../../../../products/application/products.store';
 import {Notifier} from '../../../../communication/application/notifier';
 import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
-import {positiveIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {InventoryStore} from '../../../application/inventory.store';
+import {POSITIVE_INTEGER_PATTERN} from '../../../../shared/presentation/forms/form-patterns';
 
 @Component({
   imports: [
@@ -31,7 +31,7 @@ import {InventoryStore} from '../../../application/inventory.store';
  * View to register a lot received into the inventory.
  */
 export class StockForm implements OnInit {
-  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly fb = inject(FormBuilder);
   private readonly productsStore = inject(ProductsStore);
   private readonly inventory = inject(InventoryStore);
   private readonly router = inject(Router);
@@ -42,12 +42,12 @@ export class StockForm implements OnInit {
   protected readonly minExpiry = CalendarDate.today().toString();
 
   protected readonly form = this.fb.group({
-    productId: ['', Validators.required],
-    lotCode: ['', [Validators.required, (control: AbstractControl<string>) => this.lotCodeTaken(control)]],
-    quantity: ['', [Validators.required, positiveIntegerValidator]],
-    expiresOn: ['', [Validators.required, (control: AbstractControl<string>) => this.notExpired(control)]],
-    location: ['', Validators.required],
-    notes: ['']
+    productId: new FormControl('', {nonNullable: true, validators: Validators.required}),
+    lotCode: new FormControl('', {nonNullable: true, validators: [Validators.required, control => control.value && this.inventory.hasLot(control.value) ? {duplicate: true} : null]}),
+    quantity: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.pattern(POSITIVE_INTEGER_PATTERN)]}),
+    expiresOn: new FormControl('', {nonNullable: true, validators: [Validators.required, control => control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today()) ? {expired: true} : null]}),
+    location: new FormControl('', {nonNullable: true, validators: Validators.required}),
+    notes: new FormControl('', {nonNullable: true})
   });
 
   ngOnInit(): void {
@@ -67,15 +67,5 @@ export class StockForm implements OnInit {
       this.notifier.success('inventory.form.saved', {lot: lot.lotCode});
       this.router.navigate(['/inventory']).then();
     });
-  }
-
-  private lotCodeTaken(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && this.inventory.hasLot(control.value) ? {duplicate: true} : null;
-  }
-
-  private notExpired(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today())
-      ? {expired: true}
-      : null;
   }
 }

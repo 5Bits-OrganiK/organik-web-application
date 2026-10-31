@@ -40,7 +40,7 @@
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <select matNativeControl id="module" formControlName="assignedModule">
           <option value="" disabled>{{ 'form.select' | translate }}</option>
-          @for (module of modules; track module) {
+          @for (module of availableModules(); track module) {
             <option [value]="module">{{ 'nav.' + module | translate }}</option>
           }
         </select>
@@ -65,10 +65,6 @@
         <input matInput id="notes" formControlName="notes" autocomplete="off"/>
       </mat-form-field>
     </div>
-
-    @if (form.hasError('moduleNotAllowed')) {
-      <p class="problem" role="alert">{{ 'iam.users.form.module-not-allowed' | translate }}</p>
-    }
 
     <ng-container formActions>
       <button mat-flat-button type="submit">

@@ -1,6 +1,5 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators} from '@angular/forms';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {MatError, MatFormField, MatHint} from '@angular/material/form-field';
@@ -10,8 +9,8 @@ import {Notifier} from '../../../../communication/application/notifier';
 import {ProductsStore} from '../../../../products/application/products.store';
 import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
-import {positiveIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {InventoryStore} from '../../../application/inventory.store';
+import {POSITIVE_INTEGER_PATTERN} from '../../../../shared/presentation/forms/form-patterns';
 
 @Component({
   imports: [ReactiveFormsModule, RouterLink, MatButton, MatFormField, MatError, MatHint, MatInput, TranslatePipe, FormCard],
@@ -23,7 +22,7 @@ import {InventoryStore} from '../../../application/inventory.store';
  * View to put units of a product on offer.
  */
 export class OfferForm implements OnInit {
-  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly fb = inject(FormBuilder);
   private readonly inventory = inject(InventoryStore);
   private readonly productsStore = inject(ProductsStore);
   private readonly router = inject(Router);
@@ -37,17 +36,26 @@ export class OfferForm implements OnInit {
   );
 
   protected readonly form = this.fb.group({
-    productId: ['', Validators.required],
-    quantity: ['', [Validators.required, positiveIntegerValidator, (control: AbstractControl<string>) => this.exceedsStock(control)]],
-    validUntil: ['', [Validators.required, (control: AbstractControl<string>) => this.inThePast(control)]]
+    productId: new FormControl('', {nonNullable: true, validators: Validators.required}),
+    quantity: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.pattern(POSITIVE_INTEGER_PATTERN)]}),
+    validUntil: new FormControl('', {nonNullable: true, validators: [Validators.required, control => control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today()) ? {past: true} : null]})
   });
 
-  private readonly selected = toSignal(this.form.controls.productId.valueChanges, {initialValue: ''});
+  private readonly selected = signal('');
   /** Units available of the selected product, shown as a hint. */
   protected readonly availableUnits = computed(() => (this.selected() ? this.inventory.stockOf(this.selected()) : null));
 
   constructor() {
-    this.form.controls.productId.valueChanges.subscribe(() => this.form.controls.quantity.updateValueAndValidity());
+    // The units offered cannot exceed the stock of the chosen product.
+    this.form.controls.productId.valueChanges.subscribe(productId => {
+      this.selected.set(productId);
+      this.form.controls.quantity.setValidators([
+        Validators.required,
+        Validators.pattern(POSITIVE_INTEGER_PATTERN),
+        Validators.max(this.inventory.stockOf(productId))
+      ]);
+      this.form.controls.quantity.updateValueAndValidity();
+    });
   }
 
   ngOnInit(): void {
@@ -67,14 +75,5 @@ export class OfferForm implements OnInit {
       this.notifier.success('inventory.offer-form.saved');
       this.router.navigate(['/inventory/history']).then();
     });
-  }
-
-  private exceedsStock(control: AbstractControl<string>): ValidationErrors | null {
-    const productId = this.form?.controls.productId.value;
-    return productId && control.value && Number(control.value) > this.inventory.stockOf(productId) ? {exceeds: true} : null;
-  }
-
-  private inThePast(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today()) ? {past: true} : null;
   }
 }
