@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit} from '@angular/core';
+import {Component, computed, inject, OnInit, viewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
 import {
@@ -11,8 +11,11 @@ import {
   MatHeaderRowDef,
   MatRow,
   MatRowDef,
-  MatTable
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {TranslatePipe} from '@ngx-translate/core';
 import {SessionStore} from '../../../../iam/application/session.store';
 import {StatusBadge} from '../../../../shared/presentation/components/status-badge/status-badge';
@@ -34,6 +37,9 @@ import {ORDER_STATUS_TONE} from '../../status-tones';
     MatHeaderRow,
     MatRowDef,
     MatRow,
+    MatSort,
+    MatSortHeader,
+    MatPaginator,
     TranslatePipe,
     StatusBadge
   ],
@@ -48,7 +54,24 @@ export class ShipmentList implements OnInit {
   private readonly store = inject(ProcurementsStore);
   private readonly session = inject(SessionStore);
 
-  protected readonly columns = ['order', 'party', 'products', 'date', 'status', 'actions'];
+  protected readonly columns = ['id', 'party', 'productNames', 'createdOn', 'status', 'actions'];
+
+  protected readonly sort = viewChild(MatSort);
+  protected readonly paginator = viewChild(MatPaginator);
+
+  /** Data source of the table, sorted and paged by the table controls. */
+  protected readonly dataSource = computed(() => {
+    const source = new MatTableDataSource(this.shipments());
+    const sort = this.sort();
+    if (sort) {
+      source.sort = sort;
+    }
+    const paginator = this.paginator();
+    if (paginator) {
+      source.paginator = paginator;
+    }
+    return source;
+  });
   protected readonly shipments = this.store.shipmentItems;
   protected readonly isSupplier = computed(() => !!this.session.currentUser()?.supplierId);
   protected readonly toneOf = (status: OrderStatus) => ORDER_STATUS_TONE[status];

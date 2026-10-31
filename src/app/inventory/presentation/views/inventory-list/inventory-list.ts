@@ -1,4 +1,4 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal, viewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
 import {
@@ -12,8 +12,11 @@ import {
   MatNoDataRow,
   MatRow,
   MatRowDef,
-  MatTable
+  MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {TranslatePipe} from '@ngx-translate/core';
 import {StatusBadge} from '../../../../shared/presentation/components/status-badge/status-badge';
 import {InventoryStore} from '../../../application/inventory.store';
@@ -57,6 +60,9 @@ const normalize = (value: string): string =>
     MatHeaderRow,
     MatRowDef,
     MatRow,
+    MatSort,
+    MatSortHeader,
+    MatPaginator,
     MatNoDataRow,
     TranslatePipe,
     StatusBadge
@@ -72,7 +78,24 @@ export class InventoryList implements OnInit {
   private readonly store = inject(InventoryStore);
   private readonly productsStore = inject(ProductsStore);
 
-  protected readonly columns = ['sku', 'product', 'lot', 'stock', 'expires', 'status', 'actions'];
+  protected readonly columns = ['sku', 'productName', 'lotCode', 'quantity', 'expiresOn', 'status', 'actions'];
+
+  protected readonly sort = viewChild(MatSort);
+  protected readonly paginator = viewChild(MatPaginator);
+
+  /** Data source of the table, sorted and paged by the table controls. */
+  protected readonly dataSource = computed(() => {
+    const source = new MatTableDataSource(this.rows());
+    const sort = this.sort();
+    if (sort) {
+      source.sort = sort;
+    }
+    const paginator = this.paginator();
+    if (paginator) {
+      source.paginator = paginator;
+    }
+    return source;
+  });
   protected readonly categories = this.productsStore.categories;
   protected readonly expirationOptions = EXPIRATION_FILTERS;
   protected readonly statuses = STOCK_STATUSES;
