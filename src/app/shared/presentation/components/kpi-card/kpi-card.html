@@ -8,7 +8,7 @@
     }
   </header>
   <div>
-    <p class="kpi__value ok-display" [attr.aria-label]="value()">{{ shown() ?? value() }}</p>
+    <p class="kpi__value ok-display" [attr.aria-label]="value()">@for (current of [value()]; track current) {<app-count-up [target]="current"/>}</p>
     @if (note(); as note) {
       <p class="kpi__note">{{ note }}</p>
     }
