@@ -19,10 +19,6 @@ package "shared.domain" {
     + plus(other): Quantity
     + isLessThan(other): boolean
   }
-  abstract class Clock <<domain port>> {
-    + {abstract} now(): Date
-    + today(): CalendarDate
-  }
   class DomainError
 }
 
@@ -52,15 +48,11 @@ package "suppliers" {
     + specialties: SupplierSpecialty[]
     + hasSpecialty(specialty): boolean
   }
-  class SupplierSuggestionService <<domain service>> {
-    + suggest(suppliers): SupplierSuggestion[]
-  }
   class SuppliersStore <<application>> {
     + suppliers: Signal
     + suggestions: Signal
     + registerSupplier(command)
   }
-  SuppliersStore --> SupplierSuggestionService
   Supplier --> EmailAddress
 }
 
@@ -87,7 +79,6 @@ package "inventory" {
   StockLot --> CalendarDate
   StockLot ..> ExpirationPolicy
   InventoryStore --> ProductsStore
-  InventoryStore --> Clock
 }
 
 package "requisition" {
@@ -147,9 +138,6 @@ package "conservation" {
     + statusIn(zone): ReadingStatus
   }
   class ConservationAlert <<value object>>
-  class ConservationAlertService <<domain service>> {
-    + derive(signals): ConservationAlert[]
-  }
   class ConservationStore <<application>> {
     + readingItems: Signal
     + alerts: Signal
@@ -157,7 +145,6 @@ package "conservation" {
   }
   StorageZone *-- ConservationRange
   StorageReading --> DateTime
-  ConservationStore --> ConservationAlertService
   ConservationStore --> InventoryStore
 }
 

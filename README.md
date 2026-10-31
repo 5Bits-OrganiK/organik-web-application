@@ -62,10 +62,10 @@ The application structure follows Domain-Driven Design (DDD) bounded contexts, o
 - **`suppliers`**: Supplier directory and recommendations.
 - **`conservation`**: Storage zones, sensor readings and conservation alerts.
 - **`communication`**: Alerts and notifications shown to the user.
-- **`shared`**: Shared Kernel with value objects, the clock port, the fake API client, the shell layout and reusable UI parts.
+- **`shared`**: Shared Kernel with value objects, the fake API client, the shell layout and reusable UI parts.
 
 Each bounded context applies the layers it needs from these four:
-- **`domain`**: Entities, value objects and domain services, free from Angular dependencies.
+- **`domain`**: Entities and value objects under `domain/model`, free from Angular dependencies.
 - **`application`**: Signal-based stores (`signal`, `computed`) that coordinate use cases and build read models.
 - **`infrastructure`**: Gateways, resource contracts, assemblers and seeds that talk to the backend.
 - **`presentation`**: Standalone components, routed views, forms and the routes of the context.
@@ -137,12 +137,12 @@ organik-website-v2/
 │       │   ├── application/            # ProcurementsStore
 │       │   └── presentation/           # Order list, form and detail
 │       ├── suppliers/                  # Suppliers
-│       │   ├── domain/                 # Supplier, SupplierSuggestionService
+│       │   ├── domain/                 # Supplier, SupplierSpecialty
 │       │   ├── infrastructure/         # SuppliersApi, assembler, resources
 │       │   ├── application/            # SuppliersStore
 │       │   └── presentation/           # Directory, detail, form and suggestions
 │       ├── conservation/               # Conservation
-│       │   ├── domain/                 # StorageZone, ConservationRange, alert service
+│       │   ├── domain/                 # StorageZone, ConservationRange, ConservationAlert
 │       │   ├── infrastructure/         # ConservationApi, assemblers, resources
 │       │   ├── application/            # ConservationStore
 │       │   └── presentation/           # Monitoring and alerts views
@@ -150,7 +150,7 @@ organik-website-v2/
 │       │   ├── application/            # AlertsStore, Notifier
 │       │   └── presentation/           # Alerts overview and alert item
 │       └── shared/                     # Shared Kernel
-│           ├── domain/                 # Value objects, Clock port, DomainError
+│           ├── domain/                 # Value objects, DomainError
 │           ├── infrastructure/         # FakeApi, in-memory gateway, page title strategy
 │           ├── application/            # LanguageStore, PageTitleStore
 │           └── presentation/           # Shell layout, sidebar, header, search, shared components
