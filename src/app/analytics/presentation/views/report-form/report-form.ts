@@ -9,10 +9,10 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {ConservationStore} from '../../../../conservation/application/conservation.store';
 import {RequisitionStore} from '../../../../requisition/application/requisition.store';
 import {Notifier} from '../../../../communication/application/notifier';
-import {Clock} from '../../../../shared/domain/services/clock';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
 import {AnalyticsStore} from '../../../application/analytics.store';
 import {REPORT_INDICATORS, ReportIndicator} from '../../../domain/model/report-request';
+import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
 
 /** Days before today the report period starts by default. */
 const DEFAULT_PERIOD_DAYS = 30;
@@ -52,17 +52,16 @@ export class ReportForm implements OnInit {
   private readonly analytics = inject(AnalyticsStore);
   private readonly conservation = inject(ConservationStore);
   private readonly requisition = inject(RequisitionStore);
-  private readonly clock = inject(Clock);
   private readonly notifier = inject(Notifier);
 
   protected readonly indicators = REPORT_INDICATORS;
   /** Latest day a report can cover. */
-  protected readonly maxDate = this.clock.today().toString();
+  protected readonly maxDate = CalendarDate.today().toString();
 
   protected readonly form = this.fb.group(
     {
-      from: [this.clock.today().plusDays(-DEFAULT_PERIOD_DAYS).toString(), Validators.required],
-      to: [this.clock.today().toString(), Validators.required],
+      from: [CalendarDate.today().plusDays(-DEFAULT_PERIOD_DAYS).toString(), Validators.required],
+      to: [CalendarDate.today().toString(), Validators.required],
       format: ['pdf'],
       sections: this.fb.group(
         {alerts: true, requests: true, inventory: true, conservation: true},

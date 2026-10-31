@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core';
 import {map, Observable, switchMap} from 'rxjs';
-import {Clock} from '../../shared/domain/services/clock';
 import {FakeApi, mergeByKey} from '../../shared/infrastructure/fake-api';
 import {respondWith} from '../../shared/infrastructure/in-memory-gateway';
 import {InventoryEvent} from '../domain/model/inventory-event';
@@ -11,6 +10,7 @@ import {InventoryEventResource, OfferResource, StockLotResource} from './invento
 import {inventoryEventsSeed, offersSeed, stockLotsSeed} from './inventory-seed';
 import {OfferAssembler} from './offer-assembler';
 import {StockLotAssembler} from './stock-lot-assembler';
+import {CalendarDate} from '../../shared/domain/model/calendar-date';
 
 @Injectable({providedIn: 'root'})
 /**
@@ -31,7 +31,7 @@ export class InventoryApi {
   private readonly offerResources: OfferResource[];
 
   constructor() {
-    const today = inject(Clock).today();
+    const today = CalendarDate.today();
     this.resources = stockLotsSeed(today);
     this.eventResources = inventoryEventsSeed(today);
     this.offerResources = offersSeed(today);

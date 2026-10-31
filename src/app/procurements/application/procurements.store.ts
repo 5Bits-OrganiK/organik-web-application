@@ -7,7 +7,6 @@ import {SuppliersStore} from '../../suppliers/application/suppliers.store';
 import {CalendarDate} from '../../shared/domain/model/calendar-date';
 import {DomainError} from '../../shared/domain/model/domain-error';
 import {Quantity} from '../../shared/domain/model/quantity';
-import {Clock} from '../../shared/domain/services/clock';
 import {ShipmentLine} from '../domain/model/shipment-line';
 import {OrderStatus, ShipmentOrder} from '../domain/model/shipment-order.entity';
 import {ProcurementsApi} from '../infrastructure/procurements-api';
@@ -71,7 +70,6 @@ export class ProcurementsStore {
   private readonly suppliers = inject(SuppliersStore);
   private readonly inventory = inject(InventoryStore);
   private readonly session = inject(SessionStore);
-  private readonly clock = inject(Clock);
 
   private readonly shipmentsSignal = signal<ShipmentOrder[]>([]);
   private loaded = false;
@@ -160,7 +158,7 @@ export class ProcurementsStore {
       supplierId: user.supplierId,
       minimarketId: command.minimarketId,
       lines,
-      createdOn: this.clock.today(),
+      createdOn: CalendarDate.today(),
       createdBy: user.fullName,
       status: 'pending'
     });
@@ -175,7 +173,7 @@ export class ProcurementsStore {
    */
   acceptOrder(orderId: string): Observable<ShipmentOrder> {
     const order = this.requireDecidable(orderId);
-    const accepted = order.accept(this.session.currentUser()!.fullName, this.clock.today());
+    const accepted = order.accept(this.session.currentUser()!.fullName, CalendarDate.today());
     return this.save(accepted).pipe(
       switchMap(saved =>
         this.inventory
@@ -202,7 +200,7 @@ export class ProcurementsStore {
    */
   rejectOrder(orderId: string, reason: string): Observable<ShipmentOrder> {
     const order = this.requireDecidable(orderId);
-    return this.save(order.reject(this.session.currentUser()!.fullName, this.clock.today(), reason));
+    return this.save(order.reject(this.session.currentUser()!.fullName, CalendarDate.today(), reason));
   }
 
   private requireDecidable(orderId: string): ShipmentOrder {

@@ -9,7 +9,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {ProductsStore} from '../../../../products/application/products.store';
 import {Notifier} from '../../../../communication/application/notifier';
 import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
-import {Clock} from '../../../../shared/domain/services/clock';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
 import {positiveIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {SuppliersStore} from '../../../../suppliers/application/suppliers.store';
@@ -39,7 +38,6 @@ export class RequestForm implements OnInit {
   private readonly productsStore = inject(ProductsStore);
   private readonly suppliersStore = inject(SuppliersStore);
   private readonly requisition = inject(RequisitionStore);
-  private readonly clock = inject(Clock);
   private readonly router = inject(Router);
   private readonly notifier = inject(Notifier);
   private readonly destroyRef = inject(DestroyRef);
@@ -51,7 +49,7 @@ export class RequestForm implements OnInit {
   protected readonly suppliers = this.suppliersStore.suppliers;
   protected readonly priorities = REQUEST_PRIORITIES;
   /** First day products can be required. */
-  protected readonly minDate = this.clock.today().toString();
+  protected readonly minDate = CalendarDate.today().toString();
 
   protected readonly form = this.fb.group({
     productId: ['', Validators.required],
@@ -97,7 +95,7 @@ export class RequestForm implements OnInit {
   }
 
   private notPast(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && CalendarDate.of(control.value).isBefore(this.clock.today())
+    return control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today())
       ? {past: true}
       : null;
   }

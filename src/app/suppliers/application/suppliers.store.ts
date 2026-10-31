@@ -6,7 +6,6 @@ import {CalendarDate} from '../../shared/domain/model/calendar-date';
 import {DomainError} from '../../shared/domain/model/domain-error';
 import {EmailAddress} from '../../shared/domain/model/email-address';
 import {Quantity} from '../../shared/domain/model/quantity';
-import {Clock} from '../../shared/domain/services/clock';
 import {OfferedProduct} from '../domain/model/offered-product.entity';
 import {Supplier} from '../domain/model/supplier.entity';
 import {SupplierSuggestionService} from '../domain/services/supplier-suggestion.service';
@@ -63,7 +62,6 @@ export class SuppliersStore {
   private readonly suggestionService = new SupplierSuggestionService();
   private readonly productsStore = inject(ProductsStore);
   private readonly session = inject(SessionStore);
-  private readonly clock = inject(Clock);
 
   private readonly suppliersSignal = signal<Supplier[]>([]);
   private readonly offeredSignal = signal<OfferedProduct[]>([]);
@@ -175,7 +173,7 @@ export class SuppliersStore {
       lotCode: command.lotCode,
       availableQuantity: Quantity.of(command.availableQuantity),
       expiresOn: CalendarDate.of(command.expiresOn),
-      updatedOn: this.clock.today()
+      updatedOn: CalendarDate.today()
     });
     return this.api
       .createOfferedProduct(offered)
@@ -200,7 +198,7 @@ export class SuppliersStore {
     }
     const updated = existing.update(
       {lotCode: command.lotCode, availableQuantity: Quantity.of(command.availableQuantity), expiresOn: CalendarDate.of(command.expiresOn)},
-      this.clock.today()
+      CalendarDate.today()
     );
     return this.api
       .updateOfferedProduct(updated)

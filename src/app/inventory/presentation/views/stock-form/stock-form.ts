@@ -8,7 +8,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {ProductsStore} from '../../../../products/application/products.store';
 import {Notifier} from '../../../../communication/application/notifier';
 import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
-import {Clock} from '../../../../shared/domain/services/clock';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
 import {positiveIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {InventoryStore} from '../../../application/inventory.store';
@@ -35,13 +34,12 @@ export class StockForm implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly productsStore = inject(ProductsStore);
   private readonly inventory = inject(InventoryStore);
-  private readonly clock = inject(Clock);
   private readonly router = inject(Router);
   private readonly notifier = inject(Notifier);
 
   protected readonly products = this.productsStore.products;
   /** First day a received lot may expire. */
-  protected readonly minExpiry = this.clock.today().toString();
+  protected readonly minExpiry = CalendarDate.today().toString();
 
   protected readonly form = this.fb.group({
     productId: ['', Validators.required],
@@ -76,7 +74,7 @@ export class StockForm implements OnInit {
   }
 
   private notExpired(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && CalendarDate.of(control.value).isBefore(this.clock.today())
+    return control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today())
       ? {expired: true}
       : null;
   }

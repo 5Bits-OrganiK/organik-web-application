@@ -4,7 +4,6 @@ import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatBadge} from '@angular/material/badge';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {Clock} from '../../../domain/services/clock';
 import {GlobalSearch} from '../global-search/global-search';
 import {LanguageSwitcher} from '../language-switcher/language-switcher';
 
@@ -27,7 +26,6 @@ import {LanguageSwitcher} from '../language-switcher/language-switcher';
  */
 export class AppHeader {
   private readonly translate = inject(TranslateService);
-  private readonly clock = inject(Clock);
 
   /** Translation key of the active page. */
   titleKey = input<string | null>(null);
@@ -41,7 +39,7 @@ export class AppHeader {
   /** Long date in the active language, e.g. "2 de octubre de 2026". */
   protected readonly today = computed(() =>
     new Intl.DateTimeFormat(this.translate.currentLang() ?? 'es', {dateStyle: 'long'}).format(
-      this.clock.now()
+      new Date()
     )
   );
 }

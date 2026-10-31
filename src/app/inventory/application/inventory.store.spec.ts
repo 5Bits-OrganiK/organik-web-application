@@ -1,16 +1,6 @@
-import {Injectable} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {DomainError} from '../../shared/domain/model/domain-error';
-import {Clock} from '../../shared/domain/services/clock';
 import {InventoryStore, RegisterStockCommand} from './inventory.store';
-
-/** Clock frozen on the day of the approved mockups. */
-@Injectable()
-class FixedClock extends Clock {
-  override now(): Date {
-    return new Date(2026, 9, 2, 12, 0);
-  }
-}
 
 /** Lets the in-memory gateway answer, whatever latency the environment simulates. */
 const settleGateway = () => vi.advanceTimersByTimeAsync(1_000);
@@ -30,7 +20,7 @@ describe('InventoryStore', () => {
 
   beforeEach(async () => {
     vi.useFakeTimers();
-    TestBed.configureTestingModule({providers: [{provide: Clock, useClass: FixedClock}]});
+    vi.setSystemTime(new Date(2026, 9, 2, 12, 0));
     store = TestBed.inject(InventoryStore);
     store.loadInventory();
     await settleGateway();

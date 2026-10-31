@@ -8,7 +8,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {Notifier} from '../../../../communication/application/notifier';
 import {ProductsStore} from '../../../../products/application/products.store';
 import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
-import {Clock} from '../../../../shared/domain/services/clock';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
 import {nonNegativeIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {SuppliersStore} from '../../../application/suppliers.store';
@@ -26,7 +25,6 @@ export class OfferingForm implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly store = inject(SuppliersStore);
   private readonly productsStore = inject(ProductsStore);
-  private readonly clock = inject(Clock);
   private readonly router = inject(Router);
   private readonly notifier = inject(Notifier);
   private filled = false;
@@ -37,7 +35,7 @@ export class OfferingForm implements OnInit {
   protected readonly editing = computed(() => !!this.id());
   protected readonly products = this.productsStore.products;
   /** First day the lot may expire. */
-  protected readonly minExpiry = this.clock.today().toString();
+  protected readonly minExpiry = CalendarDate.today().toString();
 
   protected readonly form = this.fb.group({
     productId: ['', Validators.required],
@@ -89,6 +87,6 @@ export class OfferingForm implements OnInit {
   }
 
   private notExpired(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && CalendarDate.of(control.value).isBefore(this.clock.today()) ? {expired: true} : null;
+    return control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today()) ? {expired: true} : null;
   }
 }

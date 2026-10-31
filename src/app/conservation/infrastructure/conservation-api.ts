@@ -1,12 +1,12 @@
 import {inject, Injectable} from '@angular/core';
 import {map, Observable} from 'rxjs';
-import {Clock} from '../../shared/domain/services/clock';
 import {respondWith} from '../../shared/infrastructure/in-memory-gateway';
 import {StorageReading} from '../domain/model/storage-reading.entity';
 import {StorageZone} from '../domain/model/storage-zone.entity';
 import {readingsSeed, ZONES_SEED} from './conservation-seed';
 import {StorageReadingAssembler} from './storage-reading-assembler';
 import {StorageZoneAssembler} from './storage-zone-assembler';
+import {CalendarDate} from '../../shared/domain/model/calendar-date';
 
 @Injectable({providedIn: 'root'})
 /**
@@ -19,7 +19,6 @@ import {StorageZoneAssembler} from './storage-zone-assembler';
 export class ConservationApi {
   private readonly zoneAssembler = inject(StorageZoneAssembler);
   private readonly readingAssembler = inject(StorageReadingAssembler);
-  private readonly clock = inject(Clock);
 
   /**
    * Fetches every storage zone.
@@ -34,7 +33,7 @@ export class ConservationApi {
    * Fetches the readings of every storage zone, including the history of the last week.
    */
   getReadings(): Observable<StorageReading[]> {
-    return respondWith({readings: readingsSeed(this.clock.today())}).pipe(
+    return respondWith({readings: readingsSeed(CalendarDate.today())}).pipe(
       map(response => this.readingAssembler.toEntitiesFromResponse(response))
     );
   }

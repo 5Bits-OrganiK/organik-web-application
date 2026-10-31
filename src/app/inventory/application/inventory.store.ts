@@ -5,7 +5,6 @@ import {ProductsStore} from '../../products/application/products.store';
 import {CalendarDate} from '../../shared/domain/model/calendar-date';
 import {DomainError} from '../../shared/domain/model/domain-error';
 import {Quantity} from '../../shared/domain/model/quantity';
-import {Clock} from '../../shared/domain/services/clock';
 import {ExpirationPolicy} from '../domain/model/expiration-policy';
 import {InventoryEvent, InventoryEventType, WasteCause} from '../domain/model/inventory-event';
 import {Offer} from '../domain/model/offer.entity';
@@ -81,7 +80,6 @@ export class InventoryStore {
   private readonly api = inject(InventoryApi);
   private readonly productsStore = inject(ProductsStore);
   private readonly session = inject(SessionStore);
-  private readonly clock = inject(Clock);
 
   private readonly lotsSignal = signal<StockLot[]>([]);
   private readonly eventsSignal = signal<InventoryEvent[]>([]);
@@ -94,7 +92,7 @@ export class InventoryStore {
 
   /** Inventory rows: every lot with its product and expiration status. */
   readonly items = computed<InventoryItem[]>(() => {
-    const today = this.clock.today();
+    const today = CalendarDate.today();
     const policy = this.policySignal();
     return this.lotsSignal().map(lot => ({
       sku: lot.productId,
@@ -148,7 +146,7 @@ export class InventoryStore {
 
   /** Offers registered by the minimarket, the most recent first. */
   readonly offers = computed<OfferItem[]>(() => {
-    const today = this.clock.today();
+    const today = CalendarDate.today();
     return [...this.offersSignal()]
       .reverse()
       .map(offer => ({
@@ -224,7 +222,7 @@ export class InventoryStore {
       throw new DomainError(`Lot ${command.lotCode} is already registered`);
     }
     const expiresOn = CalendarDate.of(command.expiresOn);
-    if (expiresOn.isBefore(this.clock.today())) {
+    if (expiresOn.isBefore(CalendarDate.today())) {
       throw new DomainError('A received lot cannot be already expired');
     }
     const lot = new StockLot({
@@ -304,7 +302,7 @@ export class InventoryStore {
       quantity: units,
       validUntil: CalendarDate.of(command.validUntil),
       createdBy: this.actorName(),
-      createdOn: this.clock.today()
+      createdOn: CalendarDate.today()
     });
     return this.api.createOffer(offer).pipe(
       tap(created => this.offersSignal.update(current => [...current, created])),
@@ -410,7 +408,7 @@ export class InventoryStore {
       cause,
       detail,
       actorName: this.actorName(),
-      occurredOn: this.clock.today()
+      occurredOn: CalendarDate.today()
     });
     return this.api.createEvent(event).pipe(tap(created => this.eventsSignal.update(current => [...current, created])));
   }

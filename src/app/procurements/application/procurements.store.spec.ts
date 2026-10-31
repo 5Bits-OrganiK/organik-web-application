@@ -1,17 +1,7 @@
-import {Injectable} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {InventoryStore} from '../../inventory/application/inventory.store';
 import {DomainError} from '../../shared/domain/model/domain-error';
-import {Clock} from '../../shared/domain/services/clock';
 import {ProcurementsStore} from './procurements.store';
-
-/** Clock frozen on the day of the approved mockups. */
-@Injectable()
-class FixedClock extends Clock {
-  override now(): Date {
-    return new Date(2026, 9, 2, 12, 0);
-  }
-}
 
 /** Lets the in-memory gateway answer, whatever latency the environment simulates. */
 const settleGateway = () => vi.advanceTimersByTimeAsync(1_000);
@@ -19,7 +9,6 @@ const settleGateway = () => vi.advanceTimersByTimeAsync(1_000);
 /** Signs a seeded user in and loads the order data. */
 async function setup(userId: string): Promise<{store: ProcurementsStore; inventory: InventoryStore}> {
   sessionStorage.setItem('organik.session', userId);
-  TestBed.configureTestingModule({providers: [{provide: Clock, useClass: FixedClock}]});
   const store = TestBed.inject(ProcurementsStore);
   store.loadProcurements();
   await settleGateway();
@@ -27,7 +16,10 @@ async function setup(userId: string): Promise<{store: ProcurementsStore; invento
 }
 
 describe('ProcurementsStore', () => {
-  beforeEach(() => vi.useFakeTimers());
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 9, 2, 12, 0));
+  });
 
   afterEach(() => {
     vi.useRealTimers();

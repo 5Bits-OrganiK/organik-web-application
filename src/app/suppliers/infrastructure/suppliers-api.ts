@@ -1,6 +1,5 @@
 import {inject, Injectable} from '@angular/core';
 import {map, Observable} from 'rxjs';
-import {Clock} from '../../shared/domain/services/clock';
 import {respondWith} from '../../shared/infrastructure/in-memory-gateway';
 import {OfferedProduct} from '../domain/model/offered-product.entity';
 import {Supplier} from '../domain/model/supplier.entity';
@@ -8,6 +7,7 @@ import {OfferedProductAssembler} from './offered-product-assembler';
 import {SupplierAssembler} from './supplier-assembler';
 import {OfferedProductResource, SupplierResource, SuppliersResponse} from './suppliers-response';
 import {offeredProductsSeed, SUPPLIERS_SEED} from './suppliers-seed';
+import {CalendarDate} from '../../shared/domain/model/calendar-date';
 
 @Injectable({providedIn: 'root'})
 /**
@@ -21,7 +21,7 @@ export class SuppliersApi {
   private readonly assembler = inject(SupplierAssembler);
   private readonly offeredAssembler = inject(OfferedProductAssembler);
   private readonly resources: SupplierResource[] = structuredClone(SUPPLIERS_SEED);
-  private readonly offeredResources: OfferedProductResource[] = offeredProductsSeed(inject(Clock).today());
+  private readonly offeredResources: OfferedProductResource[] = offeredProductsSeed(CalendarDate.today());
 
   /**
    * Fetches every supplier and maps it into domain entities.

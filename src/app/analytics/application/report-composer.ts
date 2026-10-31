@@ -3,12 +3,12 @@ import {TranslateService} from '@ngx-translate/core';
 import {ConservationStore} from '../../conservation/application/conservation.store';
 import {InventoryStore} from '../../inventory/application/inventory.store';
 import {RequisitionStore} from '../../requisition/application/requisition.store';
-import {Clock} from '../../shared/domain/services/clock';
 import {DateTime} from '../../shared/domain/model/date-time';
 import {OperationalIndicators} from '../domain/model/operational-indicators';
 import {ReportRequest} from '../domain/model/report-request';
 import {PdfLine} from '../infrastructure/pdf-document-builder';
 import {ReportDocument} from '../infrastructure/report-exporter';
+import {CalendarDate} from '../../shared/domain/model/calendar-date';
 
 /**
  * Application service that gathers the figures of every context into a report.
@@ -16,7 +16,6 @@ import {ReportDocument} from '../infrastructure/report-exporter';
 @Injectable({providedIn: 'root'})
 export class ReportComposer {
   private readonly translate = inject(TranslateService);
-  private readonly clock = inject(Clock);
   private readonly inventory = inject(InventoryStore);
   private readonly requisition = inject(RequisitionStore);
   private readonly conservation = inject(ConservationStore);
@@ -33,7 +32,7 @@ export class ReportComposer {
     const lines: PdfLine[] = [
       {text: t('reports.document.title'), bold: true},
       {text: t('reports.document.period', {from: request.from.toString(), to: request.to.toString()})},
-      {text: t('reports.document.generated', {at: new DateTime(this.clock.now()).toDisplayString()})},
+      {text: t('reports.document.generated', {at: new DateTime(new Date()).toDisplayString()})},
       {text: ''}
     ];
 
@@ -86,6 +85,6 @@ export class ReportComposer {
       }
     }
 
-    return {fileName: `organik-report-${this.clock.today().toString()}.pdf`, lines};
+    return {fileName: `organik-report-${CalendarDate.today().toString()}.pdf`, lines};
   }
 }

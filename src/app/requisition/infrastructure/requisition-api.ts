@@ -1,11 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {map, Observable} from 'rxjs';
-import {Clock} from '../../shared/domain/services/clock';
 import {respondWith} from '../../shared/infrastructure/in-memory-gateway';
 import {SupplyRequest} from '../domain/model/supply-request.entity';
 import {SupplyRequestResource} from './requisition-response';
 import {supplyRequestsSeed} from './requisition-seed';
 import {SupplyRequestAssembler} from './supply-request-assembler';
+import {CalendarDate} from '../../shared/domain/model/calendar-date';
 
 @Injectable({providedIn: 'root'})
 /**
@@ -17,7 +17,7 @@ import {SupplyRequestAssembler} from './supply-request-assembler';
  */
 export class RequisitionApi {
   private readonly assembler = inject(SupplyRequestAssembler);
-  private readonly resources: SupplyRequestResource[] = supplyRequestsSeed(inject(Clock).today());
+  private readonly resources: SupplyRequestResource[] = supplyRequestsSeed(CalendarDate.today());
 
   /**
    * Fetches every supply request.

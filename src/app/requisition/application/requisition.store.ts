@@ -3,7 +3,6 @@ import {Observable, tap} from 'rxjs';
 import {CalendarDate} from '../../shared/domain/model/calendar-date';
 import {DomainError} from '../../shared/domain/model/domain-error';
 import {Quantity} from '../../shared/domain/model/quantity';
-import {Clock} from '../../shared/domain/services/clock';
 import {ProductsStore} from '../../products/application/products.store';
 import {SessionStore} from '../../iam/application/session.store';
 import {SuppliersStore} from '../../suppliers/application/suppliers.store';
@@ -46,7 +45,6 @@ export class RequisitionStore {
   private readonly api = inject(RequisitionApi);
   private readonly productsStore = inject(ProductsStore);
   private readonly suppliers = inject(SuppliersStore);
-  private readonly clock = inject(Clock);
   private readonly session = inject(SessionStore);
 
   private readonly requestsSignal = signal<SupplyRequest[]>([]);
@@ -106,7 +104,7 @@ export class RequisitionStore {
       throw new DomainError('A supplier can consult the requests but cannot create them');
     }
     const requiredOn = CalendarDate.of(command.requiredOn);
-    if (requiredOn.isBefore(this.clock.today())) {
+    if (requiredOn.isBefore(CalendarDate.today())) {
       throw new DomainError('The required date cannot be in the past');
     }
     const request = new SupplyRequest({

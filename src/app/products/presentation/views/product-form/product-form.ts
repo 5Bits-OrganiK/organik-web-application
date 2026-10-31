@@ -9,7 +9,6 @@ import {Notifier} from '../../../../communication/application/notifier';
 import {InventoryStore} from '../../../../inventory/application/inventory.store';
 import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
 import {STORAGE_CONDITIONS, StorageCondition} from '../../../../shared/domain/model/storage-condition';
-import {Clock} from '../../../../shared/domain/services/clock';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
 import {positiveIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {SuppliersStore} from '../../../../suppliers/application/suppliers.store';
@@ -39,7 +38,6 @@ export class ProductForm implements OnInit {
   private readonly productsStore = inject(ProductsStore);
   private readonly suppliersStore = inject(SuppliersStore);
   private readonly inventory = inject(InventoryStore);
-  private readonly clock = inject(Clock);
   private readonly router = inject(Router);
   private readonly notifier = inject(Notifier);
   private filled = false;
@@ -53,7 +51,7 @@ export class ProductForm implements OnInit {
   protected readonly units = MEASUREMENT_UNITS;
   protected readonly storageConditions = STORAGE_CONDITIONS;
   /** First day the initial lot may expire. */
-  protected readonly minExpiry = this.clock.today().toString();
+  protected readonly minExpiry = CalendarDate.today().toString();
 
   protected readonly form = this.fb.group({
     name: ['', Validators.required],
@@ -141,6 +139,6 @@ export class ProductForm implements OnInit {
   }
 
   private notExpired(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && CalendarDate.of(control.value).isBefore(this.clock.today()) ? {expired: true} : null;
+    return control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today()) ? {expired: true} : null;
   }
 }

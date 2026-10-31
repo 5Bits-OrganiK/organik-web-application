@@ -1,18 +1,8 @@
-import {Injectable} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {provideTranslateService} from '@ngx-translate/core';
 import {DomainError} from '../../shared/domain/model/domain-error';
-import {Clock} from '../../shared/domain/services/clock';
 import {ReportExporter} from '../infrastructure/report-exporter';
 import {AnalyticsStore} from './analytics.store';
-
-/** Clock frozen on the day of the approved mockups. */
-@Injectable()
-class FixedClock extends Clock {
-  override now(): Date {
-    return new Date(2026, 9, 2, 12, 0);
-  }
-}
 
 /** Lets the in-memory gateway answer, whatever latency the environment simulates. */
 const settleGateway = () => vi.advanceTimersByTimeAsync(1_000);
@@ -23,11 +13,11 @@ describe('AnalyticsStore', () => {
 
   beforeEach(async () => {
     vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 9, 2, 12, 0));
     exportAsPdf.mockReset();
     TestBed.configureTestingModule({
       providers: [
         provideTranslateService(),
-        {provide: Clock, useClass: FixedClock},
         {provide: ReportExporter, useValue: {exportAsPdf}}
       ]
     });

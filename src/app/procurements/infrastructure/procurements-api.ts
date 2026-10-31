@@ -1,11 +1,11 @@
 import {inject, Injectable} from '@angular/core';
 import {map, Observable} from 'rxjs';
-import {Clock} from '../../shared/domain/services/clock';
 import {respondWith} from '../../shared/infrastructure/in-memory-gateway';
 import {ShipmentOrder} from '../domain/model/shipment-order.entity';
 import {ShipmentOrderResource} from './procurements-response';
 import {shipmentOrdersSeed} from './procurements-seed';
 import {ShipmentOrderAssembler} from './shipment-order-assembler';
+import {CalendarDate} from '../../shared/domain/model/calendar-date';
 
 @Injectable({providedIn: 'root'})
 /**
@@ -17,7 +17,7 @@ import {ShipmentOrderAssembler} from './shipment-order-assembler';
  */
 export class ProcurementsApi {
   private readonly assembler = inject(ShipmentOrderAssembler);
-  private readonly resources: ShipmentOrderResource[] = shipmentOrdersSeed(inject(Clock).today());
+  private readonly resources: ShipmentOrderResource[] = shipmentOrdersSeed(CalendarDate.today());
 
   /**
    * Fetches every order.

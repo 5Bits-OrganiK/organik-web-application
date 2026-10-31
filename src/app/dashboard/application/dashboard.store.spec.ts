@@ -1,16 +1,6 @@
-import {Injectable} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 import {provideTranslateService} from '@ngx-translate/core';
-import {Clock} from '../../shared/domain/services/clock';
 import {DashboardStore} from './dashboard.store';
-
-/** Clock frozen on the day of the approved mockups. */
-@Injectable()
-class FixedClock extends Clock {
-  override now(): Date {
-    return new Date(2026, 9, 2, 12, 0);
-  }
-}
 
 /** Lets the in-memory gateway answer, whatever latency the environment simulates. */
 const settleGateway = () => vi.advanceTimersByTimeAsync(1_000);
@@ -20,8 +10,9 @@ describe('DashboardStore', () => {
 
   beforeEach(async () => {
     vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 9, 2, 12, 0));
     TestBed.configureTestingModule({
-      providers: [provideTranslateService(), {provide: Clock, useClass: FixedClock}]
+      providers: [provideTranslateService()]
     });
     store = TestBed.inject(DashboardStore);
     store.loadDashboard();
@@ -51,7 +42,10 @@ describe('DashboardStore', () => {
 });
 
 describe('DashboardStore for each kind of user', () => {
-  beforeEach(() => vi.useFakeTimers());
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 9, 2, 12, 0));
+  });
 
   afterEach(() => {
     vi.useRealTimers();
@@ -61,7 +55,7 @@ describe('DashboardStore for each kind of user', () => {
   async function setup(userId: string): Promise<DashboardStore> {
     sessionStorage.setItem('organik.session', userId);
     TestBed.configureTestingModule({
-      providers: [provideTranslateService(), {provide: Clock, useClass: FixedClock}]
+      providers: [provideTranslateService()]
     });
     const store = TestBed.inject(DashboardStore);
     store.loadDashboard();

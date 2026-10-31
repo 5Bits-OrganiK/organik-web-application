@@ -29,6 +29,13 @@ export class CalendarDate {
     return new CalendarDate(value);
   }
 
+  /**
+   * Creates the calendar date of the current local day.
+   */
+  static today(): CalendarDate {
+    return CalendarDate.of(new Date());
+  }
+
   private static fromParts(year: number, month: number, day: number): CalendarDate {
     const pad = (n: number, size = 2) => String(n).padStart(size, '0');
     return new CalendarDate(`${pad(year, 4)}-${pad(month)}-${pad(day)}`);

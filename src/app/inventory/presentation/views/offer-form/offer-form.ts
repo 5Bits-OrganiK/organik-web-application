@@ -9,7 +9,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {Notifier} from '../../../../communication/application/notifier';
 import {ProductsStore} from '../../../../products/application/products.store';
 import {CalendarDate} from '../../../../shared/domain/model/calendar-date';
-import {Clock} from '../../../../shared/domain/services/clock';
 import {FormCard} from '../../../../shared/presentation/components/form-card/form-card';
 import {positiveIntegerValidator} from '../../../../shared/presentation/forms/validators';
 import {InventoryStore} from '../../../application/inventory.store';
@@ -27,12 +26,11 @@ export class OfferForm implements OnInit {
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly inventory = inject(InventoryStore);
   private readonly productsStore = inject(ProductsStore);
-  private readonly clock = inject(Clock);
   private readonly router = inject(Router);
   private readonly notifier = inject(Notifier);
 
   /** First day an offer may end. */
-  protected readonly minDate = this.clock.today().toString();
+  protected readonly minDate = CalendarDate.today().toString();
   /** Products that have stock to offer. */
   protected readonly products = computed(() =>
     this.productsStore.products().filter(product => this.inventory.stockOf(product.id) > 0)
@@ -77,6 +75,6 @@ export class OfferForm implements OnInit {
   }
 
   private inThePast(control: AbstractControl<string>): ValidationErrors | null {
-    return control.value && CalendarDate.of(control.value).isBefore(this.clock.today()) ? {past: true} : null;
+    return control.value && CalendarDate.of(control.value).isBefore(CalendarDate.today()) ? {past: true} : null;
   }
 }
