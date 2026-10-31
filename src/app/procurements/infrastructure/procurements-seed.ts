@@ -60,6 +60,25 @@ export function shipmentOrdersSeed(today: CalendarDate): ShipmentOrderResource[]
       createdOn: inDays(-1),
       createdBy: 'Anita Gamboa',
       status: 'pending'
+    },
+    {
+      id: 'ord-05',
+      supplierId: 'sup-valle-verde',
+      minimarketId: DEMO_MINIMARKET_ID,
+      lines: [{productId: 'ORG-02', quantity: 80, lotCode: 'VV-0903', expiresOn: inDays(9)}],
+      createdOn: inDays(0),
+      createdBy: 'Luis Mendoza',
+      status: 'pending'
+    },
+    {
+      id: 'ord-06',
+      supplierId: 'sup-bioandes',
+      minimarketId: DEMO_MINIMARKET_ID,
+      lines: [{productId: 'ORG-04', quantity: 60, lotCode: 'BA-0412', expiresOn: inDays(12)}],
+      createdOn: inDays(-6),
+      createdBy: 'Marco Quispe',
+      status: 'accepted',
+      decision: {decidedBy: 'Albino Caceres', decidedOn: inDays(-5), reason: ''}
     }
   ];
 }

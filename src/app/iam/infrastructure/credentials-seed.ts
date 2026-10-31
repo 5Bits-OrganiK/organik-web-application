@@ -12,5 +12,7 @@ export const DEMO_ACCOUNTS: readonly string[] = [
   'albino@organik.pe',
   'cielo@organik.pe',
   'alexis@organik.pe',
-  'marco@bioandes.pe'
+  'marco@bioandes.pe',
+  'anita@gamboa.pe',
+  'luis@valleverde.pe'
 ];

@@ -22,7 +22,7 @@ describe('DashboardStore', () => {
   afterEach(() => vi.useRealTimers());
 
   it('should summarize the figures of every context', () => {
-    expect(store.summary()).toEqual({health: 87, units: 1248, requests: 5, pendingShipments: 2});
+    expect(store.summary()).toEqual({health: 87, units: 1248, requests: 5, pendingShipments: 3});
   });
 
   it('should highlight the lot that expires first', () => {
@@ -67,14 +67,14 @@ describe('DashboardStore for each kind of user', () => {
     const store = await setup('usr-4');
 
     expect(store.isSupplier()).toBe(true);
-    expect(store.supplierSummary()).toEqual({needs: 2, offered: 2, pending: 1, accepted: 0, rejected: 0});
+    expect(store.supplierSummary()).toEqual({needs: 2, offered: 2, pending: 1, accepted: 1, rejected: 0});
   });
 
   it('should tell the administrator what needs attention', async () => {
     const store = await setup('usr-1');
 
     expect(store.isSupplier()).toBe(false);
-    expect(store.attention().pendingOrders).toBe(2);
+    expect(store.attention().pendingOrders).toBe(3);
     expect(store.attention().expiring).toBeGreaterThan(0);
   });
 });

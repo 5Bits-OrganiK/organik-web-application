@@ -35,7 +35,9 @@ describe('UsersStore', () => {
       'Albino Caceres',
       'Cielo Atencio',
       'Alexis Torres',
-      'Marco Quispe'
+      'Marco Quispe',
+      'Anita Gamboa',
+      'Luis Mendoza'
     ]);
   });
 
@@ -43,7 +45,7 @@ describe('UsersStore', () => {
     store.createUser(command()).subscribe();
     await settleGateway();
 
-    expect(store.findById('usr-5')?.role.id).toBe('operator');
+    expect(store.findById('usr-7')?.role.id).toBe('operator');
   });
 
   it('should refuse an e-mail that already belongs to someone', () => {
@@ -59,7 +61,7 @@ describe('UsersStore', () => {
     await settleGateway();
 
     expect(store.findById('usr-2')?.fullName).toBe('Cielo A.');
-    expect(store.users().length).toBe(4);
+    expect(store.users().length).toBe(6);
   });
 
   it('should let a user keep their own e-mail when editing', () => {

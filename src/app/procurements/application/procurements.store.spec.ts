@@ -29,7 +29,7 @@ describe('ProcurementsStore', () => {
   it('should show a supplier only its own orders', async () => {
     const {store} = await setup('usr-4');
 
-    expect(store.shipmentItems().map(item => item.id)).toEqual(['ord-01']);
+    expect(store.shipmentItems().map(item => item.id)).toEqual(['ord-01', 'ord-06']);
   });
 
   it('should show the minimarket every order addressed to it with its status', async () => {
@@ -38,7 +38,7 @@ describe('ProcurementsStore', () => {
     expect(store.shipmentItems().map(item => [item.id, item.status])).toEqual(
       expect.arrayContaining([['ord-01', 'pending'], ['ord-02', 'accepted'], ['ord-03', 'rejected'], ['ord-04', 'pending']])
     );
-    expect(store.pendingCount()).toBe(2);
+    expect(store.pendingCount()).toBe(3);
   });
 
   it('should create a pending order without touching the inventory', async () => {
@@ -48,7 +48,7 @@ describe('ProcurementsStore', () => {
     store.createOrder({minimarketId: 'mm-vida-verde', lines: [{offeringId: 'off-p-1', quantity: 20}]}).subscribe();
     await settleGateway();
 
-    expect(store.shipmentItems().find(item => item.id === 'ord-05')).toMatchObject({status: 'pending', createdBy: 'Marco Quispe'});
+    expect(store.shipmentItems().find(item => item.id === 'ord-07')).toMatchObject({status: 'pending', createdBy: 'Marco Quispe'});
     expect(inventory.totalUnits()).toBe(before);
   });
 
