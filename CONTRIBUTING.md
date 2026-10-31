@@ -58,7 +58,7 @@ Contexts depend on each other only through the public API of their `application`
 - **Encapsulation**: Domain entities expose `readonly` state and business behavior (for example `ShipmentOrder.acceptReception`) instead of plain mutable data, and validate their invariants in the constructor, raising a `DomainError` when they are violated.
 - **Value Objects**: Model quantities, money, percentages, e-mail addresses and dates with the immutable value objects of the Shared Kernel (`Quantity`, `Money`, `Percentage`, `EmailAddress`, `CalendarDate`, `DateTime`) instead of primitives.
 - **Assembler Pattern**: Keep infrastructure resources (`*Resource`, `*Response`) decoupled from domain entities using dedicated bidirectional assemblers; gateways return entities, never raw resources.
-- **Ports for Side Effects**: Read the current time through the `Clock` port so rules are deterministic in tests.
+- **Current date**: Read it with `CalendarDate.today()`; tests freeze it with `vi.setSystemTime`.
 - **Composition over Inheritance**: Prefer composing small services and stores over deep class hierarchies.
 - **Clean Code**: Use intention-revealing names, keep functions small, comment the "why" and document public classes and methods with TSDoc.
 
@@ -160,11 +160,11 @@ Every release updates `package.json`, closes the `Unreleased` section of `CHANGE
 - **Standalone Components**: Do not use `NgModule`. Declare components, pipes, and directives as standalone.
 - **Dependency Injection**: Use `inject(Service)` rather than constructor-based injection for cleaner, modern DI.
 - **Reactivity via Signals**:
-  - Use `signal()`, `computed()`, and `effect()` for local and store state.
+  - Use `signal()` and `computed()` for local and store state.
   - Use signal-based `input()` and `output()` for component communication.
 - **Change Detection**: Rely on Angular's zoneless, default `OnPush` change detection and signal-based reactivity.
 - **Lazy Loading**: Expose each context routes from a `*.routes.ts` file and load it with `loadChildren` / `loadComponent`.
-- **Reactive Forms**: Use `NonNullableFormBuilder` and the shared validators (`emailValidator`, `positiveIntegerValidator`) for consistent validation feedback.
+- **Reactive Forms**: Use `FormBuilder` with `FormControl` and `Validators`; the shared patterns live in `shared/presentation/forms/form-patterns.ts`.
 
 ### Angular Material (M3) Guidelines
 - **Theme Consistency**: Use Material 3 (M3) design tokens and `@angular/material` mixins (`@include mat.theme(...)`, `mat.theme-overrides`) in `src/material-theme.scss`.
@@ -208,7 +208,7 @@ firebase deploy --only hosting
 
 ### Tests
 - Cover domain entities, value objects, domain services and stores with unit tests next to their source (`*.spec.ts`).
-- Freeze time with a `Clock` test double and use fake timers for the simulated gateway latency.
+- Freeze time with `vi.setSystemTime` and use fake timers for the simulated gateway latency.
 - Gateways that call the fake API are tested with `HttpTestingController`; keep the `FAKE_API_ENABLED` switch off in unit tests.
 
 ---

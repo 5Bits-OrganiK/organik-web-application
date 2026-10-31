@@ -241,6 +241,9 @@ The reference repositories of the course keep the domain layer limited to `domai
 - Compute the conservation alerts and the supplier suggestions as `computed` signals in `ConservationStore` and `SuppliersStore`.
 - Remove `Clock` and read the current day with `CalendarDate.today()`; the store specs freeze the date with `vi.setSystemTime`.
 - Show the list tables with `MatTableDataSource`, `MatSort` and `MatPaginator`, read through `viewChild` as in the course examples.
+- Use `provideRouter(routes)` without view transitions, anchor scrolling or component input binding (this supersedes the router features of ADR 007): the forms read route and query values with `ActivatedRoute`, and the module guard is a `CanActivateFn` kept in `iam/infrastructure/iam.guard.ts`.
+- Build forms with `FormBuilder` and `FormControl`, validate formats and limits with `Validators.pattern`, `max` and `min` (their limits are updated when the field they depend on changes), and keep the rules that compare with today's date or with a list as short functions in the `validators` list.
+- Fill the edit forms with a subscription to the route and to the load methods of the stores, which now return a stream that emits when the data is available, instead of an `effect`.
 
 ### Consequences
 - **Positive**: The domain layer has no Angular imports and the structure matches the course repositories.

@@ -104,7 +104,7 @@ organik-website-v2/
 │       │   ├── domain/                 # User, Role, Registration and authentication errors
 │       │   ├── infrastructure/         # IamApi, assembler and resources
 │       │   ├── application/            # AuthStore, SessionStore, UsersStore
-│       │   └── presentation/           # Login, register, user views, guards
+│       │   └── presentation/           # Login, register and user views
 │       ├── profiles/                   # Profiles and business settings
 │       │   ├── application/            # SettingsStore
 │       │   └── presentation/           # Profile list and settings views
