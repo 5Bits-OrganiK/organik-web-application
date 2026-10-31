@@ -8,7 +8,6 @@ import {ReadingSource} from '../domain/model/reading-source';
 import {ReadingStatus} from '../domain/model/reading-status';
 import {StorageReading} from '../domain/model/storage-reading.entity';
 import {StorageZone} from '../domain/model/storage-zone.entity';
-import {ConservationAlertService} from '../domain/services/conservation-alert.service';
 import {ConservationApi} from '../infrastructure/conservation-api';
 
 /** Read model of one row of the monitoring table. */
@@ -42,7 +41,6 @@ export class ConservationStore {
   private readonly api = inject(ConservationApi);
   private readonly productsStore = inject(ProductsStore);
   private readonly inventory = inject(InventoryStore);
-  private readonly alertService = new ConservationAlertService();
 
   private readonly zonesSignal = signal<StorageZone[]>([]);
   private readonly readingsSignal = signal<StorageReading[]>([]);
@@ -91,16 +89,31 @@ export class ConservationStore {
     return this.zonesSignal().filter(zone => !withReadings.has(zone.id)).map(zone => zone.name);
   });
 
-  /** Active alerts, in the order they are presented in the analytics screen. */
-  readonly alerts = computed<ConservationAlert[]>(() =>
-    this.alertService.derive({
-      expiringProducts: this.inventory.expiringItems().map(item => item.productName),
-      outOfRangeZones: this.readingItems()
-        .filter(item => item.status !== 'normal')
-        .map(item => item.zoneName),
-      shortageProducts: this.inventory.shortages().map(shortage => shortage.productName)
-    })
-  );
+  /**
+   * Active alerts, in the order they are presented in the analytics screen.
+   *
+   * @remarks
+   * One alert is raised per kind of problem. Temperature breaches are critical because
+   * they endanger the whole zone at once; the others only require an action.
+   */
+  readonly alerts = computed<ConservationAlert[]>(() => {
+    const expiringProducts = this.inventory.expiringItems().map(item => item.productName);
+    const outOfRangeZones = this.readingItems()
+      .filter(item => item.status !== 'normal')
+      .map(item => item.zoneName);
+    const shortageProducts = this.inventory.shortages().map(shortage => shortage.productName);
+    const alerts: ConservationAlert[] = [];
+    if (expiringProducts.length > 0) {
+      alerts.push(new ConservationAlert('expiration', 'info', [...new Set(expiringProducts)]));
+    }
+    if (outOfRangeZones.length > 0) {
+      alerts.push(new ConservationAlert('temperature', 'critical', [...new Set(outOfRangeZones)]));
+    }
+    if (shortageProducts.length > 0) {
+      alerts.push(new ConservationAlert('minimum-stock', 'info', [...new Set(shortageProducts)]));
+    }
+    return alerts;
+  });
 
   /** Active alerts with the most urgent first; ties keep their presentation order. */
   readonly prioritizedAlerts = computed(() =>

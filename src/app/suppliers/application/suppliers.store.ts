@@ -8,7 +8,7 @@ import {EmailAddress} from '../../shared/domain/model/email-address';
 import {Quantity} from '../../shared/domain/model/quantity';
 import {OfferedProduct} from '../domain/model/offered-product.entity';
 import {Supplier} from '../domain/model/supplier.entity';
-import {SupplierSuggestionService} from '../domain/services/supplier-suggestion.service';
+import {SUPPLIER_SPECIALTIES} from '../domain/model/supplier-specialty';
 import {SuppliersApi} from '../infrastructure/suppliers-api';
 
 /**
@@ -59,7 +59,6 @@ export interface OfferingItem {
  */
 export class SuppliersStore {
   private readonly api = inject(SuppliersApi);
-  private readonly suggestionService = new SupplierSuggestionService();
   private readonly productsStore = inject(ProductsStore);
   private readonly session = inject(SessionStore);
 
@@ -71,7 +70,12 @@ export class SuppliersStore {
   readonly suppliers = this.suppliersSignal.asReadonly();
 
   /** Suppliers grouped by the alert situation they are recommended for. */
-  readonly suggestions = computed(() => this.suggestionService.suggest(this.suppliersSignal()));
+  readonly suggestions = computed(() =>
+    SUPPLIER_SPECIALTIES.map(reason => ({
+      reason,
+      suppliers: this.suppliersSignal().filter(supplier => supplier.hasSpecialty(reason))
+    })).filter(suggestion => suggestion.suppliers.length > 0)
+  );
 
   /** Every product the suppliers offer, with the product and the supplier names. */
   readonly offerings = computed<OfferingItem[]>(() =>
