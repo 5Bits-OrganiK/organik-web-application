@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { manageGuard } from '../../iam/presentation/guards/auth.guard';
+import { manageGuard } from '../../iam/infrastructure/iam.guard';
 
 const requestList = () =>
   import('./views/request-list/request-list').then(m => m.RequestList);

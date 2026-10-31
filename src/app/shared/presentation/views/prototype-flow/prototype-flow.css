@@ -48,6 +48,7 @@
   font-weight: 700;
   color: var(--ok-green-text);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .topbar__link:hover {

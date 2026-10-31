@@ -41,4 +41,9 @@ export class PrototypeFlow {
 
   /** Presenter notes, as translation keys. */
   protected readonly notes = ['flow.note-start', 'flow.note-actions', 'flow.note-map'];
+
+  /** Scrolls down to the interaction map. */
+  protected scrollToInteractions(): void {
+    document.getElementById('interactions')?.scrollIntoView({behavior: 'smooth'});
+  }
 }

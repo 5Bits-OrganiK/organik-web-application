@@ -1,10 +1,10 @@
 import {inject} from '@angular/core';
-import {CanActivateChildFn, CanActivateFn, Router} from '@angular/router';
+import {CanActivateFn, Router} from '@angular/router';
 import {map} from 'rxjs';
-import {AuthStore} from '../../application/auth.store';
-import {MODULE_KEYS, ModuleKey} from '../../domain/model/role';
-import {User} from '../../domain/model/user.entity';
-import {IamApi} from '../../infrastructure/iam-api';
+import {AuthStore} from '../application/auth.store';
+import {MODULE_KEYS, ModuleKey} from '../domain/model/role';
+import {User} from '../domain/model/user.entity';
+import {IamApi} from './iam-api';
 
 /**
  * Lets only signed-in users in; everybody else is sent to the login and brought back afterwards.
@@ -27,7 +27,7 @@ export const guestGuard: CanActivateFn = () => {
 /**
  * Keeps a signed-in user inside the modules their role can open; anything else goes to the dashboard.
  */
-export const moduleGuard: CanActivateChildFn = (_route, state) => {
+export const moduleGuard: CanActivateFn = (_route, state) => {
   const router = inject(Router);
   const auth = inject(AuthStore);
   const module = state.url.replace(/^\//, '').split(/[/?#]/)[0] as ModuleKey;

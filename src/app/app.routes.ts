@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, guestGuard, moduleGuard } from './iam/presentation/guards/auth.guard';
+import { authGuard, guestGuard, moduleGuard } from './iam/infrastructure/iam.guard';
 
 const layout = () =>
   import('./shared/presentation/components/layout/layout').then(m => m.Layout);
@@ -64,21 +64,20 @@ export const routes: Routes = [
     path: '',
     loadComponent: layout,
     canActivate: [authGuard],
-    canActivateChild: [moduleGuard],
     children: [
-      { path: 'settings', loadChildren: settings },
-      { path: 'profiles', loadChildren: profiles },
-      { path: 'users', loadChildren: users },
-      { path: 'dashboard', loadChildren: dashboard },
-      { path: 'alerts', loadChildren: alerts },
-      { path: 'analytics', loadChildren: analytics },
-      { path: 'conservation', loadChildren: conservation },
-      { path: 'shipments', loadChildren: shipments },
-      { path: 'requests', loadChildren: requests },
-      { path: 'inventory', loadChildren: inventory },
-      { path: 'products', loadChildren: products },
-      { path: 'suppliers', loadChildren: suppliers },
-      { path: 'catalog', loadChildren: catalog },
+      { path: 'settings', loadChildren: settings, canActivate: [moduleGuard] },
+      { path: 'profiles', loadChildren: profiles, canActivate: [moduleGuard] },
+      { path: 'users', loadChildren: users, canActivate: [moduleGuard] },
+      { path: 'dashboard', loadChildren: dashboard, canActivate: [moduleGuard] },
+      { path: 'alerts', loadChildren: alerts, canActivate: [moduleGuard] },
+      { path: 'analytics', loadChildren: analytics, canActivate: [moduleGuard] },
+      { path: 'conservation', loadChildren: conservation, canActivate: [moduleGuard] },
+      { path: 'shipments', loadChildren: shipments, canActivate: [moduleGuard] },
+      { path: 'requests', loadChildren: requests, canActivate: [moduleGuard] },
+      { path: 'inventory', loadChildren: inventory, canActivate: [moduleGuard] },
+      { path: 'products', loadChildren: products, canActivate: [moduleGuard] },
+      { path: 'suppliers', loadChildren: suppliers, canActivate: [moduleGuard] },
+      { path: 'catalog', loadChildren: catalog, canActivate: [moduleGuard] },
       { path: '**', loadComponent: pageNotFound, title: 'page-not-found.page-title' }
     ]
   }

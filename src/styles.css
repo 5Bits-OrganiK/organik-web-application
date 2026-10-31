@@ -161,21 +161,6 @@ table,
 .ok-table-card .mat-mdc-row:nth-child(5) { --ok-row: 4; }
 .ok-table-card .mat-mdc-row:nth-child(n + 6) { --ok-row: 5; }
 
-/* Smooth cross-fade between pages; the sidebar stays put. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 380ms;
-  animation-timing-function: var(--ok-ease-soft);
-}
-
-app-sidebar {
-  view-transition-name: ok-sidebar;
-}
-
-::view-transition-group(ok-sidebar) {
-  animation: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

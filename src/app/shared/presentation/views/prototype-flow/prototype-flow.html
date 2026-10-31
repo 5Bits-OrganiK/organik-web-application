@@ -9,7 +9,7 @@
     <span class="topbar__name">{{ 'app.title' | translate }}</span>
   </div>
   <div class="topbar__tools">
-    <a class="topbar__link" routerLink="." fragment="interactions">{{ 'flow.topbar-link' | translate }}</a>
+    <a class="topbar__link" role="link" tabindex="0" (click)="scrollToInteractions()" (keydown.enter)="scrollToInteractions()">{{ 'flow.topbar-link' | translate }}</a>
     <app-language-switcher/>
   </div>
 </header>
