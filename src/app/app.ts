@@ -25,7 +25,8 @@ export class App {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.pageTitle.set(this.activeTitleKey());
-        this.updateTabTitle();
+        // The router writes the raw route title right after this event, so ours goes after it.
+        queueMicrotask(() => this.updateTabTitle());
       }
     });
     this.translate.onLangChange.subscribe(() => this.updateTabTitle());
