@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {Component, computed, inject, input, OnInit, signal} from '@angular/core';
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterLink} from '@angular/router';
@@ -11,7 +12,7 @@ import {ProcurementsStore} from '../../../application/procurements.store';
 import {ORDER_STATUS_TONE} from '../../status-tones';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink, MatButton, MatFormField, MatError, MatInput, TranslatePipe, StatusBadge],
+  imports: [ReactiveFormsModule, RouterLink, MatButton, MatFormField, MatError, MatInput, DatePipe, TranslatePipe, StatusBadge],
   selector: 'app-order-detail',
   styleUrl: './order-detail.css',
   templateUrl: './order-detail.html',

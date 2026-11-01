@@ -46,7 +46,7 @@
             <tr>
               <td>{{ item.productName }}</td>
               <td>{{ item.availableQuantity }}</td>
-              <td>{{ item.expiresOn.toString() }}</td>
+              <td>{{ item.expiresOn.toString() | date:'yyyy-MM-dd' }}</td>
             </tr>
           } @empty {
             <tr><td colspan="3">{{ 'catalog-page.empty' | translate }}</td></tr>

@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
@@ -6,7 +7,7 @@ import {StatusBadge} from '../../../../shared/presentation/components/status-bad
 import {InventoryStore} from '../../../application/inventory.store';
 
 @Component({
-  imports: [RouterLink, MatAnchor, TranslatePipe, StatusBadge],
+  imports: [RouterLink, MatAnchor, DatePipe, TranslatePipe, StatusBadge],
   selector: 'app-inventory-history',
   styleUrl: './inventory-history.css',
   templateUrl: './inventory-history.html',

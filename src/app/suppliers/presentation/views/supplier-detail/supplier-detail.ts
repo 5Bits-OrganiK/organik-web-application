@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {Component, computed, inject, input, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
@@ -8,7 +9,7 @@ import {SuppliersStore} from '../../../application/suppliers.store';
   imports: [
     RouterLink,
     MatAnchor,
-    TranslatePipe
+    DatePipe, TranslatePipe
   ],
   selector: 'app-supplier-detail',
   styleUrl: './supplier-detail.css',

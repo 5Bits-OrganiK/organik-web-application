@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {Component, computed, inject, OnInit, signal, viewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
@@ -64,7 +65,7 @@ const normalize = (value: string): string =>
     MatSortHeader,
     MatPaginator,
     MatNoDataRow,
-    TranslatePipe,
+    DatePipe, TranslatePipe,
     StatusBadge
   ],
   selector: 'app-inventory-list',

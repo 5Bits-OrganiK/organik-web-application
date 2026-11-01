@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {Component, computed, inject, input, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
@@ -10,7 +11,7 @@ import {StockStatus} from '../../../domain/model/stock-status';
 import {STOCK_STATUS_TONE} from '../../stock-status-tone';
 
 @Component({
-  imports: [RouterLink, MatAnchor, TranslatePipe, StatusBadge],
+  imports: [RouterLink, MatAnchor, DatePipe, TranslatePipe, StatusBadge],
   selector: 'app-product-lots',
   styleUrl: './product-lots.css',
   templateUrl: './product-lots.html',

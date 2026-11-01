@@ -31,7 +31,7 @@
               <td>{{ lot.lotCode }}</td>
               <td>{{ lot.quantity }}</td>
               <td>{{ supplierName() }}</td>
-              <td>{{ lot.expiresOn.toString() }}</td>
+              <td>{{ lot.expiresOn.toString() | date:'yyyy-MM-dd' }}</td>
               <td><app-status-badge [tone]="toneOf(lot.status)">{{ 'status.' + lot.status | translate }}</app-status-badge></td>
             </tr>
           }

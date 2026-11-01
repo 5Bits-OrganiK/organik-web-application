@@ -40,12 +40,12 @@
 
     <ng-container matColumnDef="expiresOn">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'inventory.columns.expires' | translate }}</th>
-      <td mat-cell *matCellDef="let row">{{ row.expiresOn.toString() }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.expiresOn.toString() | date:'yyyy-MM-dd' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="updatedOn">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'catalog-page.updated' | translate }}</th>
-      <td mat-cell *matCellDef="let row">{{ row.updatedOn.toString() }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.updatedOn.toString() | date:'yyyy-MM-dd' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">

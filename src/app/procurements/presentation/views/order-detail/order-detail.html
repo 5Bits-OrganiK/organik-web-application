@@ -20,7 +20,7 @@
       </div>
       <div>
         <dt>{{ 'shipments.columns.date' | translate }}</dt>
-        <dd>{{ order.createdOn.toString() }}</dd>
+        <dd>{{ order.createdOn.toString() | date:'yyyy-MM-dd' }}</dd>
       </div>
       @if (order.decidedOn) {
         <div>
@@ -29,7 +29,7 @@
         </div>
         <div>
           <dt>{{ 'shipments.detail.decided-on' | translate }}</dt>
-          <dd>{{ order.decidedOn.toString() }}</dd>
+          <dd>{{ order.decidedOn.toString() | date:'yyyy-MM-dd' }}</dd>
         </div>
       }
       @if (order.status === 'rejected') {
@@ -55,7 +55,7 @@
             <td>{{ line.productName }}</td>
             <td>{{ line.lotCode }}</td>
             <td>{{ line.quantity }}</td>
-            <td>{{ line.expiresOn.toString() }}</td>
+            <td>{{ line.expiresOn.toString() | date:'yyyy-MM-dd' }}</td>
           </tr>
         }
       </tbody>

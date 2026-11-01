@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {Component, computed, inject, OnInit, viewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
@@ -40,7 +41,7 @@ import {ORDER_STATUS_TONE} from '../../status-tones';
     MatSort,
     MatSortHeader,
     MatPaginator,
-    TranslatePipe,
+    DatePipe, TranslatePipe,
     StatusBadge
   ],
   selector: 'app-shipment-list',

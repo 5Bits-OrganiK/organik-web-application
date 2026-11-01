@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {Component, computed, inject, OnInit, signal, viewChild} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatAnchor} from '@angular/material/button';
@@ -39,7 +40,7 @@ import {SuppliersStore} from '../../../application/suppliers.store';
     MatSort,
     MatSortHeader,
     MatPaginator,
-    TranslatePipe
+    DatePipe, TranslatePipe
   ],
   selector: 'app-catalog-list',
   styleUrl: './catalog-list.css',
