@@ -25,12 +25,11 @@
     <div class="ok-field">
       <label for="role">{{ 'iam.users.form.role' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="role" formControlName="role">
-          <option value="" disabled>{{ 'form.select' | translate }}</option>
+        <mat-select id="role" formControlName="role" [placeholder]="'form.select' | translate">
           @for (role of roles; track role) {
-            <option [value]="role">{{ 'iam.roles.' + role | translate }}</option>
+            <mat-option [value]="role">{{ 'iam.roles.' + role | translate }}</mat-option>
           }
-        </select>
+        </mat-select>
         <mat-error>{{ 'form.required' | translate }}</mat-error>
       </mat-form-field>
     </div>
@@ -38,12 +37,11 @@
     <div class="ok-field">
       <label for="module">{{ 'iam.users.form.module' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="module" formControlName="assignedModule">
-          <option value="" disabled>{{ 'form.select' | translate }}</option>
+        <mat-select id="module" formControlName="assignedModule" [placeholder]="'form.select' | translate">
           @for (module of availableModules(); track module) {
-            <option [value]="module">{{ 'nav.' + module | translate }}</option>
+            <mat-option [value]="module">{{ 'nav.' + module | translate }}</mat-option>
           }
-        </select>
+        </mat-select>
         <mat-error>{{ 'form.required' | translate }}</mat-error>
       </mat-form-field>
     </div>
@@ -51,11 +49,11 @@
     <div class="ok-field">
       <label for="status">{{ 'iam.users.form.status' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="status" formControlName="status">
+        <mat-select id="status" formControlName="status">
           @for (status of statuses; track status) {
-            <option [value]="status">{{ 'iam.status.' + status | translate }}</option>
+            <mat-option [value]="status">{{ 'iam.status.' + status | translate }}</mat-option>
           }
-        </select>
+        </mat-select>
       </mat-form-field>
     </div>
 

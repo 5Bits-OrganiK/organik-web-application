@@ -4,6 +4,7 @@ import {Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {MatError, MatFormField, MatHint} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Notifier} from '../../../../communication/application/notifier';
 import {ProductsStore} from '../../../../products/application/products.store';
@@ -13,7 +14,7 @@ import {InventoryStore} from '../../../application/inventory.store';
 import {POSITIVE_INTEGER_PATTERN} from '../../../../shared/presentation/forms/form-patterns';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink, MatButton, MatFormField, MatError, MatHint, MatInput, TranslatePipe, FormCard],
+  imports: [ReactiveFormsModule, RouterLink, MatButton, MatFormField, MatError, MatHint, MatInput, MatSelectModule, TranslatePipe, FormCard],
   selector: 'app-offer-form',
   styleUrl: './offer-form.css',
   templateUrl: './offer-form.html',

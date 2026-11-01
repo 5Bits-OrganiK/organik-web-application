@@ -4,11 +4,11 @@
       <div class="ok-field">
         <label for="minimarket">{{ 'shipments.form.minimarket' | translate }}</label>
         <mat-form-field appearance="outline" subscriptSizing="dynamic">
-          <select matNativeControl id="minimarket" formControlName="minimarketId">
+          <mat-select id="minimarket" formControlName="minimarketId">
             @for (minimarket of minimarkets; track minimarket.id) {
-              <option [value]="minimarket.id">{{ minimarket.name }}</option>
+              <mat-option [value]="minimarket.id">{{ minimarket.name }}</mat-option>
             }
-          </select>
+          </mat-select>
         </mat-form-field>
       </div>
 
@@ -18,12 +18,11 @@
             <div class="ok-field">
               <label [for]="'offering-' + i">{{ 'shipments.form.product' | translate }}</label>
               <mat-form-field appearance="outline" subscriptSizing="dynamic">
-                <select matNativeControl [id]="'offering-' + i" formControlName="offeringId">
-                  <option value="" disabled>{{ 'form.select' | translate }}</option>
+                <mat-select [id]="'offering-' + i" formControlName="offeringId" [placeholder]="'form.select' | translate">
                   @for (item of catalog(); track item.id) {
-                    <option [value]="item.id">{{ item.productName }} · {{ item.lotCode }}</option>
+                    <mat-option [value]="item.id">{{ item.productName }} · {{ item.lotCode }}</mat-option>
                   }
-                </select>
+                </mat-select>
                 <mat-error>{{ 'form.required' | translate }}</mat-error>
               </mat-form-field>
             </div>

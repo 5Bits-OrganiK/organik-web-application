@@ -3,12 +3,11 @@
     <div class="ok-field">
       <label for="lot">{{ 'inventory.form.lot' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="lot" formControlName="lotCode">
-          <option value="" disabled>{{ 'form.select' | translate }}</option>
+        <mat-select id="lot" formControlName="lotCode" [placeholder]="'form.select' | translate">
           @for (lot of lots(); track lot.lotCode) {
-            <option [value]="lot.lotCode">{{ lot.lotCode }} · {{ lot.productName }} ({{ lot.quantity }})</option>
+            <mat-option [value]="lot.lotCode">{{ lot.lotCode }} · {{ lot.productName }} ({{ lot.quantity }})</mat-option>
           }
-        </select>
+        </mat-select>
         <mat-error>{{ 'form.required' | translate }}</mat-error>
       </mat-form-field>
     </div>
@@ -33,11 +32,11 @@
     <div class="ok-field">
       <label for="cause">{{ 'inventory.waste-form.cause' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="cause" formControlName="cause">
+        <mat-select id="cause" formControlName="cause">
           @for (cause of causes; track cause) {
-            <option [value]="cause">{{ 'inventory.waste-causes.' + cause | translate }}</option>
+            <mat-option [value]="cause">{{ 'inventory.waste-causes.' + cause | translate }}</mat-option>
           }
-        </select>
+        </mat-select>
       </mat-form-field>
     </div>
 

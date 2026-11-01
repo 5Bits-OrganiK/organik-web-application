@@ -4,6 +4,7 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {MatError, MatFormField} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Notifier} from '../../../../communication/application/notifier';
 import {InventoryStore} from '../../../../inventory/application/inventory.store';
@@ -22,7 +23,7 @@ import {POSITIVE_INTEGER_PATTERN} from '../../../../shared/presentation/forms/fo
     MatButton,
     MatFormField,
     MatError,
-    MatInput,
+    MatInput, MatSelectModule,
     TranslatePipe,
     FormCard
   ],

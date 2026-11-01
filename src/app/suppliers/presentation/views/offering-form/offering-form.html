@@ -3,12 +3,11 @@
     <div class="ok-field">
       <label for="product">{{ 'catalog-page.product' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="product" formControlName="productId">
-          <option value="" disabled>{{ 'form.select' | translate }}</option>
+        <mat-select id="product" formControlName="productId" [placeholder]="'form.select' | translate">
           @for (product of products(); track product.id) {
-            <option [value]="product.id">{{ product.name }}</option>
+            <mat-option [value]="product.id">{{ product.name }}</mat-option>
           }
-        </select>
+        </mat-select>
         <mat-error>{{ 'form.required' | translate }}</mat-error>
       </mat-form-field>
     </div>

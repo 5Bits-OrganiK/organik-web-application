@@ -11,12 +11,11 @@
     <div class="ok-field">
       <label for="category">{{ 'catalog.form.category' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="category" formControlName="categoryId">
-          <option value="" disabled>{{ 'form.select' | translate }}</option>
+        <mat-select id="category" formControlName="categoryId" [placeholder]="'form.select' | translate">
           @for (category of categories(); track category.id) {
-            <option [value]="category.id">{{ 'catalog.categories.' + category.id | translate }}</option>
+            <mat-option [value]="category.id">{{ 'catalog.categories.' + category.id | translate }}</mat-option>
           }
-        </select>
+        </mat-select>
         <mat-error>{{ 'form.required' | translate }}</mat-error>
       </mat-form-field>
     </div>
@@ -24,12 +23,11 @@
     <div class="ok-field">
       <label for="supplier">{{ 'catalog.form.supplier' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="supplier" formControlName="supplierId">
-          <option value="" disabled>{{ 'form.select' | translate }}</option>
+        <mat-select id="supplier" formControlName="supplierId" [placeholder]="'form.select' | translate">
           @for (supplier of suppliers(); track supplier.id) {
-            <option [value]="supplier.id">{{ supplier.businessName }}</option>
+            <mat-option [value]="supplier.id">{{ supplier.businessName }}</mat-option>
           }
-        </select>
+        </mat-select>
         <mat-error>{{ 'form.required' | translate }}</mat-error>
       </mat-form-field>
     </div>
@@ -37,11 +35,11 @@
     <div class="ok-field">
       <label for="unit">{{ 'catalog.form.unit' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="unit" formControlName="unit">
+        <mat-select id="unit" formControlName="unit">
           @for (unit of units; track unit) {
-            <option [value]="unit">{{ 'catalog.units.' + unit | translate }}</option>
+            <mat-option [value]="unit">{{ 'catalog.units.' + unit | translate }}</mat-option>
           }
-        </select>
+        </mat-select>
       </mat-form-field>
     </div>
 
@@ -60,12 +58,11 @@
     <div class="ok-field">
       <label for="storage">{{ 'catalog.form.storage' | translate }}</label>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <select matNativeControl id="storage" formControlName="storageCondition">
-          <option value="" disabled>{{ 'form.select' | translate }}</option>
+        <mat-select id="storage" formControlName="storageCondition" [placeholder]="'form.select' | translate">
           @for (condition of storageConditions; track condition) {
-            <option [value]="condition">{{ 'storage.' + condition | translate }}</option>
+            <mat-option [value]="condition">{{ 'storage.' + condition | translate }}</mat-option>
           }
-        </select>
+        </mat-select>
         <mat-error>{{ 'form.required' | translate }}</mat-error>
       </mat-form-field>
     </div>
