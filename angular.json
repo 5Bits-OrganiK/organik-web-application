@@ -24,7 +24,10 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/material-theme.scss", "src/styles.css"]
+            "styles": [
+              "src/material-theme.scss",
+              "src/styles.css"
+            ]
           },
           "configurations": {
             "production": {
@@ -52,6 +55,17 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "unit": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.unit.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -69,7 +83,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "organik-website-v2:build:unit"
+          }
         }
       }
     }

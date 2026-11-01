@@ -2,7 +2,7 @@ import {provideHttpClient} from '@angular/common/http';
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
 import {environment} from '../../../environments/environment';
-import {FAKE_API_ENABLED, FakeApi, mergeByKey} from './fake-api';
+import {FakeApi, mergeByKey} from './fake-api';
 
 describe('mergeByKey', () => {
   const keyOf = (item: {id: string}) => item.id;
@@ -20,16 +20,24 @@ describe('mergeByKey', () => {
   });
 });
 
+/** Address the tests point the fake API to; the test environment leaves it empty so every gateway stays in memory. */
+const FAKE_API_URL = 'https://organik.free.beeceptor.com/api/v1';
+
 describe('FakeApi', () => {
   const url = (collection: string) => `${environment.api.baseUrl}/${collection}`;
+
+  afterEach(() => {
+    environment.api.baseUrl = '';
+  });
   let api: FakeApi;
   let http: HttpTestingController;
 
   describe('when it is switched on', () => {
     beforeEach(() => {
+      environment.api.baseUrl = FAKE_API_URL;
       localStorage.clear();
       TestBed.configureTestingModule({
-        providers: [provideHttpClient(), provideHttpClientTesting(), {provide: FAKE_API_ENABLED, useValue: true}]
+        providers: [provideHttpClient(), provideHttpClientTesting()]
       });
       api = TestBed.inject(FakeApi);
       http = TestBed.inject(HttpTestingController);
@@ -82,16 +90,17 @@ describe('FakeApi', () => {
   });
 
   it('should remember an answer in the browser so a reload does not ask again', () => {
+    environment.api.baseUrl = FAKE_API_URL;
     localStorage.clear();
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), {provide: FAKE_API_ENABLED, useValue: true}]
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     });
     TestBed.inject(FakeApi).list('products').subscribe();
     TestBed.inject(HttpTestingController).expectOne(url('products')).flush([{id: 'ORG-01'}]);
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), {provide: FAKE_API_ENABLED, useValue: true}]
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     });
     let result: unknown;
     TestBed.inject(FakeApi).list('products').subscribe(items => (result = items));

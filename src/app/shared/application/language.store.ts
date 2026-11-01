@@ -1,4 +1,4 @@
-import {DOCUMENT, inject, Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '../../../environments/environment';
 
@@ -13,7 +13,6 @@ const STORAGE_KEY = 'organik.language';
 @Injectable({providedIn: 'root'})
 export class LanguageStore {
   private readonly translate = inject(TranslateService);
-  private readonly document = inject(DOCUMENT);
 
   /** Language currently shown, as a signal. */
   readonly current = this.translate.currentLang;
@@ -38,7 +37,7 @@ export class LanguageStore {
 
   private apply(language: string): void {
     this.translate.use(language);
-    this.document.documentElement.lang = language;
+    document.documentElement.lang = language;
   }
 
   private read(): string | null {

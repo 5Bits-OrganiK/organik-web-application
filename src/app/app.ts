@@ -1,6 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
+import {SettingsStore} from './profiles/application/settings.store';
+import {LanguageStore} from './shared/application/language.store';
 import {PageTitleStore} from './shared/application/page-title.store';
 
 @Component({
@@ -22,6 +24,9 @@ export class App {
   private readonly pageTitle = inject(PageTitleStore);
 
   constructor() {
+    // Apply the language and the expiration thresholds saved in a previous visit.
+    inject(LanguageStore).restore();
+    inject(SettingsStore).restore();
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.pageTitle.set(this.activeTitleKey());

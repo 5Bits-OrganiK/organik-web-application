@@ -1,13 +1,7 @@
 import {HttpClient} from '@angular/common/http';
-import {inject, Injectable, InjectionToken} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {catchError, map, Observable, of, shareReplay, tap, timeout} from 'rxjs';
 import {environment} from '../../../environments/environment';
-
-/**
- * Switch that lets the application talk to the fake API. It is off by default so that unit tests and
- * any other injector stay in memory; `app.config.ts` turns it on.
- */
-export const FAKE_API_ENABLED = new InjectionToken<boolean>('FAKE_API_ENABLED', {factory: () => false});
 
 /**
  * Client of the fake REST API (Beeceptor) that stands in for the OrganiK web services.
@@ -28,7 +22,7 @@ export class FakeApi {
   private readonly cache = new Map<string, {at: number; result: Observable<unknown[] | null>}>();
 
   /** Whether requests are sent to the fake API at all. */
-  readonly enabled = inject(FAKE_API_ENABLED) && environment.api.baseUrl !== '';
+  readonly enabled = environment.api.baseUrl !== '';
 
   /**
    * Reads every object of a collection.
