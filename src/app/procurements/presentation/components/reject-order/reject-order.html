@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ 'shipments.detail.reject' | translate }} · {{ orderId }}</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>{{ 'shipments.detail.reason' | translate }}</mat-label>
+    <textarea matInput rows="3" [formControl]="reason"></textarea>
+    <mat-error>{{ 'form.required' | translate }}</mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{ 'form.cancel' | translate }}</button>
+  <button mat-flat-button [mat-dialog-close]="reason.value" [disabled]="!reason.value.trim()">
+    {{ 'shipments.detail.confirm-reject' | translate }}
+  </button>
+</mat-dialog-actions>

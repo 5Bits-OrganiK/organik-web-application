@@ -59,18 +59,6 @@
 }
 
 .detail__actions,
-.detail__reject {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.detail__reject {
-  flex-direction: column;
-  max-width: 520px;
-}
-
 .detail__note,
 .empty {
   color: var(--ok-muted);

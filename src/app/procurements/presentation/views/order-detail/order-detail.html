@@ -70,20 +70,8 @@
         <button mat-flat-button class="ok-btn-success" type="button" (click)="accept()">
           {{ 'shipments.detail.accept' | translate }}
         </button>
-        @if (!rejecting()) {
-          <button mat-stroked-button type="button" (click)="startReject()">{{ 'shipments.detail.reject' | translate }}</button>
-        }
+        <button mat-stroked-button type="button" (click)="reject()">{{ 'shipments.detail.reject' | translate }}</button>
       </div>
-      @if (rejecting()) {
-        <div class="detail__reject">
-          <label for="reason">{{ 'shipments.detail.reason' | translate }}</label>
-          <mat-form-field appearance="outline" subscriptSizing="dynamic">
-            <textarea matInput id="reason" rows="3" [formControl]="reason"></textarea>
-            <mat-error>{{ 'form.required' | translate }}</mat-error>
-          </mat-form-field>
-          <button mat-flat-button type="button" (click)="reject()">{{ 'shipments.detail.confirm-reject' | translate }}</button>
-        </div>
-      }
     } @else if (order.status === 'pending') {
       <p class="detail__note">{{ 'shipments.detail.only-admin' | translate }}</p>
     }

@@ -244,7 +244,7 @@ The reference repositories of the course keep the domain layer limited to `domai
 - Use `provideRouter(routes)` without view transitions, anchor scrolling or component input binding (this supersedes the router features of ADR 007): the forms read route and query values with `ActivatedRoute`, and the module guard is a `CanActivateFn` kept in `iam/infrastructure/iam.guard.ts`.
 - Build forms with `FormBuilder` and `FormControl`, validate formats and limits with `Validators.pattern`, `max` and `min` (their limits are updated when the field they depend on changes), and keep the rules that compare with today's date or with a list as short functions in the `validators` list.
 - Fill the edit forms with a subscription to the route and to the load methods of the stores, which now return a stream that emits when the data is available, instead of an `effect`.
-- Use `mat-select` in every form select, show the days with `DatePipe` (`yyyy-MM-dd`), switch the fake API on from `environment` (the unit tests build with `environment.unit.ts`, whose address is empty) and restore the saved language and settings from the root component instead of an app initializer.
+- Ask for the reason of a rejected order in a `MatDialog` (the `RejectOrder` component, opened with `MAT_DIALOG_DATA` as in the course `SourceSummary`), and use `mat-select` in every form select, show the days with `DatePipe` (`yyyy-MM-dd`), switch the fake API on from `environment` (the unit tests build with `environment.unit.ts`, whose address is empty) and restore the saved language and settings from the root component instead of an app initializer.
 
 ### Consequences
 - **Positive**: The domain layer has no Angular imports and the structure matches the course repositories.

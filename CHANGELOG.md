@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `domain/services` folders were removed: the conservation alerts and the supplier suggestions are now computed in their stores, and the `Clock` port was replaced by `CalendarDate.today()` (ADR 012).
 - The users, shipments, requests, inventory, product and catalog lists now sort by column and paginate with `MatTableDataSource`, `MatSort` and `MatPaginator`.
 - The forms use `FormBuilder`, `FormControl` and `Validators`, read route values with `ActivatedRoute` and fill themselves with subscriptions instead of effects; the report sections are a multiple select and the module list of the user form follows the chosen role.
+- Rejecting an order asks for the reason in a `MatDialog` instead of an inline field, and the detail views read their id with `ActivatedRoute`.
 - The form selects are `mat-select`, the dates go through `DatePipe`, the fake API switch comes from `environment` (the unit tests use `environment.unit.ts`) and the root component restores the saved language and settings.
 - The router uses plain `provideRouter`, the guard lives in `iam/infrastructure/iam.guard.ts` and the tab title is set by the root component.
 - The KPI cards count up through a small component created again for every new figure; the alerts shortcut draws its own counter and the layout reads the narrow viewport with `matchMedia`.
